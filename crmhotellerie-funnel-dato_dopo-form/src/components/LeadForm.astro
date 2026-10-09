@@ -1,0 +1,385 @@
+---
+import Icon from './Icon.astro';
+import { site, u, funnelPaths } from '../data/site.js';
+
+interface Props {
+  /* compact = 4 campi, per l'hero · full = qualificazione completa, in fondo alla pagina */
+  variant?: 'compact' | 'full';
+  formId?: string;
+  cta?: string;
+}
+const { variant = 'full', formId = 'leadForm', cta = 'Sblocca la demo' } = Astro.props;
+const full = variant === 'full';
+---
+
+<div class={`df-wrap df-${variant}`}>
+  <form
+    class="df"
+    id={formId}
+    action={site.formEndpoint || undefined}
+    method="post"
+    novalidate
+    data-endpoint={site.formEndpoint ? 'true' : 'false'}
+    data-mailto={site.email}
+    data-thanks={u(funnelPaths.demo)}
+    data-variant={variant}
+  >
+    <div class="df-grid">
+      <label class="df-field">
+        <span class="df-label">Nome e cognome <i>*</i></span>
+        <input type="text" name="nome" autocomplete="name" required placeholder="Mario Rossi" />
+        <span class="df-error" data-error>Inserisci il tuo nome e cognome.</span>
+      </label>
+
+      <label class="df-field">
+        <span class="df-label">Nome della struttura <i>*</i></span>
+        <input type="text" name="struttura" autocomplete="organization" required placeholder="Hotel Belvedere" />
+        <span class="df-error" data-error>Indica il nome della struttura.</span>
+      </label>
+
+      <label class="df-field">
+        <span class="df-label">Email <i>*</i></span>
+        <input type="email" name="email" autocomplete="email" required placeholder="direzione@tuohotel.it" />
+        <span class="df-error" data-error>Inserisci un indirizzo email valido.</span>
+      </label>
+
+      <label class="df-field">
+        <span class="df-label">Telefono <i>*</i></span>
+        <input type="tel" name="telefono" autocomplete="tel" required placeholder="+39 333 1234567" />
+        <span class="df-error" data-error>Inserisci un numero a cui richiamarti.</span>
+      </label>
+
+      {full && (
+        <>
+          <label class="df-field df-full">
+            <span class="df-label">Sito della struttura <em>(facoltativo)</em></span>
+            <input type="text" name="sito" inputmode="url" placeholder="www.hotelbelvedere.it" />
+          </label>
+
+          <label class="df-field">
+            <span class="df-label">Numero di camere <em>(facoltativo)</em></span>
+            <select name="camere">
+              <option value="" selected>Seleziona…</option>
+              <option value="Fino a 20">Fino a 20</option>
+              <option value="21-50">21–50</option>
+              <option value="51-100">51–100</option>
+              <option value="Oltre 100">Oltre 100</option>
+            </select>
+          </label>
+
+          <label class="df-field">
+            <span class="df-label">Come gestisci oggi la struttura? <em>(facoltativo)</em></span>
+            <select name="processo">
+              <option value="" selected>Seleziona…</option>
+              <option value="Ho un PMS e vorrei affiancarlo">Ho già un PMS e vorrei affiancarlo</option>
+              <option value="Ripartire da zero">Voglio ripartire da zero</option>
+              <option value="Excel e WhatsApp">Excel, fogli e WhatsApp</option>
+              <option value="Nuova apertura">Sto aprendo una nuova struttura</option>
+              <option value="Altro CRM">Uso già un altro CRM</option>
+            </select>
+          </label>
+
+          <label class="df-field df-full">
+            <span class="df-label">Cosa vorresti approfondire <em>(facoltativo)</em></span>
+            <textarea name="note" rows="3" placeholder="Es. commissioni OTA, coordinamento dei reparti, adempimenti al check-in…"></textarea>
+          </label>
+        </>
+      )}
+    </div>
+
+    <div class="df-consents">
+      <label class="df-check">
+        <input type="checkbox" name="privacy" value="accettata" required />
+        <span class="df-box" aria-hidden="true"><Icon name="check" size={13} stroke={3.2} /></span>
+        <span class="df-check-text">
+          Ho letto la <a href={u('/privacy-policy')} target="_blank" rel="noopener">Privacy Policy</a> e
+          acconsento al trattamento dei miei dati per ricevere la demo e essere ricontattato. <i>*</i>
+        </span>
+        <span class="df-error" data-error>Per procedere è necessario il consenso.</span>
+      </label>
+
+      {full && (
+        <label class="df-check">
+          <input type="checkbox" name="marketing" value="acconsento" />
+          <span class="df-box" aria-hidden="true"><Icon name="check" size={13} stroke={3.2} /></span>
+          <span class="df-check-text">
+            Desidero ricevere occasionalmente contenuti utili su vendita diretta, CRM e automazioni
+            per l’hotellerie. <em>(facoltativo)</em>
+          </span>
+        </label>
+      )}
+    </div>
+
+    <div class="df-hp" aria-hidden="true">
+      <label>Non compilare<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg df-submit" data-cta={`form-${variant}`}>
+      {cta}
+      <Icon name="arrow" size={19} />
+    </button>
+
+    <p class="df-note">
+      <Icon name="lock" size={15} />
+      Dopo l’invio sblocchi subito la demo e potrai scegliere quando essere richiamato.
+      Nessun impegno.
+    </p>
+  </form>
+</div>
+
+<style>
+  .df-wrap { position: relative; }
+  .df {
+    display: grid;
+    gap: 22px;
+    padding: clamp(24px, 3.2vw, 36px);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-lg);
+  }
+  .df[hidden] { display: none; }
+
+  .df-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 620px) { .df-grid { grid-template-columns: 1fr; } }
+  .df-full { grid-column: 1 / -1; }
+
+  .df-field { display: grid; gap: 7px; }
+  .df-label {
+    font-size: .84rem;
+    font-weight: 650;
+    color: var(--text);
+    letter-spacing: -.005em;
+  }
+  .df-label i { color: var(--accent-700); font-style: normal; }
+  .df-label em { font-style: normal; font-weight: 500; color: var(--muted); }
+
+  .df input[type='text'],
+  .df input[type='email'],
+  .df input[type='tel'],
+  .df select,
+  .df textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1.5px solid var(--grey-100);
+    border-radius: 12px;
+    background: var(--paper);
+    font-size: .95rem;
+    color: var(--text);
+    transition: border-color .25s var(--ease), background .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  .df textarea { resize: vertical; min-height: 82px; font-family: inherit; }
+  .df select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23727070' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 17px;
+    padding-right: 42px;
+    cursor: pointer;
+  }
+  .df input::placeholder, .df textarea::placeholder { color: var(--grey-300); }
+  .df input:hover, .df select:hover, .df textarea:hover { border-color: var(--grey-300); }
+  .df input:focus, .df select:focus, .df textarea:focus {
+    outline: none;
+    background: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(241,196,14,.25);
+  }
+
+  .df-error {
+    display: none;
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--bad);
+  }
+  .df-field.is-invalid .df-error,
+  .df-check.is-invalid .df-error { display: block; }
+  .df-field.is-invalid input,
+  .df-field.is-invalid select,
+  .df-field.is-invalid textarea { border-color: var(--bad); background: var(--bad-soft); }
+
+  /* Checkbox custom */
+  .df-consents { display: grid; gap: 13px; }
+  .df-check {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 12px;
+    cursor: pointer;
+  }
+  .df-check input {
+    position: absolute;
+    opacity: 0;
+    width: 22px; height: 22px;
+    margin: 0;
+    cursor: pointer;
+  }
+  .df-box {
+    display: grid;
+    place-items: center;
+    width: 22px; height: 22px;
+    margin-top: 1px;
+    border-radius: 7px;
+    border: 1.5px solid var(--grey-300);
+    background: #fff;
+    color: var(--black);
+    transition: background .2s var(--ease), border-color .2s var(--ease);
+  }
+  .df-box :global(svg) { opacity: 0; transform: scale(.6); transition: opacity .2s var(--ease), transform .25s var(--ease-out); }
+  .df-check input:checked ~ .df-box { background: var(--accent); border-color: var(--accent-600); }
+  .df-check input:checked ~ .df-box :global(svg) { opacity: 1; transform: none; }
+  .df-check input:focus-visible ~ .df-box { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .df-check-text { font-size: .84rem; line-height: 1.55; color: var(--muted); }
+  .df-check-text i { color: var(--accent-700); font-style: normal; }
+  .df-check-text em { font-style: normal; }
+  .df-check-text a { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 2px; }
+  .df-check .df-error { grid-column: 2; }
+  .df-check.is-invalid .df-box { border-color: var(--bad); background: var(--bad-soft); }
+
+  .df-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  .df-submit { width: 100%; }
+  .df-submit.is-busy { pointer-events: none; opacity: .75; }
+
+  .df-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: .82rem;
+    color: var(--muted);
+    text-align: center;
+  }
+  .df-note :global(svg) { color: var(--accent-700); flex: none; }
+
+  /* Stato conferma */
+  .df-done {
+    padding: clamp(28px, 4vw, 44px);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    animation: rise-in .6s var(--ease-out) both;
+  }
+  .df-done[hidden] { display: none; }
+  .df-done-ic {
+    display: inline-grid;
+    place-items: center;
+    width: 62px; height: 62px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--black);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-accent);
+  }
+  .df-done p { margin: 14px auto 24px; color: var(--muted); max-width: 46ch; font-size: .96rem; }
+  .df-done a { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 2px; }
+</style>
+<style>
+  .df-compact .df { padding: clamp(20px, 2.6vw, 28px); gap: 16px; }
+  .df-compact .df-grid { gap: 12px; }
+  .df-compact .df-note { font-size: .78rem; }
+</style>
+
+<script is:inline>
+  (function () {
+    var forms = document.querySelectorAll('form.df');
+    Array.prototype.forEach.call(forms, initForm);
+
+    function initForm(form) {
+      var hasEndpoint = form.getAttribute('data-endpoint') === 'true';
+      var mailto = form.getAttribute('data-mailto');
+      var thanks = form.getAttribute('data-thanks') || '/demo-sbloccata';
+      var submit = form.querySelector('.df-submit');
+
+      function wrapperOf(field) { return field.closest('.df-field') || field.closest('.df-check'); }
+      function validateField(field) {
+        var wrap = wrapperOf(field);
+        if (!wrap) return field.checkValidity();
+        var ok = field.checkValidity();
+        wrap.classList.toggle('is-invalid', !ok);
+        return ok;
+      }
+
+      Array.prototype.forEach.call(form.elements, function (field) {
+        if (!field.name || field.type === 'submit' || field.name === '_gotcha') return;
+        field.addEventListener('blur', function () { if (field.value !== '' || field.required) validateField(field); });
+        ['input', 'change'].forEach(function (ev) {
+          field.addEventListener(ev, function () {
+            var wrap = wrapperOf(field);
+            if (wrap && wrap.classList.contains('is-invalid')) validateField(field);
+          });
+        });
+      });
+
+      function get(n) {
+        var el = form.elements[n];
+        if (!el) return '';
+        if (el.type === 'checkbox') return el.checked ? 'Sì' : 'No';
+        return el.value || '—';
+      }
+
+      function buildMailto() {
+        var lines = [
+          'Richiesta demo — CRM Hotel (lead magnet)', '',
+          'Nome e cognome: ' + get('nome'), 'Struttura: ' + get('struttura'),
+          'Email: ' + get('email'), 'Telefono: ' + get('telefono'),
+        ];
+        ['sito', 'camere', 'processo', 'note'].forEach(function (n) { if (form.elements[n]) lines.push(n + ': ' + get(n)); });
+        lines.push('', 'Consenso privacy: ' + get('privacy'));
+        if (form.elements['marketing']) lines.push('Consenso comunicazioni commerciali: ' + get('marketing'));
+        return 'mailto:' + mailto + '?subject=' + encodeURIComponent('Richiesta demo CRM Hotel — ' + (form.elements['struttura'].value || '')) +
+          '&body=' + encodeURIComponent(lines.join('\n'));
+      }
+
+      function goThanks() { window.location.href = thanks; }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (form.elements['_gotcha'] && form.elements['_gotcha'].value) return;
+
+        var firstInvalid = null;
+        Array.prototype.forEach.call(form.elements, function (field) {
+          if (!field.name || field.type === 'submit' || field.name === '_gotcha') return;
+          if (!validateField(field) && !firstInvalid) firstInvalid = field;
+        });
+        if (firstInvalid) {
+          firstInvalid.focus({ preventScroll: true });
+          (wrapperOf(firstInvalid) || firstInvalid).scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+
+        if (submit) { submit.classList.add('is-busy'); submit.disabled = true; }
+
+        /* per la pagina di ringraziamento e per la misurazione */
+        try {
+          sessionStorage.setItem('crmhotel_lead', JSON.stringify({ nome: form.elements['nome'].value, struttura: form.elements['struttura'].value, email: form.elements['email'].value, telefono: form.elements['telefono'].value }));
+        } catch (err) {}
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'generate_lead', form_variant: form.getAttribute('data-variant') });
+
+        if (hasEndpoint) {
+          /* invio verso l'endpoint Zoho (no-cors: la risposta non è leggibile, ma l'invio parte) */
+          var body = new FormData(form);
+          fetch(form.getAttribute('action'), { method: 'POST', body: body, mode: 'no-cors' })
+            .then(goThanks, goThanks);
+        } else {
+          /* fallback senza endpoint: apre il client di posta con i dati e passa al ringraziamento */
+          var a = document.createElement('a');
+          a.href = buildMailto();
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(goThanks, 700);
+        }
+      });
+    }
+  })();
+</script>

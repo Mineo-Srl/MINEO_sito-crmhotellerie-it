@@ -1,0 +1,21 @@
+---
+// Va nel <head>, prima di qualunque altro script:
+// Google Consent Mode v2 con tutto negato finché l'utente non sceglie.
+import { site } from '../data/site.js';
+---
+<script is:inline define:vars={{ gaId: site.gaId }}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'denied',
+    personalization_storage: 'denied',
+    security_storage: 'granted',
+    wait_for_update: 500,
+  });
+  window.__MP_GA_ID__ = gaId || '';
+</script>

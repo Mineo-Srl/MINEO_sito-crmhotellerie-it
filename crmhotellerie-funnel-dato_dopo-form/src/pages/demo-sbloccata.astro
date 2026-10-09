@@ -1,0 +1,171 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Waves from '../components/Waves.astro';
+import FunnelSteps from '../components/FunnelSteps.astro';
+import { site, u, funnelPaths, demoTasks, interests } from '../data/site.js';
+---
+
+<Base
+  title={`Demo sbloccata | ${site.product} — Mineo Srl`}
+  description="La demo di CRM Hotel è sbloccata: prova il sito dimostrativo con il widget attivo e prenota la consulenza gratuita."
+  path={funnelPaths.demo}
+  noindex={true}
+  minimal={true}
+>
+  <!-- ============================================ PASSO 2 · DEMO SBLOCCATA -->
+  <section class="dm">
+    <Waves />
+    <div class="container dm-in">
+      <div class="dm-main">
+        <FunnelSteps current={2} />
+        <p class="eyebrow rise">Demo sbloccata</p>
+        <h1 class="display rise" style="--d:100ms">La demo è tua<span id="dmName"></span>: <strong>provala adesso</strong></h1>
+        <p class="lead rise" style="--d:180ms">
+          Hotel Soleluna è la nostra struttura dimostrativa: sito, widget di prenotazione e CRM
+          collegati. Aprila, fai una richiesta come un ospite e poi torna qui per scegliere quando
+          parlarne con noi.
+        </p>
+
+        <div class="dm-open rise" style="--d:260ms">
+          <span class="dm-key"><Icon name="key" size={24} /></span>
+          <div>
+            <b>Hotel Soleluna · sito dimostrativo</b>
+            <em>Si apre in una nuova scheda: questa pagina resta qui ad aspettarti.</em>
+          </div>
+          <a href={site.demoUrl} class="btn btn-primary btn-lg" target="_blank" rel="noopener" data-cta="demo-open" id="openDemo">Apri la demo <Icon name="arrowUpRight" size={19} /></a>
+        </div>
+
+        <p class="dm-skip rise" style="--d:340ms">Hai già provato la demo? <a href={u(funnelPaths.book)} data-cta="demo-skip">Vai alla consulenza</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-paper">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow">Cosa provare</p>
+        <h2 class="h2">Tre cose da guardare <strong>nella demo</strong></h2>
+        <p class="lead">Segna quelle che hai fatto: ci aiutano a preparare la consulenza sui tuoi bisogni.</p>
+      </div>
+      <div class="grid grid-3" data-stagger="100">
+        {demoTasks.map((t, i) => (
+          <article class="card task" data-reveal>
+            <span class="task-n">{i + 1}</span>
+            <span class="icon-chip"><Icon name={t.icon} /></span>
+            <h3 class="h4">{t.title}</h3>
+            <p>{t.text}</p>
+            <label class="task-check">
+              <input type="checkbox" data-task={i} />
+              <span class="task-box" aria-hidden="true"><Icon name="check" size={13} stroke={3.4} /></span>
+              <span>Fatto</span>
+            </label>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow">Cosa ti interessa di più</p>
+        <h2 class="h2">Dicci <strong>da dove partire</strong></h2>
+        <p class="lead">Scegli uno o più temi: li porteremo nella consulenza, così non perdiamo tempo.</p>
+      </div>
+      <div class="chips" role="group" aria-label="Argomenti di interesse" data-reveal>
+        {interests.map((i) => (
+          <button type="button" class="chip" data-interest={i.id} aria-pressed="false">
+            <Icon name={i.icon} size={18} /> {i.label}
+          </button>
+        ))}
+      </div>
+
+      <aside class="dm-next" data-reveal>
+        <div>
+          <p class="dm-next-t">Passo 3: scegli quando vuoi essere richiamato</p>
+          <p class="dm-next-p">Consulenza gratuita sui numeri della tua struttura. Il gestionale che usi oggi resta al suo posto.</p>
+        </div>
+        <a href={u(funnelPaths.book)} class="btn btn-primary btn-lg" data-cta="demo-to-booking">Prenota la consulenza <Icon name="arrow" size={19} /></a>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+  /* se la pagina viene caricata dentro l'iframe del form Zoho, esce dall'iframe */
+  (function () { try { if (window.top !== window.self) window.top.location.href = window.location.href; } catch (e) {} })();
+</script>
+
+<style>
+  .dm { position: relative; overflow: hidden; padding-block: calc(var(--header-h) + clamp(40px, 6vw, 80px)) clamp(50px, 7vw, 90px); }
+  .dm-in { position: relative; z-index: 2; }
+  .dm-main { max-width: 720px; }
+  .dm .lead { margin-top: 18px; }
+  .dm-open { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 20px; margin-top: 30px; padding: 22px 24px; border-radius: var(--radius-lg); background: #000; color: #fff; box-shadow: var(--shadow-lg); }
+  .dm-key { display: grid; place-items: center; width: 50px; height: 50px; flex: none; border-radius: 50%; background: var(--accent); color: #000; }
+  .dm-open > div { flex: 1; min-width: 220px; }
+  .dm-open b { display: block; font-family: var(--font-display); font-size: 1.25rem; }
+  .dm-open em { display: block; font-style: normal; font-size: .88rem; color: var(--muted-dark); }
+  .dm-skip { margin-top: 18px; font-size: .92rem; color: var(--muted); }
+  .dm-skip a { color: var(--ink); font-weight: 500; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+
+  .task { padding-top: 38px; }
+  .task-n { position: absolute; top: 16px; right: 22px; font-family: var(--font-display); font-weight: 700; font-size: 2.2rem; line-height: 1; color: var(--paper-2); }
+  .task-check { display: inline-flex; align-items: center; gap: 10px; margin-top: 16px; cursor: pointer; font-family: var(--font-display); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .88rem; }
+  .task-check input { position: absolute; opacity: 0; }
+  .task-box { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 7px; border: 2px solid var(--grey-300); background: #fff; color: transparent; transition: all .2s var(--ease); }
+  .task-check input:checked ~ .task-box { background: var(--accent); border-color: var(--accent-600); color: #000; }
+  .task-check input:focus-visible ~ .task-box { outline: 3px solid var(--accent-700); outline-offset: 2px; }
+
+  .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .chip { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 100px; border: 2px solid var(--grey-100); background: #fff; font-family: var(--font-display); font-size: 1.08rem; cursor: pointer; transition: transform .3s var(--ease-out), border-color .2s, background .2s; }
+  .chip:hover { transform: scale(1.05); border-color: var(--accent); }
+  .chip :global(svg) { color: var(--accent-700); }
+  .chip[aria-pressed='true'] { background: var(--accent); border-color: var(--accent-600); font-weight: 700; }
+  .chip[aria-pressed='true'] :global(svg) { color: #000; }
+
+  .dm-next { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 30px; margin-top: 44px; padding: 26px 32px; border-radius: var(--radius-xl); background: #000; }
+  .dm-next-t { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.3rem, 2.4vw, 1.75rem); color: #fff; line-height: 1.15; }
+  .dm-next-p { margin-top: 4px; font-size: .95rem; color: var(--muted-dark); }
+  @media (max-width: 640px) { .dm-next .btn { width: 100%; white-space: normal; text-align: center; } }
+</style>
+
+<script is:inline>
+  (function () {
+    var store = function (k, v) { try { sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+    var read = function (k, d) { try { var v = JSON.parse(sessionStorage.getItem(k) || 'null'); return v == null ? d : v; } catch (e) { return d; } };
+
+    var lead = read('crmhotel_lead', null);
+    if (lead && lead.nome) document.getElementById('dmName').textContent = ', ' + String(lead.nome).trim().split(/\s+/)[0];
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'demo_unlocked' });
+
+    var done = read('crmhotel_tasks', []);
+    document.querySelectorAll('[data-task]').forEach(function (el) {
+      el.checked = done.indexOf(el.getAttribute('data-task')) > -1;
+      el.addEventListener('change', function () {
+        var cur = read('crmhotel_tasks', []), id = el.getAttribute('data-task'), i = cur.indexOf(id);
+        if (el.checked && i < 0) cur.push(id);
+        if (!el.checked && i > -1) cur.splice(i, 1);
+        store('crmhotel_tasks', cur);
+      });
+    });
+
+    var sel = read('crmhotel_interests', []);
+    document.querySelectorAll('[data-interest]').forEach(function (b) {
+      var id = b.getAttribute('data-interest');
+      b.setAttribute('aria-pressed', sel.indexOf(id) > -1 ? 'true' : 'false');
+      b.addEventListener('click', function () {
+        var cur = read('crmhotel_interests', []), i = cur.indexOf(id);
+        if (i > -1) cur.splice(i, 1); else cur.push(id);
+        store('crmhotel_interests', cur);
+        b.setAttribute('aria-pressed', i > -1 ? 'false' : 'true');
+      });
+    });
+
+    var open = document.getElementById('openDemo');
+    if (open) open.addEventListener('click', function () { window.dataLayer.push({ event: 'demo_opened' }); });
+  })();
+</script>
