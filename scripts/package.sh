@@ -18,7 +18,7 @@ npm run build
 
 STAMP="$(date +%Y%m%d-%H%M)"
 OUT="$ROOT/deploy"
-ZIP="$OUT/crm-hotellerie-dato-$STAMP.zip"
+ZIP="$OUT/crm-hotellerie-widget-$STAMP.zip"
 mkdir -p "$OUT"
 
 # Pulizia dei file di sistema macOS
@@ -30,11 +30,11 @@ rm -f "$ZIP"
 ( cd dist && zip -q -r -X "$ZIP" . -x '.*' -x '__MACOSX/*' )
 
 # Copia "latest", comoda per gli upload ricorrenti
-cp "$ZIP" "$OUT/crm-hotellerie-dato-latest.zip"
+cp "$ZIP" "$OUT/crm-hotellerie-widget-latest.zip"
 
 echo "✓ Fatto:"
 echo "  $ZIP"
-echo "  $OUT/crm-hotellerie-dato-latest.zip"
+echo "  $OUT/crm-hotellerie-widget-latest.zip"
 ls -lh "$ZIP" | awk '{print "  dimensione: " $5}'
 echo
 echo "  Il contenuto dello ZIP va caricato nella ROOT del dominio"

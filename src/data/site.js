@@ -66,6 +66,7 @@ export const site = {
 export const nav = [
   { href: '#perche-crm', label: 'Perché CRM Hotel' },
   { href: '#perche-zoho', label: 'Perché Zoho' },
+  { href: '#widget', label: 'Il widget' },
   { href: '#dashboard', label: 'Dashboard' },
   { href: '#faq', label: 'FAQ' },
 ];
@@ -82,7 +83,7 @@ export const footerNav = [
   { href: '#percorsi', label: 'Da dove parti tu' },
   { href: '#come-si-parte', label: 'Come si parte' },
   { href: '#faq', label: 'FAQ' },
-  { href: '#demo', label: 'Sblocca la demo' },
+  { href: '#demo', label: 'Compila il form' },
 ];
 
 /* --- Tipologie di struttura (marquee) ----------------------------------- */
@@ -260,8 +261,9 @@ export const benefits = [
       'Booking engine sincronizzato in tempo reale con la disponibilità',
       'Channel manager Channex per Booking.com, Airbnb e gli altri OTA',
     ],
-    img: 'camera-angolo-lettura',
-    alt: 'Camera dell’Hotel Soleluna, struttura dimostrativa del widget di prenotazione',
+    img: 'prenotazioni-dirette.jpg',
+    pos: '0% 0%',
+    alt: 'Planning del CRM con le prenotazioni dirette arrivate dal widget',
   },
   {
     id: 'reparti',
@@ -274,9 +276,9 @@ export const benefits = [
       'Housekeeping e manutenzione negli stessi slot',
       'Ristorante e bar addebitano sul conto della camera',
     ],
-    img: 'planning-camere.jpg',
+    img: 'aree-comuni-reparti.jpg',
     pos: '0% 0%',
-    alt: 'Planning camere nel CRM: prenotazioni, pulizie e manutenzioni sullo stesso calendario',
+    alt: 'Aree comuni nel CRM: pulizie, manutenzioni e segnalazioni dei reparti in un’unica schermata',
   },
   {
     id: 'adempimenti',
@@ -289,8 +291,9 @@ export const benefits = [
       'ISTAT e tassa di soggiorno generati dall’anagrafica',
       'Fatturazione elettronica conforme al Sistema di Interscambio',
     ],
-    img: 'camera-classic',
-    alt: 'Camera Classic dell’Hotel Soleluna con letto preparato per il check-in',
+    img: 'checkout-saldo.jpg',
+    pos: '66% 0%',
+    alt: 'Check-out nel CRM: saldo da pagare, pagamenti registrati e chiusura del conto',
   },
 ];
 
@@ -427,4 +430,50 @@ export const heroPhases = [
   { icon: 'chat', title: 'Prima: chat e visite', text: 'Chatti con l’ospite indeciso e registri ricerche, abbandoni e ritorni sul sito: ogni evento diventa un dato tuo.', apps: ['SalesIQ chat', 'PageSense eventi'] },
   { icon: 'bed', title: 'Durante: richiesta e soggiorno', text: 'Richieste, preventivi, preferenze e servizi usati finiscono nella stessa scheda, con lo storico completo.', apps: ['Forms', 'Zoho CRM'] },
   { icon: 'chart', title: 'Dopo: analisi e ritorno', text: 'Dallo storico analizzi i dati e riparti con survey, campagne e loyalty che riportano l’ospite sul canale diretto.', apps: ['Analytics', 'Survey', 'Marketing Automation', 'Thrive'] },
+];
+
+/* --- Il widget dal vivo: schermate reali del CRM ---------------------------- */
+export const widgetTabs = [
+  {
+    id: 'planning', icon: 'calendar', tag: 'Prenotazione', title: 'Planning unico',
+    text: 'Prenotazioni, pulizie e manutenzioni sullo stesso calendario, con stagione e occupazione di ogni giorno.',
+    img: 'planning', alt: 'Planning camere nel CRM con prenotazioni, pulizie e manutenzioni',
+    chips: ['Anti-overbooking', 'Stagionalità visibile', 'Tutti i reparti'],
+  },
+  {
+    id: 'interventi', icon: 'cog', tag: 'Reparti', title: 'Pulizie e manutenzioni',
+    text: 'Pianifichi ogni intervento con priorità, orari, staff e ricorrenza. La camera si blocca solo quando serve.',
+    img: 'pulizie', alt: 'Scheda di modifica di una pulizia nel planning', img2: 'manutenzione', alt2: 'Scheda di modifica di una manutenzione',
+    chips: ['Staff assegnato', 'Ricorrenze', 'Esito verifica'],
+  },
+  {
+    id: 'segnalazioni', icon: 'bell', tag: 'Reparti', title: 'Segnalazioni',
+    text: 'Guasti e richieste dei reparti, per camera e per aree comuni: da fare, in corso, completata.',
+    img: 'segnalazioni', alt: 'Elenco segnalazioni delle camere e delle aree comuni', img2: 'aree-comuni', alt2: 'Aree comuni con pulizie e manutenzioni',
+    chips: ['Camere e aree comuni', 'Stati e priorità', 'Un solo posto'],
+  },
+  {
+    id: 'addebiti', icon: 'wallet', tag: 'Soggiorno', title: 'Addebiti in hotel',
+    text: 'Ristorante, bar ed extra finiscono sul conto della camera: totale dovuto, extra da saldare e già incassati.',
+    img: 'addebiti', alt: 'Addebiti in hotel registrati sulla camera',
+    chips: ['Un solo conto', 'Zero blocchetti', 'Extra in tempo reale'],
+  },
+  {
+    id: 'checkout', icon: 'key', tag: 'Check-out', title: 'Check-out e saldo',
+    text: 'Saldo da pagare, pagamenti registrati, stampa del conto e check-out in un unico passaggio.',
+    img: 'checkout', alt: 'Schermata di check-out con saldo e pagamenti', img2: 'checkout-elenco', alt2: 'Elenco delle prenotazioni ancora aperte',
+    chips: ['Acconti registrati', 'Stampa conto', 'Prenotazioni aperte'],
+  },
+  {
+    id: 'camere', icon: 'bed', tag: 'Catalogo', title: 'Tipi di camera',
+    text: 'Il catalogo camere con foto, metri quadri, ospiti e descrizione: è lo stesso che alimenta il widget sul sito.',
+    img: 'tipi-camera', alt: 'Catalogo dei tipi di camera con foto e descrizioni',
+    chips: ['Foto e descrizioni', 'Capienza', 'Collegato al widget'],
+  },
+  {
+    id: 'tariffe', icon: 'sun', tag: 'Configurazione', title: 'Tariffe e stagioni',
+    text: 'Periodi di stagione, regole per giorno della settimana e calendario prezzi: impostati una volta, validi ovunque.',
+    img: 'tariffe', alt: 'Configurazione hotel con tariffe e regole per giorno', img2: 'configurazione', alt2: 'Menu di configurazione Hotel - Prenotazioni e Interventi',
+    chips: ['Alta / media / bassa', 'Regole weekend', 'Minimo notti'],
+  },
 ];

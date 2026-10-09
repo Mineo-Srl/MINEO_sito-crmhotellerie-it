@@ -1,0 +1,130 @@
+---
+import Icon from './Icon.astro';
+import { widgetTabs, u } from '../data/site.js';
+const src = (n) => u(`/img/widget/${n}.jpg`);
+const descs = widgetTabs.map((t) => t.text);
+---
+<div class="ws" id="wsRoot" data-ws data-descs={JSON.stringify(descs)}>
+  <ol class="ws-tabs" role="tablist" aria-label="Schermate del widget">
+    {widgetTabs.map((t, i) => (
+      <li>
+        <button type="button" role="tab" class="ws-tab" id={`wsTab-${t.id}`} aria-controls={`wsPane-${t.id}`} aria-selected={i === 0 ? 'true' : 'false'} data-i={i}>
+          <span class="ws-n"><Icon name={t.icon} size={19} /></span>
+          <span class="ws-tt">
+            <small>{t.tag}</small>
+            <b>{t.title}</b>
+            <em>{t.text}</em>
+          </span>
+          <i class="ws-bar" aria-hidden="true"></i>
+        </button>
+      </li>
+    ))}
+  </ol>
+
+  <p class="ws-desc" id="wsDesc" aria-live="polite">{widgetTabs[0].text}</p>
+
+  <div class="ws-stage">
+    <div class="ws-glow" aria-hidden="true"></div>
+    {widgetTabs.map((t, i) => (
+      <figure class="ws-pane" id={`wsPane-${t.id}`} role="tabpanel" aria-labelledby={`wsTab-${t.id}`} data-active={i === 0 ? 'true' : 'false'}>
+        <div class="ws-frame">
+          <div class="ws-chrome" aria-hidden="true"><i></i><i></i><i></i><span><Icon name="lock" size={11} /> crm.zoho.eu · Hotel Soleluna</span></div>
+          <img src={src(t.img)} alt={t.alt} width="1600" height="782" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+        </div>
+        {t.img2 && (
+          <div class="ws-float" aria-hidden="false">
+            <img src={src(t.img2)} alt={t.alt2} width="1600" height="782" loading="lazy" decoding="async" />
+          </div>
+        )}
+        <figcaption class="ws-chips">
+          {t.chips.map((c) => <span><Icon name="check" size={13} stroke={3.4} /> {c}</span>)}
+        </figcaption>
+      </figure>
+    ))}
+    <p class="ws-note">Schermate reali del CRM Hotel · dati dimostrativi</p>
+  </div>
+</div>
+
+<style>
+  .ws { display: block; }
+  .ws-tabs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+  @media (max-width: 1100px) {
+    .ws-tabs { display: flex; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory; margin-inline: -24px; padding-inline: 24px; scrollbar-width: none; }
+    .ws-tabs::-webkit-scrollbar { display: none; }
+    .ws-tabs li { flex: none; width: 190px; scroll-snap-align: start; }
+  }
+  .ws-tab { position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; text-align: left; padding: 14px 14px 16px; border-radius: var(--radius); border: 1px solid var(--line); background: #fff; cursor: pointer; overflow: hidden; transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out), border-color .25s, background .25s; }
+  .ws-tab:hover { transform: scale(1.04); border-color: var(--accent); }
+  .ws-n { display: grid; place-items: center; width: 38px; height: 38px; flex: none; border-radius: 50%; background: var(--paper-2); color: var(--ink); transition: background .25s, color .25s; }
+  .ws-tt small { display: block; font-family: var(--font-display); font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--grey); }
+  .ws-tt b { display: block; margin-top: 2px; font-family: var(--font-display); font-size: 1.1rem; line-height: 1.15; }
+  .ws-tt em { display: none; }
+  .ws-tab[aria-selected='true'] { background: #000; border-color: #000; box-shadow: var(--shadow-lg); }
+  .ws-tab[aria-selected='true'] .ws-n { background: var(--accent); color: #000; }
+  .ws-tab[aria-selected='true'] .ws-tt small { color: var(--accent); }
+  .ws-tab[aria-selected='true'] .ws-tt b { color: #fff; }
+  .ws-desc { margin: 18px auto 0; max-width: 760px; text-align: center; font-size: 1.12rem; line-height: 1.5; color: var(--muted); font-weight: 300; min-height: 3.4em; }
+  .ws-bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--accent); }
+  .ws-tab[aria-selected='true'] .ws-bar { animation: ws-fill var(--ws-dur, 7000ms) linear forwards; }
+  [data-paused='true'] .ws-tab[aria-selected='true'] .ws-bar { animation: none; width: 100%; }
+  @keyframes ws-fill { to { width: 100%; } }
+
+  .ws-stage { position: relative; margin-top: 8px; padding: clamp(14px, 2.4vw, 34px) clamp(8px, 2vw, 30px) 0; }
+  .ws-glow { position: absolute; inset: 3% 0 9% 4%; border-radius: 40px; background: linear-gradient(135deg, var(--accent), #ffd52e 55%, rgba(114,112,112,.55)); transform: rotate(-3deg); opacity: .9; }
+  .ws-pane { position: relative; margin: 0; display: none; }
+  .ws-pane[data-active='true'] { display: block; animation: ws-in .6s var(--ease-out); }
+  @keyframes ws-in { from { opacity: 0; transform: translateY(18px) scale(.985); } to { opacity: 1; transform: none; } }
+
+  .ws-frame { position: relative; z-index: 1; border-radius: 16px; overflow: hidden; background: #fff; border: 1px solid rgba(0,0,0,.14); box-shadow: 0 40px 80px -30px rgba(0,0,0,.55), 0 10px 24px rgba(0,0,0,.14); transform: perspective(2000px) rotateY(-2deg) rotateX(1deg); transition: transform .6s var(--ease-out); }
+  .ws-stage:hover .ws-frame { transform: perspective(1600px) rotateY(0) rotateX(0) scale(1.01); }
+  .ws-chrome { display: flex; align-items: center; gap: 6px; padding: 9px 14px; background: #1b1b1b; }
+  .ws-chrome i { width: 10px; height: 10px; border-radius: 50%; background: #444; }
+  .ws-chrome i:nth-child(1) { background: var(--accent); }
+  .ws-chrome span { display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; padding: 3px 14px; border-radius: 100px; background: #2c2c2c; color: rgba(255,255,255,.7); font-size: .72rem; }
+  .ws-frame img { display: block; width: 100%; height: auto; }
+
+  .ws-float { position: absolute; z-index: 2; right: 0; bottom: 4%; width: 31%; border-radius: 12px; overflow: hidden; background: #fff; border: 4px solid #fff; box-shadow: 0 28px 54px -16px rgba(0,0,0,.6); transform: rotate(2.5deg); transition: transform .5s var(--ease-out); animation: ws-float 6s ease-in-out infinite; }
+  .ws-float img { display: block; width: 100%; height: auto; }
+  .ws-float:hover { transform: rotate(0) scale(1.06); animation-play-state: paused; }
+  @keyframes ws-float { 0%,100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+  @media (max-width: 700px) { .ws-float { width: 52%; right: 0; bottom: 14%; } .ws-frame { transform: none; } }
+
+  .ws-chips { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: -18px; }
+  .ws-chips span { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 100px; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); font-family: var(--font-display); font-size: .98rem; }
+  .ws-chips :global(svg) { padding: 2px; border-radius: 50%; background: var(--accent); color: #000; width: 18px; height: 18px; }
+  .ws-note { margin-top: 12px; text-align: right; font-size: .74rem; color: var(--grey); }
+  @media (prefers-reduced-motion: reduce) { .ws-float, .ws-pane[data-active='true'] { animation: none; } .ws-frame { transform: none !important; } }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-ws]');
+  if (root) {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('.ws-tab'));
+    const panes = Array.from(root.querySelectorAll<HTMLElement>('.ws-pane'));
+    const DUR = 7000;
+    root.style.setProperty('--ws-dur', DUR + 'ms');
+    let cur = 0, timer: number | undefined, auto = true, visible = false;
+    const show = (i: number, user = false) => {
+      cur = (i + tabs.length) % tabs.length;
+      tabs.forEach((t, k) => t.setAttribute('aria-selected', String(k === cur)));
+      panes.forEach((p, k) => p.setAttribute('data-active', String(k === cur)));
+      const d = document.getElementById('wsDesc'); if (d) d.textContent = JSON.parse(root.dataset.descs || '[]')[cur] || '';
+      if (user) { auto = false; root.setAttribute('data-paused', 'true'); (window as any).dataLayer?.push({ event: 'widget_tab', tab: tabs[cur].id }); }
+      schedule();
+    };
+    const schedule = () => {
+      window.clearTimeout(timer);
+      if (auto && visible && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) timer = window.setTimeout(() => show(cur + 1), DUR);
+    };
+    tabs.forEach((t, k) => {
+      t.addEventListener('click', () => show(k, true));
+      t.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); tabs[(k + 1) % tabs.length].focus(); show(k + 1, true); }
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); tabs[(k - 1 + tabs.length) % tabs.length].focus(); show(k - 1, true); }
+      });
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((es) => { visible = es[0].isIntersecting; schedule(); }, { threshold: 0.35 }).observe(root);
+    }
+  }
+</script>

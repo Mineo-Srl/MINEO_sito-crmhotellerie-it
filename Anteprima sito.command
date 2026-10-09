@@ -25,4 +25,4 @@ if [ ! -d dist ]; then
   npm run build || { echo "✗ Build fallita."; read "?Premi Invio per chiudere."; exit 1; }
 fi
 
-node scripts/serve.mjs dist 4328
+node scripts/serve.mjs dist 4330

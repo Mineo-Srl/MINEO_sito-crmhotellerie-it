@@ -3,7 +3,7 @@ import Icon from './Icon.astro';
 import { site } from '../data/site.js';
 ---
 <div class="sticky" id="stickyCta" aria-label="Contatti rapidi">
-  <a href="#demo" class="btn btn-primary" data-cta="sticky-demo">Sblocca la demo <Icon name="arrow" size={17} /></a>
+  <a href={site.bookingUrl} target="_blank" rel="noopener" class="btn btn-primary" data-cta="sticky-demo">Prenota una consulenza <Icon name="arrow" size={17} /></a>
 </div>
 <style>
   .sticky { display: none; }

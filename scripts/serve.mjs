@@ -2,7 +2,7 @@
  * Server statico locale: fa vedere la landing esattamente come sarà online.
  *
  * Uso:  node scripts/serve.mjs [cartella] [porta]
- *       npm run serve                  → serve dist/ sulla porta 4328
+ *       npm run serve                  → serve dist/ sulla porta 4330
  *       npm run serve -- deploy/xyz    → serve un'altra cartella
  *
  * Serve perché aprendo i file con doppio clic (file://) il browser non sa che
@@ -17,7 +17,7 @@ import { execFile } from 'node:child_process';
 
 const PROJECT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ROOT = resolve(process.argv[2] || join(PROJECT, 'dist'));
-const PORT = Number(process.argv[3] || 4328);
+const PORT = Number(process.argv[3] || 4330);
 
 if (!existsSync(ROOT)) {
   console.error(`✗ Cartella "${ROOT}" inesistente. Esegui prima "npm run build".`);

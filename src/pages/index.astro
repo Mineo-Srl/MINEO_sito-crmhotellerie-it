@@ -5,7 +5,9 @@ import Waves from '../components/Waves.astro';
 import StickyCta from '../components/StickyCta.astro';
 import LeadForm from '../components/LeadForm.astro';
 import ZohoLeadForm from '../components/ZohoLeadForm.astro';
+import ZohoLeadFormFull from '../components/ZohoLeadFormFull.astro';
 import CtaBand from '../components/CtaBand.astro';
+import WidgetShowcase from '../components/WidgetShowcase.astro';
 import Faq from '../components/Faq.astro';
 import {
   site, u, seo, photo, heroPhases, benefits, marketing, tailor, zohoStats, insights,
@@ -144,7 +146,20 @@ const schema = [
         ))}
       </div>
 
-      <CtaBand id="cta-why" title="Scopri quanto vale riprenderti i tuoi dati" text="Sblocca la demo: vedi come il dato dell’ospite resta tuo, dal primo clic al ritorno." label="Sblocca la demo" />
+      <CtaBand id="cta-why" title="Scopri quanto vale riprenderti i tuoi dati" text="Prenota la consulenza: vedi come il dato dell’ospite resta tuo, dal primo clic al ritorno." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
+    </div>
+  </section>
+
+  <!-- ============================================ IL WIDGET DAL VIVO: SCHERMATE REALI -->
+  <section class="section" id="widget">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow">Il widget dal vivo</p>
+        <h2 class="h2">Guarda cosa succede dentro: <strong>dalla prenotazione al check-out</strong></h2>
+        <p class="lead">Schermate reali del CRM Hotel: ogni passaggio dell’ospite è registrato, collegato e consultabile da tutti i reparti.</p>
+      </div>
+      <div data-reveal="none"><WidgetShowcase /></div>
+      <CtaBand id="cta-widget" dark={false} title="Vuoi vederlo con i dati del tuo hotel?" text="Nella consulenza ti mostriamo il widget in funzione sulla tua struttura." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
     </div>
   </section>
 
@@ -167,7 +182,7 @@ const schema = [
         ))}
         <article class="card cta-card" data-reveal>
           <h3 class="h4">Vuoi vedere dove perdi prenotazioni?</h3>
-          <a href="#demo" class="btn btn-white btn-sm" data-cta="marketing-card">Sblocca la demo <Icon name="arrow" size={16} /></a>
+          <a href={site.bookingUrl} target="_blank" rel="noopener" class="btn btn-white btn-sm" data-cta="marketing-card">Prenota una consulenza gratuita <Icon name="arrow" size={16} /></a>
         </article>
       </div>
     </div>
@@ -242,22 +257,19 @@ const schema = [
           <p class="lead mt-2">Occupazione e fatturato li sa dire chiunque. Qui si legge anche la domanda che la struttura ha respinto: scoprire di aver respinto quattrocento richieste in agosto fa capire in un secondo quanti soldi restano sul tavolo.</p>
           <ul class="check-list mt-3">{insights.map((i) => <li><b>{i.title}</b> — {i.text}</li>)}</ul>
         </div>
-        <div class="dash" data-reveal="right" aria-hidden="true">
-          <div class="dash-top"><i></i><i></i><i></i><span>CRM Hotel · Dashboard</span></div>
-          <div class="dash-kpis">
-            <div><small>RevPAR</small><b>€ 96</b></div>
-            <div><small>ADR</small><b>€ 128</b></div>
-            <div><small>Anticipo</small><b>34 gg</b></div>
-          </div>
-          <p class="dash-h">Richieste respinte · agosto</p>
-          <ul class="dash-bars">
-            <li style="--v:78%"><span>Tutto esaurito</span><div><i class="b-m"></i></div></li>
-            <li style="--v:46%"><span>Minimo notti</span><div><i class="b-t"></i></div></li>
-            <li style="--v:22%"><span>Tariffa</span><div><i class="b-o"></i></div></li>
-          </ul>
-          <p class="dash-h">Quota per canale</p>
-          <div class="dash-stack"><i class="b-m" style="flex:41">Diretto 41%</i><i class="b-p" style="flex:47">OTA 47%</i><i class="b-g" style="flex:12">12%</i></div>
-          <p class="dash-note">Valori dimostrativi</p>
+        <div class="cfg" data-reveal="right">
+          <div class="cfg-glow" aria-hidden="true"></div>
+          <figure class="cfg-main">
+            <div class="cfg-chrome" aria-hidden="true"><i></i><i></i><i></i><span>Configurazione Hotel · Tariffe</span></div>
+            <img src={u('/img/widget/config-tariffe.jpg')} alt="Configurazione Hotel: periodi di stagione, regole per giorno della settimana e calendario tariffe" width="1800" height="880" loading="lazy" decoding="async" />
+          </figure>
+          <figure class="cfg-side">
+            <div class="cfg-chrome" aria-hidden="true"><i></i><i></i><i></i><span>Configurazione · Hotel</span></div>
+            <img src={u('/img/widget/config-menu.jpg')} alt="Menu di configurazione con le aree Hotel - Prenotazioni e Hotel - Interventi" width="1800" height="880" loading="lazy" decoding="async" />
+          </figure>
+          <span class="cfg-badge cfg-b1"><Icon name="sun" size={15} /> Stagioni e tariffe</span>
+          <span class="cfg-badge cfg-b2"><Icon name="cog" size={15} /> Tutto configurabile</span>
+          <p class="cfg-note">Schermate reali del CRM Hotel · dati dimostrativi</p>
         </div>
       </div>
       <CtaBand id="cta-dashboard" dark={false} title="Scopri quanto margine resta sul tavolo" text="Nella consulenza leggiamo insieme i numeri della tua struttura." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
@@ -273,7 +285,7 @@ const schema = [
         <h2 class="h2">Visita l’hotel dimostrativo con il <strong>widget di prenotazione attivo</strong></h2>
         <p class="lead mt-2">Hotel Soleluna è la nostra struttura di prova: sito, widget e CRM collegati. L’accesso si sblocca lasciando i tuoi dati, e subito dopo ti richiamiamo per la consulenza.</p>
         <div class="btn-row mt-4">
-          <a href="#demo" class="btn btn-primary btn-lg" data-cta="demo-unlock">Sblocca la demo <Icon name="arrow" size={19} /></a>
+          <a href={site.bookingUrl} target="_blank" rel="noopener" class="btn btn-primary btn-lg" data-cta="demo-unlock">Prenota una consulenza gratuita <Icon name="arrow" size={19} /></a>
         </div>
         <p class="lockline"><Icon name="lock" size={16} /> Accesso riservato: lo ricevi subito dopo l’invio dei dati.</p>
       </div>
@@ -326,7 +338,7 @@ const schema = [
           <li class="step" data-reveal><span class="step-n">{s.n}</span><div><h3 class="h4">{s.title}</h3><p>{s.text}</p></div></li>
         ))}
       </ol>
-      <p class="text-center mt-4"><a href="#demo" class="btn btn-primary btn-lg" data-cta="steps">Sblocca la demo <Icon name="arrow" size={19} /></a></p>
+      <p class="text-center mt-4"><a href={site.bookingUrl} target="_blank" rel="noopener" class="btn btn-primary btn-lg" data-cta="steps">Prenota una consulenza gratuita <Icon name="arrow" size={19} /></a></p>
     </div>
   </section>
 
@@ -364,7 +376,7 @@ const schema = [
             <a href={`mailto:${site.email}`}><Icon name="mail" size={18} /> {site.email}</a>
           </div>
         </div>
-        <div class="demo-form" id="form" data-reveal="right"><LeadForm variant="full" formId="demoForm" cta="Sblocca la demo" /></div>
+        <div class="demo-form" id="form" data-reveal="right"><ZohoLeadFormFull /></div>
       </div>
     </div>
   </section>
@@ -444,6 +456,7 @@ const schema = [
   :global(.waves-soft) { opacity: .14; }
   @media (max-width: 760px) { :global(.hero .waves) { opacity: .3; } }
   .demo :global(.waves-soft) { opacity: .5; }
+  .cta-card .btn { white-space: normal; text-align: center; line-height: 1.2; }
   .cta-card { background: #fff; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; border: 0; }
   .cta-card h3 { color: var(--ink) !important; font-weight: 700; }
   .cta-card-grad { background: var(--accent); justify-content: center; align-items: flex-start; }
@@ -591,4 +604,24 @@ const schema = [
   .unlock .card { padding: 22px; }
   .lockline { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; font-size: .92rem; color: rgba(255,255,255,.85); }
   .lockline :global(svg) { color: var(--accent); }
+
+  /* ---------- Dashboard: schermate di configurazione ---------- */
+  .cfg { position: relative; padding: 18px 0 34px; }
+  .cfg-glow { position: absolute; inset: 0 -3% 4% 6%; border-radius: 36px; background: linear-gradient(140deg, var(--accent), #ffd52e 50%, rgba(114,112,112,.5)); transform: rotate(2.5deg); }
+  .cfg figure { margin: 0; border-radius: 14px; overflow: hidden; background: #fff; border: 1px solid rgba(0,0,0,.14); box-shadow: 0 34px 70px -26px rgba(0,0,0,.55); }
+  .cfg img { display: block; width: 100%; height: auto; }
+  .cfg-main { position: relative; z-index: 1; width: 92%; transform: perspective(1800px) rotateY(3deg); transition: transform .5s var(--ease-out); }
+  .cfg-side { position: absolute; z-index: 2; right: -2%; bottom: 0; width: 62%; transform: rotate(-2deg); border: 4px solid #fff !important; transition: transform .5s var(--ease-out); animation: cfg-float 6.5s ease-in-out infinite; }
+  .cfg:hover .cfg-main { transform: perspective(1800px) rotateY(0); }
+  .cfg-side:hover { transform: rotate(0) scale(1.05); animation-play-state: paused; }
+  @keyframes cfg-float { 0%,100% { translate: 0 0; } 50% { translate: 0 -9px; } }
+  .cfg-chrome { display: flex; align-items: center; gap: 6px; padding: 7px 12px; background: #1b1b1b; }
+  .cfg-chrome i { width: 9px; height: 9px; border-radius: 50%; background: #444; } .cfg-chrome i:first-child { background: var(--accent); }
+  .cfg-chrome span { margin-left: 8px; padding: 2px 12px; border-radius: 100px; background: #2c2c2c; color: rgba(255,255,255,.7); font-size: .68rem; }
+  .cfg-badge { position: absolute; z-index: 3; display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 100px; background: #000; color: #fff; font-family: var(--font-display); font-size: .98rem; box-shadow: var(--shadow-lg); }
+  .cfg-badge :global(svg) { color: var(--accent); }
+  .cfg-b1 { left: -3%; top: -2%; } .cfg-b2 { left: 6%; bottom: 6%; }
+  .cfg-note { position: absolute; right: 0; bottom: 0; font-size: .72rem; color: var(--grey); }
+  @media (max-width: 900px) { .cfg-badge { display: none; } .cfg-main { transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .cfg-side { animation: none; } .cfg-main { transform: none; } }
 </style>
