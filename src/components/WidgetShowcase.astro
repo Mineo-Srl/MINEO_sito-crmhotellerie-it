@@ -28,7 +28,7 @@ const descs = widgetTabs.map((t) => t.text);
     {widgetTabs.map((t, i) => (
       <figure class="ws-pane" id={`wsPane-${t.id}`} role="tabpanel" aria-labelledby={`wsTab-${t.id}`} data-active={i === 0 ? 'true' : 'false'}>
         <div class="ws-frame">
-          <div class="ws-chrome" aria-hidden="true"><i></i><i></i><i></i><span><Icon name="lock" size={11} /> crm.zoho.eu · Hotel Soleluna</span></div>
+          <div class="ws-chrome" aria-hidden="true"><i></i><i></i><i></i><span><Icon name="lock" size={11} /> {t.url ?? 'crm.zoho.eu · Hotel Soleluna'}</span></div>
           <img src={src(t.img)} alt={t.alt} width="1600" height="782" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
         </div>
         {t.img2 && (
@@ -47,7 +47,7 @@ const descs = widgetTabs.map((t) => t.text);
 
 <style>
   .ws { display: block; }
-  .ws-tabs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+  .ws-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
   @media (max-width: 1100px) {
     .ws-tabs { display: flex; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory; margin-inline: -24px; padding-inline: 24px; scrollbar-width: none; }
     .ws-tabs::-webkit-scrollbar { display: none; }

@@ -476,4 +476,16 @@ export const widgetTabs = [
     img: 'tariffe', alt: 'Configurazione hotel con tariffe e regole per giorno', img2: 'configurazione', alt2: 'Menu di configurazione Hotel - Prenotazioni e Interventi',
     chips: ['Alta / media / bassa', 'Regole weekend', 'Minimo notti'],
   },
+  {
+    id: 'chat', icon: 'chat', tag: 'Marketing', title: 'Visitatori live e chat', url: 'salesiq.zoho.eu · Hotel Soleluna',
+    text: 'Vedi chi è sul sito in questo momento, da dove arriva e da quanto tempo: puoi intercettarlo in chat prima che se ne vada.',
+    img: 'salesiq-live', alt: 'SalesIQ: visualizzazione live dei visitatori del sito dell’hotel',
+    chips: ['Visitatori in tempo reale', 'Chat con l’ospite indeciso', 'Provenienza e tempo sul sito'],
+  },
+  {
+    id: 'analisi', icon: 'chart', tag: 'Marketing', title: 'Analisi del sito', url: 'pagesense.zoho.eu · Hotel Soleluna',
+    text: 'Pagine più viste, tempo medio, rimbalzi e canali di acquisizione: ogni visita diventa un dato tuo, con lo storico.',
+    img: 'pagesense-pagine', alt: 'PageSense: analisi delle pagine del sito con visualizzazioni, ingressi e tasso di rimbalzo', img2: 'pagesense-canali', alt2: 'PageSense: canali di acquisizione con sessioni e visitatori',
+    chips: ['Pagine e percorsi', 'Canali di provenienza', 'Storico giornaliero'],
+  },
 ];
