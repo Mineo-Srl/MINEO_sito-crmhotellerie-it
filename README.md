@@ -1,13 +1,23 @@
-# CRM Hotel — versione "widget" (ramo nuovo, 9 ottobre 2026)
+# CRM Hotel — landing page (Mineo)
 
-Copia di `../crmhotellerie-funnel-dato_def/` con una sezione in più: **«Il widget dal vivo»** (#widget), dopo «Perché CRM Hotel».
-Mostra le 11 schermate reali della cartella `immagini/` di `_def`, ottimizzate in `public/img/widget/` (JPG 1600px).
+Sito statico fatto con [Astro](https://astro.build). Contenuti e testi in `src/data/site.js`, pagine in `src/pages/`.
 
-Come funziona (`src/components/WidgetShowcase.astro`, testi in `widgetTabs` di `src/data/site.js`):
-7 schede (Planning unico · Pulizie e manutenzioni · Segnalazioni · Addebiti · Check-out · Tipi di camera · Tariffe e stagioni),
-cornice da browser, immagine principale + schermata secondaria sovrapposta, tre punti chiave sotto,
-cambio automatico ogni 7 secondi (si ferma quando clicchi), tastiera con le frecce, su telefono schede scorrevoli.
-Voce «Il widget» aggiunta al menu in alto.
+## Sviluppo locale
 
-Anteprima: porta 4330 (`Anteprima sito.command`). Zip: `deploy/crm-hotellerie-widget-latest.zip`.
-**Privacy:** le schermate contengono nomi di prenotazioni e staff di prova (es. «Mario Rossi», «Andrea Mineo»): controllare prima di pubblicare.
+```bash
+npm install
+npm run dev        # sviluppo, http://localhost:4321
+npm run build      # genera dist/
+npm run serve      # anteprima di dist/ su http://localhost:4330
+```
+
+## Pubblicazione con GitHub
+
+Il workflow `.github/workflows/deploy.yml` costruisce il sito e lo pubblica su GitHub Pages a ogni push su `main`.
+
+1. Crea il repository su GitHub e fai il push del ramo `main`.
+2. In **Settings → Pages** imposta **Source: GitHub Actions**.
+3. Dominio: `site` in `astro.config.mjs` è `https://crmhotel.mineoepartners.it`. Per usare questo dominio aggiungi un file `public/CNAME` con il dominio e il record DNS CNAME verso `<organizzazione>.github.io`.
+   Se invece il sito resta sull'indirizzo `https://<organizzazione>.github.io/<repo>/`, imposta in `astro.config.mjs` `site: 'https://<organizzazione>.github.io'` e `base: '/<repo>'` (i link interni usano l'helper `u()` e si adeguano da soli).
+
+Le intestazioni di `public/_headers` valgono solo su Netlify/Cloudflare Pages: GitHub Pages le ignora.
