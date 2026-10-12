@@ -1,0 +1,400 @@
+---
+import Icon from './Icon.astro';
+import { site, u } from '../data/site.js';
+---
+
+<div id="cookieRoot">
+  <!-- Banner -->
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-modal="false"
+       aria-labelledby="cookieTitle" aria-describedby="cookieDesc" hidden>
+    <div class="cb-icon" aria-hidden="true"><Icon name="cookie" size={26} /></div>
+    <div class="cb-body">
+      <h2 id="cookieTitle">Rispettiamo la tua privacy</h2>
+      <p id="cookieDesc">
+        Utilizziamo cookie tecnici necessari al funzionamento del sito e, previo tuo consenso,
+        cookie di analisi e di marketing per migliorare l’esperienza di navigazione e misurare
+        le performance. Puoi accettare, rifiutare o scegliere quali categorie attivare.
+        Maggiori informazioni nella <a href={u('/cookie-policy')}>Cookie Policy</a> e nella
+        <a href={u('/privacy-policy')}>Privacy Policy</a>.
+      </p>
+      <div class="cb-actions">
+        <button type="button" class="btn btn-primary btn-sm" data-cc="accept-all">Accetta tutti</button>
+        <button type="button" class="btn btn-ghost btn-sm" data-cc="reject-all">Rifiuta i non necessari</button>
+        <button type="button" class="cb-link" data-cc="open-prefs">Personalizza</button>
+      </div>
+    </div>
+    <button type="button" class="cb-close" data-cc="reject-all" aria-label="Chiudi e rifiuta i cookie non necessari">
+      <Icon name="close" size={18} stroke={2.2} />
+    </button>
+  </div>
+
+  <!-- Preferenze -->
+  <div class="cookie-modal" id="cookieModal" hidden>
+    <div class="cm-backdrop" data-cc="close-prefs"></div>
+    <div class="cm-panel" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+      <div class="cm-head">
+        <h2 id="cmTitle">Preferenze cookie</h2>
+        <button type="button" class="cb-close" data-cc="close-prefs" aria-label="Chiudi preferenze">
+          <Icon name="close" size={18} stroke={2.2} />
+        </button>
+      </div>
+
+      <div class="cm-scroll">
+        <p class="cm-intro">
+          Scegli quali categorie di cookie autorizzare. Puoi modificare la tua scelta in qualsiasi
+          momento dal link <strong>“Preferenze cookie”</strong> nel footer del sito.
+        </p>
+
+        <div class="cm-group">
+          <div class="cm-row">
+            <div>
+              <h3>Necessari</h3>
+              <p>Indispensabili per il funzionamento del sito, la navigazione e la memorizzazione delle tue preferenze di consenso. Non possono essere disattivati.</p>
+            </div>
+            <span class="cm-always">Sempre attivi</span>
+          </div>
+        </div>
+
+        <div class="cm-group">
+          <label class="cm-row">
+            <div>
+              <h3>Analitici</h3>
+              <p>Ci aiutano a capire come i visitatori utilizzano il sito, raccogliendo informazioni in forma aggregata (pagine viste, sorgenti di traffico, tempo di permanenza).</p>
+            </div>
+            <span class="switch">
+              <input type="checkbox" id="ccAnalytics" />
+              <span class="slider" aria-hidden="true"></span>
+            </span>
+          </label>
+        </div>
+
+        <div class="cm-group">
+          <label class="cm-row">
+            <div>
+              <h3>Marketing</h3>
+              <p>Utilizzati per mostrare comunicazioni pertinenti e misurare l’efficacia delle campagne, anche su siti di terze parti.</p>
+            </div>
+            <span class="switch">
+              <input type="checkbox" id="ccMarketing" />
+              <span class="slider" aria-hidden="true"></span>
+            </span>
+          </label>
+        </div>
+
+        <p class="cm-note">
+          Titolare del trattamento: <strong>{site.legal}</strong> — {site.privacyEmail}.
+          Dettagli su finalità, durata e terze parti nella <a href={u('/cookie-policy')}>Cookie Policy</a>.
+        </p>
+      </div>
+
+      <div class="cm-foot">
+        <button type="button" class="btn btn-ghost btn-sm" data-cc="reject-all">Rifiuta tutti</button>
+        <button type="button" class="btn btn-ghost btn-sm" data-cc="save">Salva preferenze</button>
+        <button type="button" class="btn btn-primary btn-sm" data-cc="accept-all">Accetta tutti</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cookie-banner {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 300;
+    display: flex;
+    gap: 18px;
+    width: min(560px, calc(100vw - 40px));
+    padding: 24px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 70px -18px rgba(0,0,0,.4);
+    animation: cb-in .6s var(--ease-out) both;
+  }
+  .cookie-banner[hidden] { display: none; }
+  @keyframes cb-in {
+    from { opacity: 0; transform: translateY(24px) scale(.97); }
+    to   { opacity: 1; transform: none; }
+  }
+  .cb-icon {
+    display: grid;
+    place-items: center;
+    width: 48px; height: 48px;
+    flex: none;
+    border-radius: 14px;
+    background: linear-gradient(140deg, var(--grey-50), #fff);
+    border: 1px solid var(--accent-200);
+    color: var(--grey);
+  }
+  .cb-body h2 { font-size: 1.1rem; margin-bottom: 8px; }
+  .cb-body p { font-size: .875rem; line-height: 1.6; color: var(--muted); }
+  .cb-body a { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 2px; }
+  .cb-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .cb-link {
+    background: none;
+    border: 0;
+    padding: 8px 4px;
+    font-size: .87rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color .25s var(--ease);
+  }
+  .cb-link:hover { color: var(--text); }
+  .cb-close {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 30px; height: 30px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background .2s var(--ease), color .2s var(--ease);
+  }
+  .cb-close:hover { background: var(--paper); color: var(--text); }
+
+  /* Modal */
+  .cookie-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 320;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+  }
+  .cookie-modal[hidden] { display: none; }
+  .cm-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    backdrop-filter: blur(4px);
+    animation: fade-in .3s var(--ease) both;
+  }
+  @keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
+  .cm-panel {
+    position: relative;
+    width: min(620px, 100%);
+    max-height: min(86vh, 760px);
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 40px 90px -20px rgba(0,0,0,.55);
+    overflow: hidden;
+    animation: cm-in .45s var(--ease-out) both;
+  }
+  @keyframes cm-in {
+    from { opacity: 0; transform: translateY(20px) scale(.96); }
+    to   { opacity: 1; transform: none; }
+  }
+  .cm-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .cm-head h2 { font-size: 1.2rem; }
+  .cm-head .cb-close { position: static; }
+  .cm-scroll { padding: 22px 24px; overflow-y: auto; }
+  .cm-intro { font-size: .9rem; color: var(--muted); margin-bottom: 20px; }
+  .cm-intro strong, .cm-note strong { color: var(--text); }
+  .cm-group + .cm-group { margin-top: 12px; }
+  .cm-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--paper);
+    cursor: pointer;
+    transition: border-color .25s var(--ease), background .25s var(--ease);
+  }
+  label.cm-row:hover { border-color: var(--accent-200); background: #fff; }
+  .cm-row h3 { font-size: .98rem; font-weight: 700; margin-bottom: 5px; }
+  .cm-row p { font-size: .85rem; line-height: 1.55; color: var(--muted); }
+  .cm-always {
+    flex: none;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--text);
+    background: var(--accent-50);
+    padding: 6px 12px;
+    border-radius: 100px;
+    margin-top: 3px;
+  }
+
+  .switch { flex: none; position: relative; margin-top: 2px; }
+  .switch input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    width: 100%; height: 100%;
+    margin: 0;
+    cursor: pointer;
+  }
+  .slider {
+    display: block;
+    width: 48px; height: 28px;
+    border-radius: 100px;
+    background: var(--grey-300);
+    transition: background .3s var(--ease);
+  }
+  .slider::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.25);
+    transition: transform .32s var(--ease-out);
+  }
+  .switch input:checked + .slider { background: linear-gradient(100deg, var(--accent), var(--accent-600)); }
+  .switch input:checked + .slider::after { transform: translateX(20px); }
+  .switch input:focus-visible + .slider { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+  .cm-note { margin-top: 20px; font-size: .82rem; color: var(--muted); line-height: 1.6; }
+  .cm-note a, .cm-intro a { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 2px; }
+  .cm-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 18px 24px;
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+  }
+
+  @media (max-width: 560px) {
+    .cookie-banner {
+      left: 12px; right: 12px; bottom: 12px;
+      width: auto;
+      padding: 20px;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 88vh;
+      overflow-y: auto;
+    }
+    .cb-actions .btn, .cb-actions .cb-link { width: 100%; }
+    .cm-foot { justify-content: stretch; }
+    .cm-foot .btn { flex: 1 1 auto; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var KEY = 'mineo_crmhotel_consent_v1';
+    var banner = document.getElementById('cookieBanner');
+    var modal = document.getElementById('cookieModal');
+    var cbAnalytics = document.getElementById('ccAnalytics');
+    var cbMarketing = document.getElementById('ccMarketing');
+    var gaLoaded = false;
+
+    function read() {
+      try {
+        var raw = localStorage.getItem(KEY);
+        if (!raw) return null;
+        var v = JSON.parse(raw);
+        return v && typeof v === 'object' ? v : null;
+      } catch (e) { return null; }
+    }
+
+    function write(consent) {
+      consent.date = new Date().toISOString();
+      consent.version = 1;
+      try { localStorage.setItem(KEY, JSON.stringify(consent)); } catch (e) {}
+      document.cookie =
+        'mineo_consent=' + encodeURIComponent((consent.analytics ? 'a' : '-') + (consent.marketing ? 'm' : '-')) +
+        '; path=/; max-age=15552000; SameSite=Lax';
+    }
+
+    function applyConsent(c) {
+      if (typeof window.gtag === 'function') {
+        window.gtag('consent', 'update', {
+          analytics_storage: c.analytics ? 'granted' : 'denied',
+          ad_storage: c.marketing ? 'granted' : 'denied',
+          ad_user_data: c.marketing ? 'granted' : 'denied',
+          ad_personalization: c.marketing ? 'granted' : 'denied',
+          functionality_storage: 'granted',
+          personalization_storage: c.marketing ? 'granted' : 'denied',
+        });
+      }
+      if (c.analytics && !gaLoaded && window.__MP_GA_ID__) {
+        gaLoaded = true;
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.__MP_GA_ID__;
+        document.head.appendChild(s);
+        window.gtag('js', new Date());
+        window.gtag('config', window.__MP_GA_ID__, { anonymize_ip: true });
+      }
+      document.dispatchEvent(new CustomEvent('mineo:consent', { detail: c }));
+    }
+
+    function hideBanner() { if (banner) banner.hidden = true; }
+
+    var lastFocus = null;
+    function openPrefs() {
+      var c = read() || { analytics: false, marketing: false };
+      if (cbAnalytics) cbAnalytics.checked = !!c.analytics;
+      if (cbMarketing) cbMarketing.checked = !!c.marketing;
+      lastFocus = document.activeElement;
+      if (modal) {
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+        var first = modal.querySelector('button, input');
+        if (first) first.focus();
+      }
+    }
+    function closePrefs() {
+      if (modal) modal.hidden = true;
+      document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    function decide(analytics, marketing) {
+      var c = { necessary: true, analytics: analytics, marketing: marketing };
+      write(c);
+      applyConsent(c);
+      hideBanner();
+      closePrefs();
+    }
+
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest('[data-cc], [data-cookie-settings]');
+      if (!el) return;
+      if (el.hasAttribute('data-cookie-settings')) { e.preventDefault(); openPrefs(); return; }
+      var action = el.getAttribute('data-cc');
+      if (action === 'accept-all') decide(true, true);
+      else if (action === 'reject-all') decide(false, false);
+      else if (action === 'save') decide(!!(cbAnalytics && cbAnalytics.checked), !!(cbMarketing && cbMarketing.checked));
+      else if (action === 'open-prefs') openPrefs();
+      else if (action === 'close-prefs') closePrefs();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal && !modal.hidden) closePrefs();
+    });
+
+    var saved = read();
+    if (saved) applyConsent(saved);
+    else setTimeout(function () { if (banner) banner.hidden = false; }, 700);
+  })();
+</script>

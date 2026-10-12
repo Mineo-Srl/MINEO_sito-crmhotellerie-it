@@ -1,0 +1,430 @@
+/* ==========================================================================
+   Dati del sito e contenuti del sito verticale.
+   Prodotto: CRM Hotel — il CRM alberghiero costruito su Zoho da Mineo.
+   Obiettivo: vendere il CRM ai proprietari di hotel (richiesta demo / consulenza).
+   Testi di partenza: «Testi sito web Zoho Hotel.docx».
+   Tutta la copy modificabile sta qui o nelle singole sezioni di index.astro.
+   ========================================================================== */
+
+/* --- Base path -----------------------------------------------------------
+   `u()` costruisce ogni link interno tenendo conto del base path di Astro:
+   se il sito finisse in una sottocartella basta aggiungere `base` in
+   astro.config.mjs, senza toccare nient'altro. */
+const B = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+
+export function u(path = '/') {
+  if (!path || /^(https?:|mailto:|tel:|#|\/\/)/.test(path)) return path;
+  const clean = path === '/' ? '' : path.startsWith('/') ? path : `/${path}`;
+  return `${B}${clean}` || '/';
+}
+
+export const site = {
+  name: 'Mineo Srl',
+  legal: 'MINEO S.r.l.',
+  product: 'CRM Hotel',
+  brand: 'CRM Hotel by Mineo',
+  /* ⚠️ Dominio di pubblicazione: sostituiscilo con quello definitivo.
+     Serve per canonical, Open Graph e sitemap (non per i link interni). */
+  domain: 'crmhotel.mineoepartners.it',
+  url: 'https://crmhotel.mineoepartners.it',
+  tagline: 'Zoho Authorized Partner',
+  email: 'info@mineoepartners.it',
+  privacyEmail: 'privacy@mineoepartners.it',
+  phone: '+39 02 814 807 92',
+  phoneHref: '+390281480792',
+  whatsapp: '+39 389 6680301',
+  whatsappHref: '393896680301',
+  address: 'Viale Villoresi, 3 — 20045 Lainate (MI), Italia',
+  addressStreet: 'Viale Villoresi, 3',
+  addressCity: 'Lainate',
+  addressZip: '20045',
+  addressRegion: 'MI',
+  vat: 'P.IVA 14522690966',
+  vatNumber: '14522690966',
+  linkedin: 'https://www.linkedin.com/company/80985139',
+  mainSite: 'https://www.mineoepartners.it',
+
+  /* Incolla qui l'URL dell'endpoint Zoho (Zoho Forms → "Share → Embed → form action",
+     oppure un webhook Zoho Flow / CRM WebForm). Finché resta vuoto il form
+     funziona comunque: apre il client di posta con i dati già compilati. */
+  /* Calendario Zoho Bookings per le consulenze gratuite */
+  bookingUrl: 'https://mineoepartners.zohobookings.eu/#/andreamineo',
+  formEndpoint: '',
+
+  /* ID misurazione Google Analytics 4 (es. 'G-XXXXXXX').
+     Se vuoto, nessuno script di tracciamento viene caricato. */
+  gaId: '',
+
+  /* Sito dimostrativo (lead magnet): si sblocca dopo aver lasciato i dati, link sulla pagina /grazie */
+  demoUrl: 'https://hotelsoleluna.crmhotellerie.it/',
+};
+
+/* --- Navigazione (anchor della single page) ------------------------------ */
+/* Menu a imbuto: una voce per fase di decisione (max 4 + CTA).
+   Interesse → Perché CRM Hotel · Fiducia → Perché Zoho · Prova → Guardalo dal vivo · Dubbi → FAQ.
+   La CTA principale (navCta) resta sempre visibile e porta al form. */
+export const nav = [
+  { href: '#perche-crm', label: 'Perché CRM Hotel' },
+  { href: '#perche-zoho', label: 'Perché Zoho' },
+  { href: '#dashboard', label: 'Dashboard' },
+  { href: '#faq', label: 'FAQ' },
+];
+
+export const navCta = { href: 'https://mineoepartners.zohobookings.eu/#/andreamineo', label: 'Prenota una consulenza gratuita', labelLong: 'Prenota una consulenza gratuita' };
+
+/* Footer: tutte le sezioni della pagina, per chi scorre fino in fondo */
+export const footerNav = [
+  { href: '#perche-crm', label: 'Perché CRM Hotel' },
+  { href: '#marketing', label: 'Marketing alberghiero' },
+  { href: '#perche-zoho', label: 'Perché Zoho' },
+  { href: '#dashboard', label: 'Dashboard' },
+  { href: '#demo-hotel', label: 'La demo' },
+  { href: '#percorsi', label: 'Da dove parti tu' },
+  { href: '#come-si-parte', label: 'Come si parte' },
+  { href: '#faq', label: 'FAQ' },
+  { href: '#demo', label: 'Compila il form' },
+];
+
+/* --- Tipologie di struttura (marquee) ----------------------------------- */
+export const propertyTypes = [
+  { label: 'Hotel indipendenti', icon: 'building' },
+  { label: 'Boutique hotel', icon: 'sparkles' },
+  { label: 'Resort e villaggi', icon: 'palm' },
+  { label: 'Dimore storiche', icon: 'key' },
+  { label: 'Agriturismi', icon: 'leaf' },
+  { label: 'B&B e affittacamere', icon: 'bed' },
+  { label: 'Residence e apartment hotel', icon: 'layers' },
+  { label: 'Piccoli gruppi alberghieri', icon: 'globe' },
+  { label: 'Wellness e spa hotel', icon: 'droplet' },
+  { label: 'Strutture di nuova apertura', icon: 'bolt' },
+];
+
+/* --- Hero: i tre benefici in testa -------------------------------------- */
+export const heroBenefits = [
+  { icon: 'wallet', text: 'Recuperi margine sul canale diretto, abbassando la dipendenza dalle commissioni OTA' },
+  { icon: 'calendar', text: 'Reparti coordinati su un solo calendario: reception, pulizie, manutenzione' },
+  { icon: 'document', text: 'Adempimenti automatici: fatturazione elettronica, Alloggiati Web e ISTAT senza passaggi manuali' },
+];
+
+/* --- 1. CRM ospite ------------------------------------------------------ */
+export const crmPoints = [
+  { title: 'Gestione preventivi multicanale', text: 'Richieste da sito, telefono, email e social gestite nello stesso flusso, senza fogli Excel paralleli.' },
+  { title: 'Catalogo prodotti per reparto', text: 'Camere, bar, ristorante, spa, servizi ed esperienze, con upselling e cross-selling guidati già in fase di preventivo.' },
+  { title: 'Storico ospite completo', text: 'Soggiorni passati, no-show, richieste speciali e consensi privacy, sempre consultabili.' },
+  { title: 'Nessuna sostituzione del gestionale in uso', text: 'Il CRM si affianca al PMS esistente, aggiungendo ciò che manca.' },
+];
+
+/* --- 2. Operatività: un calendario per tre reparti ---------------------- */
+export const opsPoints = [
+  { icon: 'calendar', title: 'Front office e booking engine', text: 'Lo stesso calendario usato in reception alimenta anche il motore di prenotazione diretta sul sito, con chiave univoca camera-data contro l’overbooking.' },
+  { icon: 'bed', title: 'Housekeeping pianificato', text: 'Le pulizie seguono partenze e arrivi, con segnalazione immediata di guasti o anomalie.' },
+  { icon: 'cog', title: 'Manutenzione negli stessi slot', text: 'Interventi preventivi e straordinari incastrati nel calendario, senza bloccare la vendita della camera.' },
+  { icon: 'lock', title: 'Visibilità per reparto', text: 'Ogni addetto vede solo ciò che gli serve, dalla lavanderia alla reception.' },
+];
+
+/* --- 3. Distribuzione e tariffe ----------------------------------------- */
+export const distribution = [
+  { icon: 'refresh', title: 'Channel manager integrato (Channex)', text: 'Aggiornamento automatico di disponibilità e tariffe su tutti gli OTA collegati, azzerando il rischio di overbooking tra canali.' },
+  { icon: 'sun', title: 'Tariffazione stagionale nel CRM', text: 'Bassa stagione, alta stagione e periodi speciali con fasce di prezzo differenziate, senza fogli di calcolo separati.' },
+  { icon: 'shield', title: 'Parity rate sotto controllo', text: 'Stessa tariffa, stessa disponibilità, su ogni canale di vendita.' },
+  { icon: 'search', title: 'Dati di prima parte sulla domanda diretta', text: 'Chi visita il sito, cerca una data e non prenota resta un dato della struttura, non del fornitore del booking engine.' },
+];
+
+/* --- 4. Due strade: da zero oppure accanto al PMS ----------------------- */
+export const modules = [
+  { icon: 'deskbell', title: 'Front office', text: 'Check-in, check-out e planning camere in un’unica schermata.' },
+  { icon: 'bed', title: 'Housekeeping', text: 'Pulizie e manutenzione pianificate sullo stesso calendario delle prenotazioni.' },
+  { icon: 'document', title: 'Amministrazione', text: 'Fatturazione elettronica, Alloggiati Web, ISTAT e reportistica, tutto automatico.' },
+  { icon: 'code', title: 'Booking engine', text: 'Motore di prenotazione diretta collegato al sito, sincronizzato in tempo reale con la disponibilità.' },
+  { icon: 'globe', title: 'Channel manager', text: 'Distribuzione automatica su Booking.com, Airbnb e gli altri OTA tramite Channex.' },
+];
+
+export const pmsPoints = [
+  { title: 'Nessuna migrazione forzata', text: 'Il tuo PMS resta al suo posto, i dati continuano a vivere lì dove sono oggi.' },
+  { title: 'Integrazione, non duplicazione', text: 'Il CRM aggiunge marketing, operatività di reparto e fidelizzazione senza reinserire i dati a mano.' },
+  { title: 'Un ecosistema pensato per l’apertura', text: 'API documentate, non un sistema chiuso da cui è difficile uscire.' },
+  { title: 'La scelta resta tua', text: 'Con il tempo puoi decidere se restare nel modello ibrido o migrare anche il gestionale su Zoho.' },
+];
+
+/* --- 5. Marketing: il percorso dell'ospite ------------------------------ */
+export const marketing = [
+  { icon: 'chart', tool: 'PageSense', text: 'Mappa il funnel di prenotazione (camera, ricerca, riepilogo, pagamento), individua dove si interrompe e lo corregge con test A/B mirati.' },
+  { icon: 'chat', tool: 'SalesIQ', text: 'Intercetta in chat l’ospite indeciso, con trigger contestuali: chi cerca una data senza prenotare, chi torna più volte, chi è già cliente riconosciuto dal CRM.' },
+  { icon: 'inbox', tool: 'Forms', text: 'Raccoglie richieste e preventivi senza disperdere il lead tra mille canali.' },
+  { icon: 'send', tool: 'Marketing Automation', text: 'Trasforma i contatti raccolti in prenotazioni dirette attribuite, con campagne mirate prima e dopo il soggiorno.' },
+  { icon: 'megaphone', tool: 'Social', text: 'Presidio continuo su ogni canale, messaggi e lead in un’unica coda.' },
+  { icon: 'star', tool: 'Survey', text: 'Misura l’NPS a fine soggiorno e lo correla alla tipologia di camera.' },
+  { icon: 'refresh', tool: 'Thrive', text: 'Trasforma l’ospite che riparte in un ospite che torna, con programmi di loyalty e referral.' },
+];
+
+/* --- 6. Reparti connessi ------------------------------------------------ */
+export const departments = [
+  { icon: 'glass', title: 'Ristorante', text: 'Coperti prenotati sempre visibili, addebiti extra caricati direttamente sulla camera.' },
+  { icon: 'coffee', title: 'Bar', text: 'Consumazioni registrate al volo, nessun blocchetto cartaceo da riconciliare a fine turno.' },
+  { icon: 'bed', title: 'Pulizie', text: 'Lista camere da pulire aggiornata in automatico, con segnalazione immediata di anomalie o danni.' },
+  { icon: 'check', title: 'Zero doppi inserimenti', text: 'Un solo addebito, un solo conto, una sola fonte di verità.' },
+];
+
+/* --- 7. Amministrazione ------------------------------------------------- */
+export const compliance = [
+  { icon: 'shield', title: 'Alloggiati Web', text: 'I dati della Questura inviati automaticamente al check-in, nessun documento da caricare a mano a fine giornata.' },
+  { icon: 'document', title: 'ISTAT turismo e tassa di soggiorno', text: 'Comunicazioni generate senza doppia battitura dei dati ospite.' },
+  { icon: 'wallet', title: 'Fatturazione elettronica via SdI', text: 'Ogni fattura già conforme al Sistema di Interscambio, dal preventivo all’incasso.' },
+  { icon: 'users', title: 'Un’unica anagrafica', text: 'I dati inseriti una volta in CRM alimentano prenotazione, fattura e adempimenti di legge.' },
+];
+
+/* --- 8. Numeri (dashboard) --------------------------------------------- */
+export const insights = [
+  { icon: 'close', title: 'Richieste respinte per motivo', text: 'Tutto esaurito o minimo notti: capisci quanto margine resta sul tavolo.' },
+  { icon: 'users', title: 'Composizione della domanda', text: 'Coppie, famiglie, gruppi, con anticipo medio di prenotazione.' },
+  { icon: 'layers', title: 'Performance per canale', text: 'Diretto, OTA e agenzie a confronto, nella stessa dashboard.' },
+  { icon: 'clock', title: 'Tre ritmi di decisione', text: 'Dashboard settimanali per marketing e revenue, mensili per la direzione.' },
+];
+
+/* --- 9. Ecosistema Zoho ------------------------------------------------- */
+export const zohoStats = [
+  { value: '45+', label: 'applicazioni integrate su un unico account' },
+  { value: '30', label: 'anni di attività' },
+  { value: '1 mln+', label: 'aziende clienti nel mondo' },
+  { value: 'ISO 27001', label: 'data center di proprietà, certificati' },
+];
+
+export const ecosystem = [
+  { icon: 'layers', title: 'Una sola piattaforma, non un fornitore in più', text: 'Reception, marketing, assistenza e back office sullo stesso stack, con lo stesso dato al centro.' },
+  { icon: 'lock', title: 'Il dato resta della struttura', text: 'Esportabile in ogni momento, mai chiuso nel silo di un singolo fornitore. Nessun modello pubblicitario sui dati.' },
+  { icon: 'building', title: 'Cresce con l’hotel', text: 'Dall’indipendente di 20 camere al gruppo con più strutture, senza cambiare piattaforma.' },
+  { icon: 'plug', title: 'Stessa famiglia, zero fornitori aggiuntivi', text: 'Ogni modulo che aggiungi — Bookings, People, Analytics — condivide dati e accessi: non è un nuovo contratto da firmare altrove.' },
+];
+
+/* --- Consulenza: cosa si affronta -------------------------------------- */
+export const consultPoints = [
+  {
+    icon: 'wallet',
+    title: 'Quanto vale spostare dieci punti sul diretto',
+    text: 'Partiamo dai numeri reali del tuo hotel: quanto pesano oggi le commissioni OTA e cosa cambia recuperando una parte di prenotazioni sul canale diretto.',
+  },
+  {
+    icon: 'calendar',
+    title: 'Quali reparti coordinare da subito',
+    text: 'Reception, pulizie, manutenzione, ristorante, bar: vediamo dove oggi si perde tempo e dove il calendario unico dà il ritorno più rapido.',
+  },
+  {
+    icon: 'bolt',
+    title: 'Cosa cambia già nella prima settimana',
+    text: 'Niente promesse generiche: ti indichiamo cosa si può attivare subito, con il gestionale che usi oggi che resta al suo posto.',
+  },
+];
+
+/* --- FAQ --------------------------------------------------------------- */
+export const faq = [
+  {
+    q: 'Posso gestire con Zoho anche il personale dell’hotel?',
+    a: 'Sì. Zoho People è il modulo dedicato alla gestione delle persone: anagrafica dei dipendenti, presenze, ferie e permessi, turni e inserimento dei nuovi assunti. Vive sullo stesso account del CRM Hotel, con gli stessi accessi, così reception, housekeeping e direzione lavorano su dati coerenti senza un altro gestionale da affiancare.',
+  },
+  {
+    q: 'Zoho è solo un CRM?',
+    a: 'No. Zoho è un ecosistema di oltre 45 applicazioni integrate su un unico account, che coprono aree diverse: vendite e marketing, assistenza clienti, fatturazione e contabilità, risorse umane, analisi dei dati e collaborazione. Il CRM Hotel è il cuore, ma ogni modulo che aggiungi condivide dati e accessi: un solo sistema, non un nuovo contratto da firmare altrove.',
+  },
+  {
+    q: 'Il sistema è personalizzabile sulla mia struttura?',
+    a: 'Sì, ed è il punto di forza. Non è un software preconfezionato: lo cuciamo su misura del tuo hotel. Il widget di prenotazione porta i colori, il logo e i campi della struttura; pipeline, preventivi, ruoli per reparto, automazioni e dashboard si tarano sul tuo modo di lavorare e possono crescere nel tempo, senza cambiare piattaforma.',
+  },
+];
+
+/* --- Landing SEO: contenuti specifici ------------------------------------ */
+export const seo = {
+  title: 'Gestionale per hotel su Zoho: segui ogni ospite dall’inizio alla fine',
+  description:
+    'Non il solito CRM: chat sul sito, tracciamento di ogni evento e storico completo di clienti e servizi. CRM Hotel prende in carico l’ospite dall’inizio alla fine con le app di marketing e analisi Zoho. Sblocca la demo.',
+};
+
+export const photo = (name) => u(`/img/photos/${name.includes('.') ? name : name + '.webp'}`);
+
+/* Le tre aree, come i tre pallini di bemyguest.it */
+export const pillars = [
+  { color: 'magenta', label: 'Prenotazioni dirette' },
+  { color: 'teal', label: 'Reparti coordinati' },
+  { color: 'orange', label: 'Adempimenti automatici' },
+];
+
+/* Vantaggi (sezione #vantaggi) con foto reale della struttura dimostrativa */
+export const benefits = [
+  {
+    id: 'dirette',
+    color: 'magenta',
+    kicker: 'Prenotazioni dirette',
+    title: 'Dalla prenotazione dell’ospite al tuo calendario, senza passaggi',
+    text: 'Il nostro widget, creato ad hoc, vive sul sito dell’hotel e porta la richiesta completa direttamente in Zoho. Stesso calendario della reception, nessuna commissione sulle prenotazioni dirette, dati dell’ospite che restano tuoi.',
+    bullets: [
+      'Widget con il brand dell’hotel, date, ospiti, camera e trattamento',
+      'Booking engine sincronizzato in tempo reale con la disponibilità',
+      'Channel manager Channex per Booking.com, Airbnb e gli altri OTA',
+    ],
+    img: 'camera-angolo-lettura',
+    alt: 'Camera dell’Hotel Soleluna, struttura dimostrativa del widget di prenotazione',
+  },
+  {
+    id: 'reparti',
+    color: 'teal',
+    kicker: 'Reparti coordinati',
+    title: 'Reception, pulizie e manutenzione sullo stesso calendario',
+    text: 'Il planning camere anti-overbooking non vive da solo: la cameriera ai piani sa quali camere liberare prima del check-in e la reception non assegna mai una camera non ancora pronta.',
+    bullets: [
+      'Chiave univoca camera-data contro l’overbooking',
+      'Housekeeping e manutenzione negli stessi slot',
+      'Ristorante e bar addebitano sul conto della camera',
+    ],
+    img: 'planning-camere.jpg',
+    pos: '0% 0%',
+    alt: 'Planning camere nel CRM: prenotazioni, pulizie e manutenzioni sullo stesso calendario',
+  },
+  {
+    id: 'adempimenti',
+    color: 'orange',
+    kicker: 'Adempimenti automatici',
+    title: 'Alloggiati Web, ISTAT e fatture partono al check-in',
+    text: 'I dati inseriti una volta alimentano prenotazione, fattura e obblighi di legge: niente portali da aprire a fine giornata, niente doppie battiture.',
+    bullets: [
+      'Alloggiati Web inviato automaticamente alla Questura',
+      'ISTAT e tassa di soggiorno generati dall’anagrafica',
+      'Fatturazione elettronica conforme al Sistema di Interscambio',
+    ],
+    img: 'camera-classic',
+    alt: 'Camera Classic dell’Hotel Soleluna con letto preparato per il check-in',
+  },
+];
+
+/* Galleria reparti connessi */
+export const deptShots = [
+  { img: 'ristorante-sala', alt: 'Sala ristorante dell’hotel', cap: 'Ristorante: coperti sempre visibili' },
+  { img: 'cocktail', alt: 'Cocktail servito al bar dell’hotel', cap: 'Bar: addebito sulla camera in pochi secondi' },
+  { img: 'colazione', alt: 'Sala colazioni di un hotel', cap: 'Colazioni e sale' },
+  { img: 'spa-sauna', alt: 'Area spa con sauna', cap: 'Spa e servizi extra' },
+];
+
+export const steps = [
+  { n: '1', title: 'Lasci i tuoi dati', text: 'Pochi secondi: nome, struttura, email e telefono. Nessuna carta, nessun impegno.' },
+  { n: '2', title: 'Ricevi la demo e ti richiamiamo', text: 'Subito dopo l’invio sblocchi il sito dimostrativo con il widget attivo; ti contattiamo entro 1 giorno lavorativo.' },
+  { n: '3', title: 'Consulenza sui tuoi numeri', text: 'Un confronto gratuito su commissioni OTA, reparti e adempimenti. Si configura solo se ha senso per te.' },
+];
+
+/* --- Concetto hero: il percorso in un unico sistema ----------------------- */
+export const flow = [
+  { icon: 'calendar', title: 'Prenotazione', text: 'L’ospite sceglie date e camera' },
+  { icon: 'code', title: 'Widget su misura', text: 'Sul sito, con il brand dell’hotel' },
+  { icon: 'bed', title: 'Reparti', text: 'Reception, pulizie, bar e ristorante' },
+  { icon: 'megaphone', title: 'Marketing', text: 'Prima, durante e dopo il soggiorno' },
+  { icon: 'chart', title: 'Dashboard', text: 'Numeri, adempimenti e controllo' },
+];
+
+/* --- Perché Zoho: cucito su misura ---------------------------------------- */
+export const tailor = [
+  { icon: 'code', title: 'Il widget con il tuo brand', text: 'Colori, font, logo, lingue e campi sono quelli dell’hotel: sul sito sembra nato lì.' },
+  { icon: 'document', title: 'Pipeline e preventivi', text: 'Stati reali, template di preventivo e assegnazioni tarati sul tuo processo.' },
+  { icon: 'lock', title: 'Ruoli per reparto', text: 'Ogni addetto vede solo ciò che gli serve, dalla lavanderia alla reception.' },
+  { icon: 'bolt', title: 'Automazioni su misura', text: 'Promemoria, messaggi pre e post soggiorno, upselling: le regole le scriviamo con te.' },
+  { icon: 'chart', title: 'Dashboard che guardi davvero', text: 'Gli indicatori che contano per te, con ritmo settimanale e mensile.' },
+  { icon: 'layers', title: 'Cresce con l’hotel', text: 'Aggiungi People, Books, Desk o Analytics senza cambiare piattaforma né migrare dati.' },
+];
+
+/* --- Partner ufficiale Zoho ---------------------------------------------- */
+export const partnerPoints = [
+  {
+    icon: 'shield',
+    title: 'Riconoscimento Zoho',
+    text: 'Mineo Srl è Zoho Authorized Partner: operiamo con il riconoscimento ufficiale di Zoho, non come rivenditore improvvisato.',
+  },
+  {
+    icon: 'cog',
+    title: 'Esperienza quotidiana su Zoho',
+    text: 'Ogni giorno configuriamo Zoho per aziende di settori diversi: CRM, marketing automation, assistenza, progetti e integrazioni. Conosciamo la piattaforma da dentro.',
+  },
+  {
+    icon: 'building',
+    title: 'Un prodotto completo, fatto per gli hotel',
+    text: 'CRM Hotel non è un modello generico adattato in fretta: è un prodotto verticale costruito da noi su Zoho, con calendario unico, widget, channel manager e adempimenti già pensati per l’albergo.',
+  },
+];
+
+export const partnerPromises = [
+  'Un solo referente per software, configurazione e assistenza',
+  'Assistenza e formazione dei reparti in italiano',
+  'Aggiornamenti e nuovi moduli Zoho senza cambiare sistema',
+];
+
+/* --- Lead magnet: cosa si sblocca con la demo ------------------------------ */
+export const demoUnlock = [
+  { icon: 'code', title: 'Il widget dal lato dell’ospite', text: 'Prova una richiesta di prenotazione sul sito dell’hotel dimostrativo.' },
+  { icon: 'inbox', title: 'La richiesta che arriva in Zoho', text: 'La stessa richiesta, completa e assegnata, nel CRM.' },
+  { icon: 'chart', title: 'La dashboard della direzione', text: 'RevPAR, ADR, richieste respinte e canali di vendita.' },
+  { icon: 'cog', title: 'Il tuo caso, su misura', text: 'Nella consulenza vediamo come cucirlo sulla tua struttura.' },
+];
+
+/* --- Pagina di ringraziamento -------------------------------------------- */
+export const thanksSteps = [
+  { n: '1', title: 'Confermiamo l’orario', text: 'Entro 1 giorno lavorativo ti chiamiamo per confermare giorno e fascia scelti.' },
+  { n: '2', title: 'Prepara tre numeri (facoltativo)', text: 'Camere, quota di prenotazioni OTA e gestionale in uso: bastano per partire dai tuoi dati reali.' },
+  { n: '3', title: 'Consulenza gratuita', text: 'Vediamo insieme dove recuperare margine e cosa cambia già nella prima settimana.' },
+];
+
+/* ============================================================================
+   FUNNEL COMPLETO
+   1 landing (/) → 2 demo sbloccata (/demo-sbloccata) → 3 prenota consulenza
+   (/prenota-consulenza) → 4 grazie finale (/grazie)
+   ========================================================================== */
+export const funnelPaths = {
+  demo: '/demo-sbloccata',
+  book: '/prenota-consulenza',
+  thanks: '/grazie',
+};
+
+export const funnelSteps = [
+  { n: 1, label: 'Dati' },
+  { n: 2, label: 'Demo' },
+  { n: 3, label: 'Consulenza' },
+];
+
+/* Pagina "demo sbloccata": tre cose da provare */
+export const demoTasks = [
+  { icon: 'code', title: 'Fai una richiesta come un ospite', text: 'Apri Hotel Soleluna, scegli date e camera e prova il widget di prenotazione come lo userebbe un tuo cliente.' },
+  { icon: 'inbox', title: 'Pensa a cosa succede dietro le quinte', text: 'La stessa richiesta arriva in Zoho completa, assegnata e con i consensi registrati. Nella consulenza te la mostriamo in diretta.' },
+  { icon: 'chart', title: 'Immagina i tuoi numeri', text: 'Quante richieste dirette ricevi oggi e quante ne perdi? La dashboard le rende visibili: ne parliamo insieme.' },
+];
+
+/* Cosa interessa di più: scelto nella demo, portato nella prenotazione */
+export const interests = [
+  { id: 'dirette', label: 'Più prenotazioni dirette', icon: 'wallet' },
+  { id: 'reparti', label: 'Coordinare i reparti', icon: 'calendar' },
+  { id: 'adempimenti', label: 'Adempimenti automatici', icon: 'shield' },
+  { id: 'marketing', label: 'Marketing e fidelizzazione', icon: 'megaphone' },
+  { id: 'dashboard', label: 'Dashboard e numeri', icon: 'chart' },
+  { id: 'pms', label: 'Affiancare il mio PMS', icon: 'plug' },
+];
+
+export const bookingSlots = [
+  { id: 'mattina', label: 'Mattina' },
+  { id: 'pomeriggio', label: 'Pomeriggio' },
+  { id: 'indifferente', label: 'Indifferente' },
+];
+
+/* Cosa si vede nella consulenza (pagina prenotazione) */
+export const bookingAgenda = [
+  { icon: 'wallet', title: 'I tuoi numeri', text: 'Quanto pesano oggi le commissioni OTA e quanto margine puoi recuperare sul canale diretto.' },
+  { icon: 'code', title: 'Il widget sul tuo sito', text: 'Come si adatta al brand dell’hotel e come la richiesta arriva in Zoho.' },
+  { icon: 'cog', title: 'Cosa cambia da subito', text: 'Quali reparti coordinare per primi e come affiancare il gestionale che usi oggi.' },
+];
+
+/* --- Hero: dal sito alla strategia di marketing (differenziante) ---------- */
+export const heroFlow = [
+  { icon: 'code', title: 'Il plugin sul tuo sito', text: 'Il nostro widget raccoglie visite e richieste direttamente dal sito dell’hotel.' },
+  { icon: 'calendar', title: 'La prenotazione, gestita', text: 'Richiesta completa, preventivo e conferma sullo stesso calendario della reception.' },
+  { icon: 'users', title: 'I dati, organizzati nel CRM', text: 'Ogni ospite una scheda unica: storico, preferenze e consensi.' },
+  { icon: 'megaphone', title: 'La strategia, con le app Zoho', text: 'Campagne, chat, analisi e fidelizzazione costruite sui tuoi dati.' },
+];
+
+/* --- Hero "il dato resta tuo": le tre fasi -------------------------------- */
+export const heroPhases = [
+  { icon: 'chat', title: 'Prima: chat e visite', text: 'Chatti con l’ospite indeciso e registri ricerche, abbandoni e ritorni sul sito: ogni evento diventa un dato tuo.', apps: ['SalesIQ chat', 'PageSense eventi'] },
+  { icon: 'bed', title: 'Durante: richiesta e soggiorno', text: 'Richieste, preventivi, preferenze e servizi usati finiscono nella stessa scheda, con lo storico completo.', apps: ['Forms', 'Zoho CRM'] },
+  { icon: 'chart', title: 'Dopo: analisi e ritorno', text: 'Dallo storico analizzi i dati e riparti con survey, campagne e loyalty che riportano l’ospite sul canale diretto.', apps: ['Analytics', 'Survey', 'Marketing Automation', 'Thrive'] },
+];

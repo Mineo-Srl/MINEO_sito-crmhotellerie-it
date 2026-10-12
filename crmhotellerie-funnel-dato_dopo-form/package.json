@@ -1,0 +1,19 @@
+{
+  "name": "crm-hotellerie-landing-mineo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "serve": "node scripts/serve.mjs",
+    "og": "node scripts/og.mjs",
+    "package": "bash scripts/package.sh",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^7.2.0"
+  }
+}

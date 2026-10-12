@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Waves from '../components/Waves.astro';
+import FunnelSteps from '../components/FunnelSteps.astro';
+import BookingForm from '../components/BookingForm.astro';
+import { site, u, funnelPaths, bookingAgenda } from '../data/site.js';
+---
+
+<Base
+  title={`Prenota la consulenza gratuita | ${site.product} — Mineo Srl`}
+  description="Scegli quando essere richiamato per la consulenza gratuita sui numeri della tua struttura."
+  path={funnelPaths.book}
+  noindex={true}
+  minimal={true}
+>
+  <!-- ============================================ PASSO 3 · PRENOTA LA CONSULENZA -->
+  <section class="bk">
+    <Waves />
+    <div class="container bk-in">
+      <div class="bk-copy">
+        <FunnelSteps current={3} />
+        <p class="eyebrow rise">Ultimo passo</p>
+        <h1 class="display rise" style="--d:100ms">Scegli <strong>quando parlarne</strong></h1>
+        <p class="lead rise" style="--d:180ms">
+          Dopo la demo, il confronto sui numeri reali del tuo hotel. È gratuito e senza impegno: il
+          gestionale che usi oggi resta al suo posto.
+        </p>
+
+        <ul class="agenda rise" style="--d:260ms">
+          {bookingAgenda.map((a) => (
+            <li>
+              <span class="ag-ic"><Icon name={a.icon} size={20} /></span>
+              <span><b>{a.title}</b><em>{a.text}</em></span>
+            </li>
+          ))}
+        </ul>
+
+        <div class="bk-contact rise" style="--d:340ms">
+          <p>Preferisci scriverci subito?</p>
+          <a href={`https://wa.me/${site.whatsappHref}`} target="_blank" rel="noopener noreferrer" data-cta="booking-whatsapp"><Icon name="whatsapp" size={17} /> WhatsApp</a>
+        </div>
+        <p class="bk-back"><a href={u(funnelPaths.demo)}>← Torna alla demo</a></p>
+      </div>
+
+      <div class="bk-form rise" style="--d:200ms"><BookingForm /></div>
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+  /* se la pagina viene caricata dentro l'iframe del form Zoho, esce dall'iframe */
+  (function () { try { if (window.top !== window.self) window.top.location.href = window.location.href; } catch (e) {} })();
+</script>
+
+<style>
+  .bk { position: relative; overflow: hidden; padding-block: calc(var(--header-h) + clamp(36px, 5vw, 64px)) clamp(50px, 7vw, 90px); }
+  .bk-in { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 4.5vw, 62px); align-items: start; }
+  @media (max-width: 1000px) { .bk-in { grid-template-columns: minmax(0, 1fr); } }
+  .bk .lead { margin-top: 18px; }
+  .agenda { display: grid; gap: 16px; margin-top: 28px; }
+  .agenda li { display: flex; gap: 14px; }
+  .ag-ic { display: grid; place-items: center; width: 44px; height: 44px; flex: none; border-radius: 50%; background: var(--accent); color: #000; }
+  .agenda b { display: block; font-family: var(--font-display); font-size: 1.15rem; }
+  .agenda em { display: block; font-style: normal; font-size: .93rem; color: var(--muted); margin-top: 2px; }
+  .bk-contact { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin-top: 28px; padding: 16px 22px; border-radius: var(--radius); background: var(--accent-50); border: 1px solid var(--accent-200); }
+  .bk-contact p { font-family: var(--font-display); font-weight: 700; }
+  .bk-contact a { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+  .bk-contact a:hover { color: var(--accent-700); }
+  .bk-back { margin-top: 18px; font-size: .92rem; }
+  .bk-back a { color: var(--muted); } .bk-back a:hover { color: var(--ink); }
+</style>

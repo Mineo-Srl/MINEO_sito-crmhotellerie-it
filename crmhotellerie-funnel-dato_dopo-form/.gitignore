@@ -1,0 +1,11 @@
+# build
+dist/
+.astro/
+node_modules/
+
+# pacchetti di deploy
+deploy/*.zip
+
+# sistema
+.DS_Store
+*.log

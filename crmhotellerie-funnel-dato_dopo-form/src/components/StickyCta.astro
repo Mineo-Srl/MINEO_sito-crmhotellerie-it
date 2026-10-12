@@ -1,0 +1,28 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site.js';
+---
+<div class="sticky" id="stickyCta" aria-label="Contatti rapidi">
+  <a href={site.bookingUrl} target="_blank" rel="noopener" class="btn btn-primary" data-cta="sticky-demo">Prenota una consulenza <Icon name="arrow" size={17} /></a>
+</div>
+<style>
+  .sticky { display: none; }
+  @media (max-width: 760px) {
+    .sticky { position: fixed; z-index: 230; left: 12px; right: 12px; bottom: 12px; display: flex; gap: 10px; padding: 10px; border-radius: 100px; background: rgba(255,255,255,.96); backdrop-filter: blur(10px); box-shadow: 0 10px 40px -8px rgba(0,0,0,.4); transform: translateY(140%); transition: transform .45s var(--ease-out); }
+    .sticky.is-on { transform: none; }
+    .sticky .btn { flex: 1; padding-inline: 16px; }
+    .sticky-call { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 50%; border: 2px solid #000; color: #000; }
+  }
+</style>
+<script>
+  const bar = document.getElementById('stickyCta');
+  const demo = document.getElementById('demo');
+  const update = () => {
+    const pastHero = window.scrollY > 560;
+    const r = demo?.getBoundingClientRect();
+    const onForm = r ? r.top < window.innerHeight * 0.8 && r.bottom > 0 : false;
+    bar?.classList.toggle('is-on', pastHero && !onForm);
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+</script>
