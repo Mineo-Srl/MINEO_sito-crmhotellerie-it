@@ -1,5 +1,4 @@
 ---
-import Logo from './Logo.astro';
 import { site, u } from '../data/site.js';
 
 interface Props { home?: boolean; }
@@ -8,7 +7,7 @@ const { home = false } = Astro.props;
 
 <footer class="ftr">
   <div class="container ftr-in">
-    <a href={site.mainSite} target="_blank" rel="noopener" aria-label="Mineo Srl — sito aziendale" class="ftr-logo"><Logo light height={42} /></a>
+    <a href={u('/')} class="ftr-logo">{site.product}</a>
 
     <p class="ftr-line">
       © 2026 <a href={site.mainSite} target="_blank" rel="noopener">{site.legal}</a> · {site.vat} · {site.tagline}
@@ -27,6 +26,7 @@ const { home = false } = Astro.props;
 <style>
   .ftr { background: #000; color: #fff; padding-block: 38px 34px; }
   .ftr-in { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+  .ftr-logo { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: .1em; text-transform: uppercase; color: #fff; padding-left: 12px; border-left: 3px solid var(--accent); }
   .ftr-line { font-size: .92rem; color: var(--muted-dark); }
   .ftr-line a { color: #fff; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
   .ftr-line a:hover { color: var(--accent); }

@@ -328,14 +328,14 @@ const full = variant === 'full';
 
       function buildMailto() {
         var lines = [
-          'Richiesta demo — CRM Hotel (lead magnet)', '',
+          'Richiesta demo — CRM Hotellerie (lead magnet)', '',
           'Nome e cognome: ' + get('nome'), 'Struttura: ' + get('struttura'),
           'Email: ' + get('email'), 'Telefono: ' + get('telefono'),
         ];
         ['sito', 'camere', 'processo', 'note'].forEach(function (n) { if (form.elements[n]) lines.push(n + ': ' + get(n)); });
         lines.push('', 'Consenso privacy: ' + get('privacy'));
         if (form.elements['marketing']) lines.push('Consenso comunicazioni commerciali: ' + get('marketing'));
-        return 'mailto:' + mailto + '?subject=' + encodeURIComponent('Richiesta demo CRM Hotel — ' + (form.elements['struttura'].value || '')) +
+        return 'mailto:' + mailto + '?subject=' + encodeURIComponent('Richiesta demo CRM Hotellerie — ' + (form.elements['struttura'].value || '')) +
           '&body=' + encodeURIComponent(lines.join('\n'));
       }
 

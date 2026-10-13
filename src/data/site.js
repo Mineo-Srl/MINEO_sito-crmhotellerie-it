@@ -1,6 +1,6 @@
 /* ==========================================================================
    Dati del sito e contenuti del sito verticale.
-   Prodotto: CRM Hotel — il CRM alberghiero costruito su Zoho da Mineo.
+   Prodotto: CRM Hotellerie — il CRM alberghiero costruito su Zoho da Mineo.
    Obiettivo: vendere il CRM ai proprietari di hotel (richiesta demo / consulenza).
    Testi di partenza: «Testi sito web Zoho Hotel.docx».
    Tutta la copy modificabile sta qui o nelle singole sezioni di index.astro.
@@ -21,13 +21,15 @@ export function u(path = '/') {
 export const site = {
   name: 'Mineo Srl',
   legal: 'MINEO S.r.l.',
-  product: 'CRM Hotel',
-  brand: 'CRM Hotel by Mineo',
+  product: 'CRM Hotellerie',
+  brand: 'CRM Hotellerie',
   /* ⚠️ Dominio di pubblicazione: sostituiscilo con quello definitivo.
      Serve per canonical, Open Graph e sitemap (non per i link interni). */
   domain: 'crmhotel.mineoepartners.it',
   url: 'https://crmhotel.mineoepartners.it',
   tagline: 'Zoho Authorized Partner',
+  /* Anni da Zoho Authorized Partner: aggiornalo qui, vale per tutto il sito */
+  partnerYears: 9,
   email: 'info@mineoepartners.it',
   privacyEmail: 'privacy@mineoepartners.it',
   phone: '+39 02 814 807 92',
@@ -61,13 +63,13 @@ export const site = {
 
 /* --- Navigazione (anchor della single page) ------------------------------ */
 /* Menu a imbuto: una voce per fase di decisione (max 4 + CTA).
-   Interesse → Perché CRM Hotel · Fiducia → Perché Zoho · Prova → Guardalo dal vivo · Dubbi → FAQ.
+   Interesse → Perché CRM Hotellerie · Fiducia → Perché Zoho · Prova → Guardalo dal vivo · Dubbi → FAQ.
    La CTA principale (navCta) resta sempre visibile e porta al form. */
 export const nav = [
-  { href: '#perche-crm', label: 'Perché CRM Hotel' },
-  { href: '#perche-zoho', label: 'Perché Zoho' },
-  { href: '#widget', label: 'Il widget' },
+  { href: '#ospite', label: 'L’ospite' },
+  { href: '#marketing', label: 'Marketing' },
   { href: '#dashboard', label: 'Dashboard' },
+  { href: '#perche-zoho', label: 'Perché Zoho' },
   { href: '#faq', label: 'FAQ' },
 ];
 
@@ -75,10 +77,13 @@ export const navCta = { href: 'https://mineoepartners.zohobookings.eu/#/andreami
 
 /* Footer: tutte le sezioni della pagina, per chi scorre fino in fondo */
 export const footerNav = [
-  { href: '#perche-crm', label: 'Perché CRM Hotel' },
+  { href: '#ospite', label: 'L’ospite al centro' },
   { href: '#marketing', label: 'Marketing alberghiero' },
-  { href: '#perche-zoho', label: 'Perché Zoho' },
   { href: '#dashboard', label: 'Dashboard' },
+  { href: '#perche-crm', label: 'Perché CRM Hotellerie' },
+  { href: '#widget', label: 'Il widget dal vivo' },
+  { href: '#chi-fa-cosa', label: 'Chi fa cosa' },
+  { href: '#perche-zoho', label: 'Perché Zoho' },
   { href: '#demo-hotel', label: 'La demo' },
   { href: '#percorsi', label: 'Da dove parti tu' },
   { href: '#come-si-parte', label: 'Come si parte' },
@@ -219,12 +224,28 @@ export const consultPoints = [
 /* --- FAQ --------------------------------------------------------------- */
 export const faq = [
   {
+    q: 'Che cos’è CRM Hotellerie, rispetto a Zoho?',
+    a: `È Zoho, con il suo CRM e tutte le app di marketing, personalizzato sul tuo hotel da noi: Zoho Authorized Partner da ${site.partnerYears} anni. Zoho fornisce la piattaforma e le licenze; noi la conoscenza della suite, la personalizzazione, la formazione e l’assistenza in italiano.`,
+  },
+  {
+    q: 'Devo acquistare le licenze Zoho a parte?',
+    a: 'Sì. CRM Hotellerie funziona sull’account Zoho della tua struttura, con licenze in abbonamento a parte. Serve almeno l’edizione Enterprise di Zoho CRM, inclusa anche in Zoho One: ti indichiamo noi la soluzione giusta e la attiviamo come partner. I costi li vediamo insieme in consulenza, sui numeri della tua struttura.',
+  },
+  {
+    q: 'Posso tenere il gestionale e il booking engine che uso già?',
+    a: 'Sì. Puoi partire da CRM e marketing lasciando al suo posto il gestionale che usi oggi: in consulenza vediamo come portare nel CRM i dati di prenotazioni e ospiti dal sistema che hai, e se e quando ha senso fare di più.',
+  },
+  {
+    q: 'Cosa succede ai miei dati se un giorno smetto di lavorare con voi?',
+    a: 'Restano tuoi. L’account Zoho è della struttura: moduli, ospiti, prenotazioni e storico rimangono nel tuo CRM e puoi esportarli in ogni momento. Nessun modello pubblicitario sui dati.',
+  },
+  {
     q: 'Posso gestire con Zoho anche il personale dell’hotel?',
-    a: 'Sì. Zoho People è il modulo dedicato alla gestione delle persone: anagrafica dei dipendenti, presenze, ferie e permessi, turni e inserimento dei nuovi assunti. Vive sullo stesso account del CRM Hotel, con gli stessi accessi, così reception, housekeeping e direzione lavorano su dati coerenti senza un altro gestionale da affiancare.',
+    a: 'Sì. Zoho People è il modulo dedicato alla gestione delle persone: anagrafica dei dipendenti, presenze, ferie e permessi, turni e inserimento dei nuovi assunti. Vive sullo stesso account del CRM Hotellerie, con gli stessi accessi, così reception, housekeeping e direzione lavorano su dati coerenti senza un altro gestionale da affiancare.',
   },
   {
     q: 'Zoho è solo un CRM?',
-    a: 'No. Zoho è un ecosistema di oltre 45 applicazioni integrate su un unico account, che coprono aree diverse: vendite e marketing, assistenza clienti, fatturazione e contabilità, risorse umane, analisi dei dati e collaborazione. Il CRM Hotel è il cuore, ma ogni modulo che aggiungi condivide dati e accessi: un solo sistema, non un nuovo contratto da firmare altrove.',
+    a: 'No. Zoho è un ecosistema di oltre 45 applicazioni integrate su un unico account, che coprono aree diverse: vendite e marketing, assistenza clienti, fatturazione e contabilità, risorse umane, analisi dei dati e collaborazione. Il CRM Hotellerie è il cuore, ma ogni modulo che aggiungi condivide dati e accessi: un solo sistema, non un nuovo contratto da firmare altrove.',
   },
   {
     q: 'Il sistema è personalizzabile sulla mia struttura?',
@@ -234,9 +255,9 @@ export const faq = [
 
 /* --- Landing SEO: contenuti specifici ------------------------------------ */
 export const seo = {
-  title: 'Gestionale per hotel su Zoho: segui ogni ospite dall’inizio alla fine',
+  title: 'CRM e marketing per hotel su Zoho: segui ogni ospite dall’inizio alla fine',
   description:
-    'Non il solito CRM: chat sul sito, tracciamento di ogni evento e storico completo di clienti e servizi. CRM Hotel prende in carico l’ospite dall’inizio alla fine con le app di marketing e analisi Zoho. Sblocca la demo.',
+    'CRM e marketing per hotel su Zoho: chat sul sito, scheda ospite completa e campagne che riportano l’ospite sul canale diretto. I dati restano tuoi. Sblocca la demo.',
 };
 
 export const photo = (name) => u(`/img/photos/${name.includes('.') ? name : name + '.webp'}`);
@@ -345,7 +366,7 @@ export const partnerPoints = [
   {
     icon: 'building',
     title: 'Un prodotto completo, fatto per gli hotel',
-    text: 'CRM Hotel non è un modello generico adattato in fretta: è un prodotto verticale costruito da noi su Zoho, con calendario unico, widget, channel manager e adempimenti già pensati per l’albergo.',
+    text: 'CRM Hotellerie non è un modello generico adattato in fretta: è un prodotto verticale costruito da noi su Zoho, con calendario unico, widget, channel manager e adempimenti già pensati per l’albergo.',
   },
 ];
 
@@ -396,12 +417,12 @@ export const demoTasks = [
 
 /* Cosa interessa di più: scelto nella demo, portato nella prenotazione */
 export const interests = [
+  { id: 'marketing', label: 'Marketing e fidelizzazione', icon: 'megaphone' },
   { id: 'dirette', label: 'Più prenotazioni dirette', icon: 'wallet' },
+  { id: 'pms', label: 'Affiancare il mio PMS', icon: 'plug' },
+  { id: 'dashboard', label: 'Dashboard e numeri', icon: 'chart' },
   { id: 'reparti', label: 'Coordinare i reparti', icon: 'calendar' },
   { id: 'adempimenti', label: 'Adempimenti automatici', icon: 'shield' },
-  { id: 'marketing', label: 'Marketing e fidelizzazione', icon: 'megaphone' },
-  { id: 'dashboard', label: 'Dashboard e numeri', icon: 'chart' },
-  { id: 'pms', label: 'Affiancare il mio PMS', icon: 'plug' },
 ];
 
 export const bookingSlots = [
@@ -434,6 +455,18 @@ export const heroPhases = [
 
 /* --- Il widget dal vivo: schermate reali del CRM ---------------------------- */
 export const widgetTabs = [
+  {
+    id: 'chat', icon: 'chat', tag: 'Marketing', title: 'Visitatori live e chat', url: 'salesiq.zoho.eu · Hotel Soleluna',
+    text: 'Vedi chi è sul sito in questo momento, da dove arriva e da quanto tempo: puoi intercettarlo in chat prima che se ne vada.',
+    img: 'salesiq-live', alt: 'SalesIQ: visualizzazione live dei visitatori del sito dell’hotel',
+    chips: ['Visitatori in tempo reale', 'Chat con l’ospite indeciso', 'Provenienza e tempo sul sito'],
+  },
+  {
+    id: 'analisi', icon: 'chart', tag: 'Marketing', title: 'Analisi del sito', url: 'pagesense.zoho.eu · Hotel Soleluna',
+    text: 'Pagine più viste, tempo medio, rimbalzi e canali di acquisizione: ogni visita diventa un dato tuo, con lo storico.',
+    img: 'pagesense-pagine', alt: 'PageSense: analisi delle pagine del sito con visualizzazioni, ingressi e tasso di rimbalzo', img2: 'pagesense-canali', alt2: 'PageSense: canali di acquisizione con sessioni e visitatori',
+    chips: ['Pagine e percorsi', 'Canali di provenienza', 'Storico giornaliero'],
+  },
   {
     id: 'planning', icon: 'calendar', tag: 'Prenotazione', title: 'Planning unico',
     text: 'Prenotazioni, pulizie e manutenzioni sullo stesso calendario, con stagione e occupazione di ogni giorno.',
@@ -476,16 +509,74 @@ export const widgetTabs = [
     img: 'tariffe', alt: 'Configurazione hotel con tariffe e regole per giorno', img2: 'configurazione', alt2: 'Menu di configurazione Hotel - Prenotazioni e Interventi',
     chips: ['Alta / media / bassa', 'Regole weekend', 'Minimo notti'],
   },
+];
+
+/* ==========================================================================
+   L'OSPITE AL CENTRO (sezione #ospite): cosa contiene la scheda ospite.
+   Ogni voce corrisponde a campi reali dei moduli Prenotazioni/Addebiti.
+   ========================================================================== */
+export const guestRecord = [
+  { title: 'Storico soggiorni e canale', text: 'ogni prenotazione, diretta od OTA, con camera, trattamento e periodo.' },
+  { title: 'Spesa in hotel', text: 'ristorante, bar, spa ed extra addebitati in camera, soggiorno per soggiorno.' },
+  { title: 'Preferenze e interessi', text: 'lingua, note per la ristorazione, richieste di arrivo anticipato o partenza posticipata.' },
+  { title: 'Segmenti pronti', text: 'nuovo, ricorrente, abituale; privato, business, VIP e influencer.' },
+  { title: 'Consensi registrati', text: 'privacy, newsletter e WhatsApp raccolti con la prenotazione.' },
+];
+
+/* Scheda ospite d'esempio (dati dimostrativi, persona inventata) */
+export const guestCard = {
+  initials: 'GR',
+  name: 'Giulia R.',
+  sub: 'Ospite abituale · 4 soggiorni',
+  segment: 'Abituale',
+  rows: [
+    { k: 'Ultimo soggiorno', v: 'Agosto · Junior suite · mezza pensione' },
+    { k: 'Canale', v: 'La prima volta da un portale, poi sempre dal sito' },
+    { k: 'Spesa extra media', v: '160 € a soggiorno (spa, cena)' },
+    { k: 'Interessi', v: 'Spa · Enogastronomia · Bici' },
+    { k: 'Lingua', v: 'Italiano' },
+    { k: 'Consensi', v: 'Privacy ✓ · Newsletter ✓ · WhatsApp ✓' },
+  ],
+  next: 'Offerta weekend spa a marzo, inviata solo a ospiti abituali interessati alla spa.',
+};
+
+/* Cosa ci fai con la scheda ospite */
+export const guestUses = [
+  { icon: 'calendar', title: 'Riempi i periodi vuoti', text: 'Scegli il segmento giusto (famiglie, coppie, ospiti abituali) e lanci l’offerta sulle date in cui la struttura è scarica.' },
+  { icon: 'sparkles', title: 'Vendi di più prima dell’arrivo', text: 'Spa, cena, transfer, partenza posticipata: proposti nei giorni prima del soggiorno a chi ha già mostrato interesse.' },
+  { icon: 'refresh', title: 'Riporta l’ospite sul diretto', text: 'Chi è arrivato da un portale torna a prenotare dal tuo sito, senza commissioni, grazie ai consensi raccolti durante il soggiorno.' },
+];
+
+/* ==========================================================================
+   CHI FA COSA (sezione #chi-fa-cosa): la collaborazione con Zoho, senza cifre.
+   ========================================================================== */
+export const zohoRoles = [
   {
-    id: 'chat', icon: 'chat', tag: 'Marketing', title: 'Visitatori live e chat', url: 'salesiq.zoho.eu · Hotel Soleluna',
-    text: 'Vedi chi è sul sito in questo momento, da dove arriva e da quanto tempo: puoi intercettarlo in chat prima che se ne vada.',
-    img: 'salesiq-live', alt: 'SalesIQ: visualizzazione live dei visitatori del sito dell’hotel',
-    chips: ['Visitatori in tempo reale', 'Chat con l’ospite indeciso', 'Provenienza e tempo sul sito'],
+    who: 'Zoho', icon: 'layers', title: 'CRM e marketing',
+    text: 'CRM, marketing automation, chat sul sito, analisi e tutte le altre app su un unico account, con data center certificati ISO 27001.',
+    items: ['Licenze in abbonamento, a parte', 'Edizione minima: Zoho CRM Enterprise, inclusa in Zoho One', 'Aggiornamenti della piattaforma inclusi'],
   },
   {
-    id: 'analisi', icon: 'chart', tag: 'Marketing', title: 'Analisi del sito', url: 'pagesense.zoho.eu · Hotel Soleluna',
-    text: 'Pagine più viste, tempo medio, rimbalzi e canali di acquisizione: ogni visita diventa un dato tuo, con lo storico.',
-    img: 'pagesense-pagine', alt: 'PageSense: analisi delle pagine del sito con visualizzazioni, ingressi e tasso di rimbalzo', img2: 'pagesense-canali', alt2: 'PageSense: canali di acquisizione con sessioni e visitatori',
-    chips: ['Pagine e percorsi', 'Canali di provenienza', 'Storico giornaliero'],
+    who: 'Noi', icon: 'cog', title: 'La personalizzazione',
+    text: `Da ${site.partnerYears} anni lavoriamo su Zoho ogni giorno: lo cuciamo sul tuo hotel con moduli, widget di prenotazione, automazioni e integrazioni scritte da noi.`,
+    items: [`Zoho Authorized Partner da ${site.partnerYears} anni`, 'Conoscenza dell’intera suite, non solo del CRM', 'Configurazione, formazione e assistenza in italiano'],
   },
+  {
+    who: 'La tua struttura', icon: 'lock', title: 'I dati',
+    text: 'L’account Zoho è della struttura: ospiti, prenotazioni e storico restano tuoi, esportabili in ogni momento.',
+    items: ['Nessun modello pubblicitario sui dati', 'Se cambi partner, CRM e storico restano', 'Aggiungi Books, People o Desk quando ti servono'],
+  },
+];
+
+/* Cosa paghi: solo le voci, le cifre si vedono in consulenza */
+export const payItems = [
+  { title: 'Licenze Zoho', text: 'abbonamento per utente, nell’edizione che ti indichiamo.' },
+  { title: 'Personalizzazione CRM Hotellerie', text: 'configurazione sulla tua struttura e formazione iniziale dei reparti.' },
+  { title: 'Servizi opzionali', text: 'channel manager per gli OTA e marketing gestito da noi, se vuoi delegarlo.' },
+];
+
+/* App Zoho su cui lavoriamo ogni giorno (sezione #chi-fa-cosa) */
+export const zohoApps = [
+  'CRM', 'Marketing Automation', 'Campaigns', 'SalesIQ', 'PageSense', 'Forms', 'Analytics',
+  'Books', 'Desk', 'People', 'Creator', 'Catalyst', 'Flow', 'Sign', 'WorkDrive', 'Writer', 'Voice',
 ];

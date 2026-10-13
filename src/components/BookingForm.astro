@@ -295,10 +295,10 @@ import { site, u, funnelPaths, interests, bookingSlots } from '../data/site.js';
     function checkedList() { return Array.prototype.map.call(form.querySelectorAll('input[name="argomenti"]:checked'), function (c) { return c.value; }); }
 
     function buildMailto() {
-      var lines = ['Richiesta consulenza — CRM Hotel', '', 'Nome: ' + val('nome'), 'Struttura: ' + val('struttura'), 'Email: ' + val('email'), 'Telefono: ' + val('telefono'),
+      var lines = ['Richiesta consulenza — CRM Hotellerie', '', 'Nome: ' + val('nome'), 'Struttura: ' + val('struttura'), 'Email: ' + val('email'), 'Telefono: ' + val('telefono'),
         '', 'Giorno preferito: ' + val('giorno'), 'Fascia: ' + (form.querySelector('input[name="fascia"]:checked') || {}).value,
         'Argomenti: ' + (checkedList().join(', ') || '—'), 'Note: ' + val('note')];
-      return 'mailto:' + mailto + '?subject=' + encodeURIComponent('Consulenza CRM Hotel — ' + (form.elements['struttura'].value || form.elements['nome'].value)) + '&body=' + encodeURIComponent(lines.join('\n'));
+      return 'mailto:' + mailto + '?subject=' + encodeURIComponent('Consulenza CRM Hotellerie — ' + (form.elements['struttura'].value || form.elements['nome'].value)) + '&body=' + encodeURIComponent(lines.join('\n'));
     }
     function goThanks() { window.location.href = thanks; }
 
