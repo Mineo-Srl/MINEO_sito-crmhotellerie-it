@@ -25,8 +25,8 @@ export const site = {
   brand: 'CRM Hotellerie',
   /* ⚠️ Dominio di pubblicazione: sostituiscilo con quello definitivo.
      Serve per canonical, Open Graph e sitemap (non per i link interni). */
-  domain: 'crmhotel.mineoepartners.it',
-  url: 'https://crmhotel.mineoepartners.it',
+  domain: 'www.crmhotellerie.it',
+  url: 'https://www.crmhotellerie.it',
   tagline: 'Zoho Authorized Partner',
   /* Anni da Zoho Authorized Partner: aggiornalo qui, vale per tutto il sito */
   partnerYears: 9,
