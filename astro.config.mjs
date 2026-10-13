@@ -9,7 +9,7 @@ import { defineConfig } from 'astro/config';
 //   `base: '/crm-hotel'`: tutti i link interni passano dall'helper `u()` in
 //   src/data/site.js e si adeguano da soli, senza toccare le pagine.
 export default defineConfig({
-  site: 'https://crmhotel.mineoepartners.it',
+  site: 'https://www.crmhotellerie.it',
   trailingSlash: 'ignore',
   build: {
     inlineStylesheets: 'auto',
