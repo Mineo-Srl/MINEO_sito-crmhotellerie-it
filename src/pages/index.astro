@@ -79,29 +79,14 @@ const schema = [
           i dati restano tuoi.
         </p>
 
-        <div class="compare rise" style="--d:260ms">
-          <div class="cmp cmp-old">
-            <span class="cmp-t"><Icon name="close" size={15} stroke={3} /> Il solito CRM</span>
-            <p>Archivia i contatti che gli porti. Cosa è successo prima e dopo, non lo sa.</p>
-          </div>
-          <div class="cmp cmp-new">
-            <span class="cmp-t"><Icon name="check" size={15} stroke={3} /> CRM Hotellerie</span>
-            <p>Prende in carico l’ospite dal primo clic e registra ogni passaggio, fino al ritorno.</p>
-          </div>
-        </div>
-
-        <ol class="phases rise" style="--d:320ms" aria-label="Cosa tracciamo, dall’inizio alla fine">
-          {heroPhases.map((ph) => (
-            <li>
-              <span class="ph-n"><Icon name={ph.icon} size={20} /></span>
-              <span class="ph-t">
-                <b>{ph.title}</b>
-                <em>{ph.text}</em>
-                <span class="ph-tags">{ph.apps.map((a) => <i>{a}</i>)}</span>
-              </span>
-            </li>
+        <div class="htailor rise" style="--d:260ms" aria-label="Come lo cuciamo sul tuo hotel">
+          {tailor.map((t) => (
+            <article class="ht-card">
+              <span class="ht-ic"><Icon name={t.icon} size={20} /></span>
+              <div><h3>{t.title}</h3><p>{t.text}</p></div>
+            </article>
           ))}
-        </ol>
+        </div>
 
         <p class="punch rise" style="--d:380ms"><b>Tieni traccia di tutto.</b> Più conosci l’ospite, meno paghi per riaverlo.</p>
 
@@ -310,16 +295,6 @@ const schema = [
       <ul class="stats" data-stagger="90">
         {zohoStats.map((s) => <li data-reveal="scale"><b>{s.value}</b><span>{s.label}</span></li>)}
       </ul>
-
-      <div class="grid grid-3" data-stagger="80">
-        {tailor.map((t) => (
-          <article class="card" data-reveal>
-            <span class="icon-chip"><Icon name={t.icon} /></span>
-            <h3 class="h4">{t.title}</h3>
-            <p>{t.text}</p>
-          </article>
-        ))}
-      </div>
 
       <CtaBand id="cta-zoho" dark={false} title="Raccontaci come lavora il tuo hotel" text="Lo cuciamo su di te, a partire dal gestionale che usi oggi." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
     </div>
@@ -707,4 +682,13 @@ const schema = [
   .pay li b { display: block; margin-bottom: 4px; color: #fff; }
   .pay-note { font-size: .88rem; color: rgba(255,255,255,.6); }
   @media (max-width: 860px) { .pay ul { grid-template-columns: minmax(0, 1fr); } }
+
+  /* ---------- Hero: come lo cuciamo sul tuo hotel ---------- */
+  .htailor { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 26px; max-width: 640px; }
+  @media (max-width: 560px) { .htailor { grid-template-columns: minmax(0, 1fr); } }
+  .ht-card { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: var(--radius); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); transition: transform .3s var(--ease-out), border-color .25s, background .25s; }
+  .ht-card:hover { transform: scale(1.04); border-color: var(--accent); background: rgba(255,255,255,.1); }
+  .ht-ic { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 50%; background: var(--accent); color: #000; }
+  .ht-card h3 { font-family: var(--font-display); font-size: 1.1rem; line-height: 1.15; color: #fff; }
+  .ht-card p { margin-top: 3px; font-size: .85rem; line-height: 1.4; color: rgba(255,255,255,.72); }
 </style>
