@@ -71,7 +71,7 @@ const schema = [
       <div class="hero-copy">
         <p class="badge rise" style="--d:40ms"><span class="dot"></span> Marketing + CRM per hotel · su Zoho</p>
         <h1 class="display rise" id="h1" style="--d:120ms">
-          Non il solito CRM: <span class="mark">prende in carico</span> ogni ospite, dall’inizio alla fine
+          Non il solito CRM: <span class="mark">prende in carico</span> ogni ospite, dall’inizio alla fine con Tutto Zoho, cucito sul tuo hotel
         </h1>
         <p class="lead rise" style="--d:200ms">
           Chat sul sito, registrazione di ogni evento e storico completo di clienti e servizi.
@@ -113,7 +113,7 @@ const schema = [
 
       <div class="lead-card rise" id="hero-lead" style="--d:240ms">
         <span class="lead-tag">Demo gratuita</span>
-        <h2>Vedi come segui ogni ospite, dall’inizio alla fine</h2>
+        <h2>Scopri come seguire ogni ospite dall’inizio alla fine</h2>
         <p class="lead-sub">Sblocca la demo gratuita: chat, eventi e storico in funzione sull’hotel dimostrativo, poi ti richiamiamo per la consulenza.</p>
         <ol class="lead-steps" aria-label="Come funziona">
           <li><b>1</b> Dati</li>
@@ -391,20 +391,8 @@ const schema = [
     </div>
   </section>
 
-  <!-- ============================================ FAQ -->
-  <section class="section" id="faq">
-    <div class="container container-narrow">
-      <div class="section-head center" data-reveal>
-        <p class="eyebrow">Domande frequenti</p>
-        <h2 class="h2">Le domande che ci fanno <strong>i proprietari di hotel</strong></h2>
-      </div>
-      <Faq />
-      <CtaBand id="cta-faq" title="Hai ancora un dubbio?" text="Prenota la consulenza o scrivici: rispondiamo noi, in italiano." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
-    </div>
-  </section>
-
   <!-- ============================================ FORM FINALE (stesso lead magnet) -->
-  <section class="section section-paper demo" id="demo">
+  <section class="section demo" id="demo">
     <Waves class="waves-soft" />
     <div class="container relative">
       <div class="demo-grid">
@@ -427,6 +415,18 @@ const schema = [
         </div>
         <div class="demo-form" id="form" data-reveal="right"><ZohoLeadFormFull /></div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============================================ FAQ -->
+  <section class="section section-paper" id="faq">
+    <div class="container container-narrow">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow">Domande frequenti</p>
+        <h2 class="h2">Le domande che ci fanno <strong>i proprietari di hotel</strong></h2>
+      </div>
+      <Faq />
+      <CtaBand id="cta-faq" title="Hai ancora un dubbio?" text="Prenota la consulenza o scrivici: rispondiamo noi, in italiano." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
     </div>
   </section>
 
