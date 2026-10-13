@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import Logo from './Logo.astro';
 import { site, nav, navCta, u } from '../data/site.js';
 
 interface Props { home?: boolean; minimal?: boolean; }
@@ -9,7 +10,8 @@ const prefix = home ? '' : u('/');
 
 <header class="hdr" id="hdr">
   <div class="container hdr-in">
-    <a href={home ? '#top' : u('/')} class="hdr-logo" aria-label={site.product}>
+    <a href={home ? '#top' : u('/')} class="hdr-logo" aria-label={`${site.product} — Mineo Srl`}>
+      <Logo height={30} />
       <span class="hdr-product">{site.product}</span>
     </a>
 
