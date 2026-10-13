@@ -1,22 +1,23 @@
 ---
-/* Form Zoho Forms (iframe) per sbloccare la demo, nella prima pagina.
-   Embed fornito da Zoho: l'iframe e lo script del referrername sono quelli originali. */
+/* Form Zoho Forms "Funnel_hotellerie" (iframe): embed originale di Zoho. */
 ---
 <div class="zform">
-  <iframe id="ziframe_351513" aria-label="Form Hotel Soleluna funnel_1 pagina" frameborder="0" style="height:680px;width:99%;border:none;" src='https://forms.zohopublic.eu/hotelsoleluna1/form/FormHotelSolelunafunnel1pagina/formperma/rdMQBrTx1mdvpEZBTTEHjqjVouaN3IiheFM1_69F9Bs' title="Form per sbloccare la demo" loading="lazy">
+  <iframe id="ziframe_995773" aria-label="Form Funnel_hotellerie" frameborder="0" style="height:680px;width:99%;border:none;" src='https://forms.zohopublic.eu/portaleswm/form/Funnelhotellerie/formperma/0v6LduQD91dJDm6b-IMAnhege71Pl-Y9TRZqEtiZaok' title="Form per sbloccare la demo" loading="lazy">
   </iframe>
 </div>
 
 <style>
   .zform { margin-top: 6px; }
   .zform iframe { display: block; border-radius: var(--radius); }
-  @media (max-width: 560px) { .zform iframe { height: 760px !important; } }
+  .zform-full { padding: clamp(10px, 1.6vw, 18px); border-radius: var(--radius-lg); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-lg); }
+  .zform-full iframe { display: block; border-radius: var(--radius); }
+  @media (max-width: 560px) { .zform iframe, .zform-full iframe { height: 760px !important; } }
 </style>
 
 <script type="text/javascript" is:inline>
 (function() {
   try {
-    var zf_frame = document.getElementById("ziframe_351513");
+    var zf_frame = document.getElementById("ziframe_995773");
     var ifrmSrc = zf_frame.src;
 
         if (!((new RegExp("[?&]referrername=")).test(ifrmSrc))) {
