@@ -280,21 +280,6 @@ const schema = [
         <ul>{payItems.map((x) => <li><b>{x.title}</b>{x.text}</li>)}</ul>
         <p class="pay-note">Le cifre le vediamo in consulenza, sui numeri reali della tua struttura.</p>
       </div>
-    </div>
-  </section>
-
-  <!-- ============================================ PERCHÉ ZOHO: SU MISURA -->
-  <section class="section" id="perche-zoho">
-    <div class="container">
-      <div class="section-head center" data-reveal>
-        <p class="eyebrow">Perché Zoho</p>
-        <h2 class="h2">Non un software preconfezionato: <strong>un sistema cucito su misura</strong> sul tuo hotel</h2>
-        <p class="lead">Zoho è una piattaforma, non una scatola chiusa. La modelliamo su come lavora la tua struttura — widget, pipeline, reparti, automazioni, dashboard — e la facciamo crescere con te, senza cambiare sistema.</p>
-      </div>
-
-      <ul class="stats" data-stagger="90">
-        {zohoStats.map((s) => <li data-reveal="scale"><b>{s.value}</b><span>{s.label}</span></li>)}
-      </ul>
 
       <CtaBand id="cta-zoho" dark={false} title="Raccontaci come lavora il tuo hotel" text="Lo cuciamo su di te, a partire dal gestionale che usi oggi." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
     </div>
@@ -541,22 +526,6 @@ const schema = [
   .demo-form { position: relative; }
   @media (min-width: 1001px) { .demo-form { position: sticky; top: calc(var(--header-h) + 24px); } }
 
-  /* ---------- Perché Zoho (compatto) ---------- */
-  #perche-zoho { padding-block: clamp(40px, 5vw, 64px); }
-  #perche-zoho .section-head { margin-bottom: 26px; }
-  #perche-zoho .section-head .lead { font-size: 1.02rem; }
-  #perche-zoho .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-  @media (max-width: 860px) { #perche-zoho .stats { grid-template-columns: 1fr 1fr; } }
-  #perche-zoho .stats li { padding: 14px 12px; text-align: center; border-radius: var(--radius); background: #000; }
-  #perche-zoho .stats b { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.4rem, 2.4vw, 1.9rem); color: var(--accent); line-height: 1.1; }
-  #perche-zoho .stats span { display: block; margin-top: 3px; font-size: .78rem; line-height: 1.3; color: var(--muted-dark); }
-  #perche-zoho .grid { gap: 14px; margin-top: 18px; }
-  #perche-zoho .grid .card { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 14px; align-items: start; padding: 16px 18px; border-radius: var(--radius); }
-  #perche-zoho .grid .icon-chip { grid-row: span 2; width: 44px; height: 44px; margin: 0; }
-  #perche-zoho .grid .icon-chip svg { width: 21px; height: 21px; }
-  #perche-zoho .grid .card h3 { margin: 0 0 3px; font-size: 1.1rem; }
-  #perche-zoho .grid .card p { font-size: .88rem; line-height: 1.45; }
-  #perche-zoho .ctaband { margin-top: 20px; padding-block: 18px; }
 
   /* ---------- Partner ufficiale Zoho ---------- */
   .partner { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 70px); align-items: center; }

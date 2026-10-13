@@ -69,7 +69,7 @@ export const nav = [
   { href: '#ospite', label: 'L’ospite' },
   { href: '#marketing', label: 'Marketing' },
   { href: '#dashboard', label: 'Dashboard' },
-  { href: '#perche-zoho', label: 'Perché Zoho' },
+  { href: '#chi-fa-cosa', label: 'Perché Zoho' },
   { href: '#faq', label: 'FAQ' },
 ];
 
@@ -83,7 +83,7 @@ export const footerNav = [
   { href: '#perche-crm', label: 'Perché CRM Hotellerie' },
   { href: '#widget', label: 'Il widget dal vivo' },
   { href: '#chi-fa-cosa', label: 'Chi fa cosa' },
-  { href: '#perche-zoho', label: 'Perché Zoho' },
+  { href: '#chi-fa-cosa', label: 'Perché Zoho' },
   { href: '#demo-hotel', label: 'La demo' },
   { href: '#percorsi', label: 'Da dove parti tu' },
   { href: '#come-si-parte', label: 'Come si parte' },
