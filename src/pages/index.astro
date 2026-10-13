@@ -251,20 +251,7 @@ const schema = [
         <p class="lead">Zoho è una piattaforma, non una scatola chiusa. La modelliamo su come lavora la tua struttura — widget, pipeline, reparti, automazioni, dashboard — e la facciamo crescere con te, senza cambiare sistema.</p>
       </div>
 
-      <div class="partner">
-        <div class="partner-badge" data-reveal="left">
-          <img src={u('/img/zoho-authorized-partner.png')} alt="Zoho Authorized Partner" width="900" height="251" loading="lazy" decoding="async" />
-          <p>Zoho Authorized Partner · <b>da {site.partnerYears} anni</b></p>
-        </div>
-        <div class="partner-copy" data-reveal="right">
-          <p class="eyebrow">Chi fa cosa</p>
-          <h2 class="h2">Tutto Zoho, <strong>cucito sul tuo hotel</strong></h2>
-          <p class="lead mt-2">Zoho mette il CRM e tutta la parte di marketing. Noi, partner Zoho da {site.partnerYears} anni, conosciamo la suite app per app e la personalizziamo sul tuo hotel: questo è CRM Hotellerie. I dati restano della tua struttura.</p>
-          <a href={site.bookingUrl} target="_blank" rel="noopener" class="btn btn-primary mt-3" data-cta="partner">Prenota una consulenza gratuita <Icon name="arrow" size={17} /></a>
-        </div>
-      </div>
-
-      <div class="grid grid-3 mt-5" data-stagger="100">
+      <div class="grid grid-3" data-stagger="100">
         {zohoRoles.map((r) => (
           <article class="card role-card" data-reveal>
             <span class="role-who">{r.who}</span>
