@@ -42,8 +42,8 @@ const prefix = home ? '' : u('/');
   .hdr { position: fixed; inset: 0 0 auto 0; z-index: 250; height: var(--header-h); display: flex; align-items: center; background: rgba(255,255,255,.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); transition: box-shadow .3s var(--ease); }
   .hdr.is-solid { box-shadow: 0 8px 30px -18px rgba(0,0,0,.35); }
   .hdr-in { display: flex; align-items: center; gap: 28px; }
-  .hdr-logo { display: inline-flex; align-items: center; gap: 12px; flex: none; min-width: 0; }
-  .hdr-product { font-family: var(--font-display); font-weight: 700; font-size: 1rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); padding-left: 12px; border-left: 3px solid var(--accent); white-space: nowrap; }
+  .hdr-logo { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 3px; flex: none; min-width: 0; }
+  .hdr-product { font-family: var(--font-display); font-weight: 700; font-size: .78rem; line-height: 1; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); padding-left: 0; border-left: 0; white-space: nowrap; }
   .hdr-nav { display: flex; gap: 26px; margin-left: auto; }
   .hdr-nav a { font-family: var(--font-display); font-size: .98rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); white-space: nowrap; position: relative; padding-block: 6px; }
   .hdr-nav a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--grad); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease-out); }
@@ -71,8 +71,8 @@ const prefix = home ? '' : u('/');
   .cta-short { display: none; }
   @media (max-width: 520px) { .cta-full { display: none; } .cta-short { display: inline; } }
   @media (max-width: 360px) { .hdr-cta { max-width: 118px; padding-inline: 10px; } }
-  @media (max-width: 440px) { .hdr-product { display: none; } .hdr-in { gap: 10px; } .hdr-cta { max-width: 150px; } }
-  @media (max-width: 520px) { .hdr-product { font-size: .82rem; letter-spacing: .06em; padding-left: 9px; } .hdr-phone { display: none; } .hdr-side { gap: 8px; } .hdr-cta { padding: 7px 14px; font-size: .7rem; line-height: 1.15; white-space: normal; text-align: center; max-width: 150px; } }
+  @media (max-width: 440px) { .hdr-in { gap: 10px; } .hdr-cta { max-width: 150px; } }
+  @media (max-width: 520px) { .hdr-product { font-size: .68rem; letter-spacing: .1em; } .hdr-phone { display: none; } .hdr-side { gap: 8px; } .hdr-cta { padding: 7px 14px; font-size: .7rem; line-height: 1.15; white-space: normal; text-align: center; max-width: 150px; } }
 </style>
 
 <script>
