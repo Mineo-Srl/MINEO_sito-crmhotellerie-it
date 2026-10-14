@@ -2,12 +2,12 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Waves from '../components/Waves.astro';
-import { site, u, funnelPaths, formThanksSteps } from '../data/site.js';
+import { site, u, funnelPaths } from '../data/site.js';
 ---
 
 <Base
   title={`Grazie, richiesta ricevuta | ${site.product}`}
-  description="Abbiamo ricevuto i tuoi dati: ti contattiamo entro 1 giorno lavorativo."
+  description="Abbiamo ricevuto i tuoi dati: ti rispondiamo il prima possibile."
   path={funnelPaths.formThanks}
   noindex={true}
   minimal={true}
@@ -20,31 +20,19 @@ import { site, u, funnelPaths, formThanksSteps } from '../data/site.js';
         <p class="eyebrow rise" style="--d:80ms">Richiesta ricevuta</p>
         <h1 class="display rise" style="--d:140ms">Grazie<span id="tyName"></span>, <strong>abbiamo i tuoi dati</strong></h1>
         <p class="lead rise" style="--d:220ms">
-          Ti contattiamo <b>entro 1 giorno lavorativo</b> per organizzare la demo e la consulenza gratuita.
-          Nel frattempo puoi dare un’occhiata al sito dimostrativo.
+          Rispondiamo <b>il prima possibile</b> per organizzare la demo e la consulenza gratuita.
         </p>
 
         <div class="btn-row rise" style="--d:300ms">
-          <a href={site.demoUrl} class="btn btn-primary btn-lg" target="_blank" rel="noopener" data-cta="formthanks-demo">Apri la demo <Icon name="arrowUpRight" size={18} /></a>
-          <a href={site.bookingUrl} class="btn btn-ghost btn-lg" target="_blank" rel="noopener" data-cta="formthanks-booking">Scegli tu l’orario <Icon name="arrow" size={18} /></a>
+          <a href={site.bookingUrl} class="btn btn-primary btn-lg" target="_blank" rel="noopener" data-cta="formthanks-booking">Scegli tu l’orario <Icon name="arrow" size={18} /></a>
         </div>
         <p class="ty-hint rise" style="--d:380ms">Preferisci non aspettare? Prenota tu stesso il momento della consulenza dal nostro calendario.</p>
       </div>
     </div>
   </section>
 
-  <section class="section section-paper">
+  <section class="section section-paper" style="padding-block: clamp(36px, 5vw, 60px)">
     <div class="container">
-      <div class="section-head center" data-reveal>
-        <p class="eyebrow">Cosa succede ora</p>
-        <h2 class="h2">Tre passi, <strong>poi decidi tu</strong></h2>
-      </div>
-      <ol class="steps" data-stagger="110">
-        {formThanksSteps.map((s) => (
-          <li class="step" data-reveal><span class="step-n">{s.n}</span><div><h3 class="h4">{s.title}</h3><p>{s.text}</p></div></li>
-        ))}
-      </ol>
-
       <div class="ty-contact" data-reveal>
         <p><b>Hai fretta?</b> Scrivici su WhatsApp o per email.</p>
         <div>
@@ -71,12 +59,7 @@ import { site, u, funnelPaths, formThanksSteps } from '../data/site.js';
   .ty .lead b { color: var(--ink); font-weight: 700; }
   .ty .btn-row { margin-top: 30px; }
   .ty-hint { margin-top: 14px; font-size: .9rem; color: var(--muted); }
-  .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
-  @media (max-width: 860px) { .steps { grid-template-columns: minmax(0, 1fr); } }
-  .step { display: flex; gap: 18px; padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: #fff; }
-  .step p { color: var(--muted); font-size: .96rem; margin-top: 6px; }
-  .step-n { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: #000; font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; }
-  .ty-contact { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 28px; margin-top: 40px; padding: 22px 28px; border-radius: var(--radius-xl); background: var(--accent-50); border: 1px solid var(--accent-200); }
+  .ty-contact { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 28px; padding: 22px 28px; border-radius: var(--radius-xl); background: var(--accent-50); border: 1px solid var(--accent-200); }
   .ty-contact p { font-family: var(--font-display); font-size: 1.3rem; }
   .ty-contact > div { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
 </style>

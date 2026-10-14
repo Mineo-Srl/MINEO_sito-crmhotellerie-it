@@ -583,9 +583,3 @@ export const zohoApps = [
   'Books', 'Desk', 'People', 'Creator', 'Catalyst', 'Flow', 'Sign', 'WorkDrive', 'Writer', 'Voice',
 ];
 
-/* --- Grazie dopo il form della home --------------------------------------- */
-export const formThanksSteps = [
-  { n: '1', title: 'Ti contattiamo entro 1 giorno lavorativo', text: 'Una persona del team Mineo ti chiama o ti scrive per capire come lavora il tuo hotel.' },
-  { n: '2', title: 'Prepara tre numeri (facoltativo)', text: 'Camere, quota di prenotazioni OTA e gestionale in uso: bastano per partire dai tuoi dati reali.' },
-  { n: '3', title: 'Consulenza gratuita', text: 'Vediamo insieme dove recuperare margine e cosa cambia già nella prima settimana. Nessun impegno.' },
-];
