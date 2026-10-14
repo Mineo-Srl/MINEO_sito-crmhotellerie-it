@@ -328,7 +328,7 @@ export const deptShots = [
 
 export const steps = [
   { n: '1', title: 'Lasci i tuoi dati', text: 'Pochi secondi: nome, struttura, email e telefono. Nessuna carta, nessun impegno.' },
-  { n: '2', title: 'Ricevi la demo e ti richiamiamo', text: 'Subito dopo l’invio sblocchi il sito dimostrativo con il widget attivo; ti contattiamo entro 1 giorno lavorativo.' },
+  { n: '2', title: 'Ricevi la demo e ti richiamiamo', text: 'Subito dopo l’invio sblocchi il sito dimostrativo con il widget attivo; ti rispondiamo il prima possibile.' },
   { n: '3', title: 'Consulenza sui tuoi numeri', text: 'Un confronto gratuito su commissioni OTA, reparti e adempimenti. Si configura solo se ha senso per te.' },
 ];
 
@@ -386,7 +386,7 @@ export const demoUnlock = [
 
 /* --- Pagina di ringraziamento -------------------------------------------- */
 export const thanksSteps = [
-  { n: '1', title: 'Confermiamo l’orario', text: 'Entro 1 giorno lavorativo ti chiamiamo per confermare giorno e fascia scelti.' },
+  { n: '1', title: 'Confermiamo l’orario', text: 'Ti chiamiamo il prima possibile per confermare giorno e fascia scelti.' },
   { n: '2', title: 'Prepara tre numeri (facoltativo)', text: 'Camere, quota di prenotazioni OTA e gestionale in uso: bastano per partire dai tuoi dati reali.' },
   { n: '3', title: 'Consulenza gratuita', text: 'Vediamo insieme dove recuperare margine e cosa cambia già nella prima settimana.' },
 ];
