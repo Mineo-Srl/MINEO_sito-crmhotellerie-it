@@ -87,7 +87,13 @@ const descs = widgetTabs.map((t) => t.text);
   .ws-float img { display: block; width: 100%; height: auto; }
   .ws-float:hover { transform: rotate(0) scale(1.06); animation-play-state: paused; }
   @keyframes ws-float { 0%,100% { translate: 0 0; } 50% { translate: 0 -10px; } }
-  @media (max-width: 700px) { .ws-float { width: 52%; right: 0; bottom: 14%; } .ws-frame { transform: none; } }
+  @media (max-width: 700px) {
+    .ws-frame { transform: none; }
+    .ws .ws-float { position: relative; right: auto; bottom: auto; width: 64%; margin: -34px 0 0 auto; transform: rotate(1.5deg); animation: none; }
+    .ws .ws-chips { margin-top: 20px; justify-content: center; }
+    .ws-glow { inset: 2% 0 12% 3%; }
+    .ws-stage { padding-inline: 0; }
+  }
 
   .ws-chips { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: -18px; }
   .ws-chips span { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 100px; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); font-family: var(--font-display); font-size: .98rem; }
