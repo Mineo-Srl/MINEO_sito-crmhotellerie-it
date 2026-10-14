@@ -595,12 +595,12 @@ const schema = [
   .lockline :global(svg) { color: var(--accent); }
 
   /* ---------- Dashboard: schermate di configurazione ---------- */
-  .cfg { position: relative; padding: 18px 0 34px; overflow: clip; max-width: 100%; }
+  .cfg { position: relative; padding: 38px 24px 74px 18px; max-width: 100%; }
   .cfg-glow { position: absolute; inset: 0 -3% 4% 6%; border-radius: 36px; background: linear-gradient(140deg, var(--accent), #ffd52e 50%, rgba(114,112,112,.5)); transform: rotate(2.5deg); }
   .cfg figure { margin: 0; border-radius: 14px; overflow: hidden; background: #fff; border: 1px solid rgba(0,0,0,.14); box-shadow: 0 34px 70px -26px rgba(0,0,0,.55); }
   .cfg img { display: block; width: 100%; height: auto; }
   .cfg-main { position: relative; z-index: 1; width: 92%; transform: perspective(1800px) rotateY(3deg); transition: transform .5s var(--ease-out); }
-  .cfg-side { position: absolute; z-index: 2; right: -2%; bottom: 0; width: 62%; transform: rotate(-2deg); border: 4px solid #fff !important; transition: transform .5s var(--ease-out); animation: cfg-float 6.5s ease-in-out infinite; }
+  .cfg-side { position: absolute; z-index: 2; right: 0; bottom: 44px; width: 60%; transform: rotate(-2deg); border: 4px solid #fff !important; transition: transform .5s var(--ease-out); animation: cfg-float 6.5s ease-in-out infinite; }
   .cfg:hover .cfg-main { transform: perspective(1800px) rotateY(0); }
   .cfg-side:hover { transform: rotate(0) scale(1.05); animation-play-state: paused; }
   @keyframes cfg-float { 0%,100% { translate: 0 0; } 50% { translate: 0 -9px; } }
@@ -609,11 +609,11 @@ const schema = [
   .cfg-chrome span { margin-left: 8px; padding: 2px 12px; border-radius: 100px; background: #2c2c2c; color: rgba(255,255,255,.7); font-size: .68rem; }
   .cfg-badge { position: absolute; z-index: 3; display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 100px; background: #000; color: #fff; font-family: var(--font-display); font-size: .98rem; box-shadow: var(--shadow-lg); }
   .cfg-badge :global(svg) { color: var(--accent); }
-  .cfg-b1 { left: -3%; top: -2%; } .cfg-b2 { left: 6%; bottom: 6%; }
-  .cfg-note { position: absolute; right: 0; bottom: 0; font-size: .72rem; color: var(--grey); }
+  .cfg-b1 { left: 0; top: 6px; } .cfg-b2 { left: 6px; bottom: 40px; }
+  .cfg-note { position: absolute; right: 24px; bottom: 14px; font-size: .72rem; color: var(--grey); }
   @media (max-width: 900px) {
     .cfg-badge { display: none; }
-    .cfg { padding: 14px 0 6px; }
+    .cfg { padding: 14px 0 6px; overflow: clip; }
     .cfg-main { transform: none; width: 100%; }
     .cfg .cfg-side { position: relative; right: auto; bottom: auto; width: 68%; margin: -30px 0 0 auto; transform: rotate(-1.5deg); animation: none; }
     .cfg .cfg-note { position: static; margin-top: 14px; text-align: center; }
