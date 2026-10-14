@@ -24,7 +24,7 @@ import { site, u, funnelPaths, thanksSteps } from '../data/site.js';
         <h1 class="display rise" style="--d:140ms">Grazie<span id="tyName"></span>, <strong>ti richiamiamo noi</strong></h1>
         <p class="lead rise" style="--d:220ms">
           Un nostro consulente ti chiama <b>il prima possibile</b> per confermare l’orario.
-          Non devi fare altro: nel frattempo puoi continuare a esplorare la demo.
+          Non devi fare altro.
         </p>
 
         <div class="ty-sum rise" id="tySummary" style="--d:300ms" hidden>
@@ -39,8 +39,7 @@ import { site, u, funnelPaths, thanksSteps } from '../data/site.js';
         </div>
 
         <div class="btn-row rise" style="--d:380ms">
-          <a href={site.demoUrl} class="btn btn-primary btn-lg" target="_blank" rel="noopener" data-cta="thanks-demo">Torna alla demo <Icon name="arrowUpRight" size={18} /></a>
-          <a href={u('/')} class="btn btn-ghost btn-lg" data-cta="thanks-home">Vai al sito</a>
+          <a href={u('/')} class="btn btn-primary btn-lg" data-cta="thanks-home">Vai al sito</a>
         </div>
       </div>
     </div>
