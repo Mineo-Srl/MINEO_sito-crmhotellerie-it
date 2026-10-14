@@ -145,7 +145,7 @@ const full = variant === 'full';
     grid-template-columns: 1fr 1fr;
     gap: 18px;
   }
-  @media (max-width: 620px) { .df-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 620px) { .df-grid { grid-template-columns: minmax(0, 1fr); } }
   .df-full { grid-column: 1 / -1; }
 
   .df-field { display: grid; gap: 7px; }

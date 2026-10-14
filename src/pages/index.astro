@@ -596,7 +596,7 @@ const schema = [
   .lockline :global(svg) { color: var(--accent); }
 
   /* ---------- Dashboard: schermate di configurazione ---------- */
-  .cfg { position: relative; padding: 18px 0 34px; }
+  .cfg { position: relative; padding: 18px 0 34px; overflow: clip; max-width: 100%; }
   .cfg-glow { position: absolute; inset: 0 -3% 4% 6%; border-radius: 36px; background: linear-gradient(140deg, var(--accent), #ffd52e 50%, rgba(114,112,112,.5)); transform: rotate(2.5deg); }
   .cfg figure { margin: 0; border-radius: 14px; overflow: hidden; background: #fff; border: 1px solid rgba(0,0,0,.14); box-shadow: 0 34px 70px -26px rgba(0,0,0,.55); }
   .cfg img { display: block; width: 100%; height: auto; }
@@ -630,7 +630,7 @@ const schema = [
   .gcard-next b { color: var(--ink); margin-right: 6px; }
   .gcard-note { margin-top: 12px; font-size: .8rem; color: var(--muted); text-align: right; }
   .uses { margin-top: clamp(36px, 5vw, 56px); }
-  @media (max-width: 560px) { .gcard-grid { grid-template-columns: 1fr; } .gcard-seg { display: none; } }
+  @media (max-width: 560px) { .gcard-grid { grid-template-columns: minmax(0, 1fr); } .gcard-seg { display: none; } }
 
   /* ---------- Chi fa cosa: ruoli, app della suite e voci di costo ---------- */
   .apps { margin-top: 32px; text-align: center; }
