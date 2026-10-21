@@ -365,10 +365,6 @@ const schema = [
               </li>
             ))}
           </ul>
-          <div class="contact-card mt-4">
-            <a href={`https://wa.me/${site.whatsappHref}`} target="_blank" rel="noopener noreferrer" data-cta="form-whatsapp"><Icon name="whatsapp" size={18} /> WhatsApp</a>
-            <a href={`mailto:${site.email}`}><Icon name="mail" size={18} /> {site.email}</a>
-          </div>
         </div>
         <div class="demo-form" id="form" data-reveal="right"><ZohoLeadFormFull /></div>
       </div>
@@ -516,9 +512,6 @@ const schema = [
   .demo-ic { display: grid; place-items: center; width: 44px; height: 44px; flex: none; border-radius: 50%; background: var(--accent); color: #000; }
   .demo-points b { display: block; font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; }
   .demo-points em { display: block; font-style: normal; font-size: .93rem; color: var(--muted); margin-top: 2px; }
-  .contact-card { display: flex; flex-wrap: wrap; gap: 10px 22px; padding: 18px 22px; border-radius: var(--radius); background: var(--accent-50); border: 1px solid var(--accent-200); }
-  .contact-card a { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--ink); }
-  .contact-card a:hover { color: var(--accent-700); }
   .demo-form { position: relative; }
   @media (min-width: 1001px) { .demo-form { position: sticky; top: calc(var(--header-h) + 24px); } }
 
