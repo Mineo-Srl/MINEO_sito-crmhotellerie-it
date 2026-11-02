@@ -5,11 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "serve": "node scripts/serve.mjs",
-    "og": "node scripts/og.mjs",
+    "serve": "node scripts/serve.mjs dist 4334",
     "package": "bash scripts/package.sh",
     "astro": "astro"
   },

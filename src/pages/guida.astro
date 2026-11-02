@@ -1,0 +1,166 @@
+---
+/* Landing della guida PDF: form Zoho Forms → /grazie (download).
+   Il reindirizzamento a /grazie si imposta in Zoho Forms:
+   Impostazioni del form → Dopo l'invio → Reindirizza a URL. */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site, guide, guideChapters } from '../data/site.js';
+
+const previews = [
+  { src: '/img/guida/pag-2.jpg', alt: 'Pagina della guida con la mappa delle cinque aree' },
+  { src: '/img/guida/pag-3.jpg', alt: 'Pagina della guida sul marketing e la conversione' },
+  { src: '/img/guida/pag-4.jpg', alt: 'Pagina della guida su booking engine e channel manager' },
+  { src: '/img/guida/pag-6.jpg', alt: 'Pagina della guida su PMS e reparti' },
+];
+---
+
+<Base
+  title="Guida gratuita: Tutto Zoho, cucito sul tuo hotel"
+  description="Scarica gratis la guida CRM Hotellerie: 10 pagine su marketing, prenotazioni dirette, CRM, reparti e analytics per hotel su Zoho."
+  keywords={['guida CRM hotel', 'guida Zoho hotel', 'marketing alberghiero guida', 'PDF CRM hotel']}
+  breadcrumbs={[{ name: 'Guida gratuita' }]}
+>
+  <section class="gh section-dark">
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="blob b1 drifting" aria-hidden="true"></div>
+    <div class="container relative gh-grid">
+      <div>
+        <p class="badge rise"><span class="dot"></span> Guida gratuita · PDF, {guide.pages} pagine</p>
+        <h1 class="h1 rise" style="--d:100ms"><span class="gradient-text">Tutto Zoho</span>, cucito sul tuo hotel</h1>
+        <p class="lead rise" style="--d:200ms">
+          Marketing, booking engine, CRM, reparti e numeri: come le app Zoho lavorano insieme in un hotel,
+          dal primo clic sul sito al ritorno dell’ospite. Lascia i tuoi dati e scaricala subito.
+        </p>
+        <div class="gh-book rise" style="--d:300ms" aria-hidden="true">
+          <img class="b-back b2" src={previews[2].src} alt="" width="919" height="1300" />
+          <img class="b-back b1p" src={previews[0].src} alt="" width="919" height="1300" />
+          <img class="b-front" src="/img/guida/copertina.jpg" alt="" width="919" height="1300" fetchpriority="high" />
+        </div>
+      </div>
+
+      <div class="gh-form rise" style="--d:260ms" id="scarica">
+        <h2 class="h4">Ricevi la guida</h2>
+        <p>Compila il modulo: subito dopo si apre la pagina con il download.</p>
+        <iframe
+          id="ziframeGuida"
+          aria-label="Modulo per scaricare la guida CRM Hotellerie"
+          title="Modulo per scaricare la guida"
+          src={guide.formUrl}
+          loading="lazy"
+        ></iframe>
+        <p class="gh-privacy">
+          I dati sono trattati da {site.legal} secondo la <a href="/privacy-policy">Privacy Policy</a>.
+          Puoi chiedere la cancellazione in ogni momento.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow">Cosa trovi dentro</p>
+        <h2 class="h2">Cinque aree, <span class="gradient-text">un solo sistema</span></h2>
+      </div>
+      <ol class="chapters" data-stagger="100">
+        {guideChapters.map((c) => (
+          <li data-reveal data-tilt>
+            <span class="ch-n">{c.n}</span>
+            <h3 class="h4">{c.title}</h3>
+            <p>{c.text}</p>
+            <div class="ch-tags">{c.tags.map((t) => <span>{t}</span>)}</div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section-paper">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Un’anteprima</p>
+        <h2 class="h2">Pagine da leggere <span class="gradient-text">con calma</span></h2>
+      </div>
+      <div class="prev" data-stagger="100">
+        {previews.map((p) => (
+          <figure data-reveal><img src={p.src} alt={p.alt} width="919" height="1300" loading="lazy" decoding="async" /></figure>
+        ))}
+      </div>
+      <div class="prev-cta" data-reveal>
+        <a href="#scarica" class="btn btn-primary btn-lg">Scarica la guida gratuita <Icon name="arrow" size={18} /></a>
+        <p>Preferisci parlarne subito? <a href={site.bookings} target="_blank" rel="noopener noreferrer">Prenota una consulenza</a></p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+  /* Snippet di Zoho Forms: passa al modulo la pagina di provenienza */
+  (function () {
+    try {
+      var f = document.getElementById('ziframeGuida');
+      if (!f) return;
+      var src = f.src;
+      if (!/[?&]referrername=/.test(src)) {
+        var rfr = location.href.split('?')[0].slice(0, 1800);
+        f.src = src + (src.indexOf('?') > 0 ? '&' : '?') + 'referrername=' + encodeURIComponent(rfr);
+      }
+    } catch (e) {}
+  })();
+</script>
+
+<style>
+  .gh { padding-block: clamp(48px, 6vw, 88px) clamp(64px, 8vw, 110px); }
+  .gh .b1 { width: 520px; height: 520px; left: -160px; top: -160px; background: rgba(241,196,14,.3); }
+  .gh-grid { display: grid; grid-template-columns: 1fr minmax(0, 480px); gap: clamp(36px, 5vw, 72px); align-items: start; }
+  .gh .badge { margin-bottom: 24px; }
+  .gh .lead { margin-top: 22px; max-width: 54ch; }
+  @media (max-width: 960px) { .gh-grid { grid-template-columns: 1fr; } }
+
+  .gh-book { position: relative; height: 330px; margin-top: 44px; perspective: 1200px; }
+  .gh-book img { position: absolute; left: 0; top: 0; width: 220px; height: auto; border-radius: 6px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.85); transition: transform .7s var(--ease-out); }
+  .b-front { z-index: 3; transform: rotateY(-12deg) rotate(-4deg); }
+  .b1p { z-index: 2; transform: translateX(120px) rotate(4deg) scale(.92); opacity: .9; }
+  .b2 { z-index: 1; transform: translateX(230px) rotate(10deg) scale(.84); opacity: .7; }
+  .gh-book:hover .b-front { transform: rotateY(0) rotate(0) translateY(-8px); }
+  .gh-book:hover .b1p { transform: translateX(150px) rotate(2deg) scale(.94); }
+  .gh-book:hover .b2 { transform: translateX(280px) rotate(6deg) scale(.86); }
+  @media (max-width: 560px) {
+    .gh-book { height: 250px; }
+    .gh-book img { width: 160px; }
+    .b1p { transform: translateX(80px) rotate(4deg) scale(.92); }
+    .b2 { transform: translateX(150px) rotate(10deg) scale(.84); }
+  }
+
+  .gh-form { padding: 24px; border-radius: var(--radius-lg); background: #fff; color: var(--text); box-shadow: 0 40px 80px -30px rgba(0,0,0,.8), 0 0 0 6px rgba(241,196,14,.2); }
+  .gh-form h2 { color: var(--text) !important; }
+  .gh-form > p { margin-top: 6px; color: var(--muted) !important; font-size: .94rem; }
+  .gh-form iframe { display: block; width: 100%; height: 680px; margin-top: 12px; border: 0; border-radius: var(--radius); }
+  @media (max-width: 560px) { .gh-form iframe { height: 760px; } }
+  .gh-privacy { margin-top: 10px; font-size: .78rem !important; }
+  .gh-privacy a { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+
+  .chapters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+  .chapters li { position: relative; padding: 24px; border-radius: var(--radius-lg); background: #fff; border: 1px solid var(--line); transition: transform .25s var(--ease-out), box-shadow .4s var(--ease-out), border-color .3s var(--ease); }
+  .chapters li:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); }
+  .ch-n { display: block; font-family: var(--font-display); font-weight: 800; font-size: 2.2rem; line-height: 1; margin-bottom: 14px; background: linear-gradient(transparent 55%, rgba(241,196,14,.6) 55%); width: max-content; }
+  .chapters p { margin-top: 8px; color: var(--muted); font-size: .92rem; }
+  .ch-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 14px; }
+  .ch-tags span { padding: 3px 9px; border-radius: 100px; background: var(--paper); font-size: .72rem; font-weight: 600; }
+  @media (max-width: 1080px) { .chapters { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 760px) { .chapters { grid-template-columns: 1fr; } }
+
+  .prev { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .prev figure { margin: 0; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-lg); transition: transform .5s var(--ease-out); }
+  .prev figure:nth-child(odd) { transform: rotate(-1.5deg); }
+  .prev figure:nth-child(even) { transform: rotate(1.5deg) translateY(16px); }
+  .prev figure:hover { transform: rotate(0) translateY(-8px) scale(1.03); z-index: 2; }
+  .prev figure.is-visible:nth-child(odd) { transform: rotate(-1.5deg); }
+  .prev figure.is-visible:nth-child(even) { transform: rotate(1.5deg) translateY(16px); }
+  .prev figure.is-visible:hover { transform: rotate(0) translateY(-8px) scale(1.03); }
+  .prev img { width: 100%; height: auto; }
+  @media (max-width: 760px) { .prev { grid-template-columns: 1fr 1fr; } }
+  .prev-cta { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 56px; text-align: center; }
+  .prev-cta p { color: var(--muted); }
+  .prev-cta p a { color: var(--text); font-weight: 600; border-bottom: 2px solid var(--accent); }
+</style>

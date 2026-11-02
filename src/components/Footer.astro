@@ -1,39 +1,234 @@
 ---
 import Logo from './Logo.astro';
-import { site, u } from '../data/site.js';
-
-interface Props { home?: boolean; }
-const { home = false } = Astro.props;
+import Icon from './Icon.astro';
+import { site, whatsappUrl } from '../data/site.js';
+import { apps } from '../data/apps.js';
+const year = new Date().getFullYear();
 ---
 
-<footer class="ftr">
-  <div class="container ftr-in">
-    <a href={site.mainSite} target="_blank" rel="noopener" aria-label="Mineo Srl — sito aziendale" class="ftr-mineo"><Logo light height={42} /></a>
-    <a href={u('/')} class="ftr-logo">{site.product}</a>
+<footer class="site-footer">
+  <div class="glow" aria-hidden="true"></div>
+  <div class="container footer-inner">
+    <div class="f-brand">
+      <a href="/" aria-label="CRM Hotellerie, home" class="f-logo"><Logo light height={40} /><span>CRM<b>Hotellerie</b></span></a>
+      <p>
+        CRM Hotellerie è il CRM per hotel costruito su Zoho da {site.legal}, Zoho Authorized Partner
+        da {site.partnerYears} anni: marketing, prenotazioni dirette e reparti su un unico sistema.
+      </p>
+      <div class="zoho-partner">
+        <img
+          class="zoho-badge"
+          src="/img/partner-autorizzato-zoho.webp"
+          alt="Zoho Authorized Partner"
+          width="700"
+          height="195"
+          loading="lazy"
+        />
+      </div>
+    </div>
 
-    <p class="ftr-line">
-      © 2026 <a href={site.mainSite} target="_blank" rel="noopener">{site.legal}</a> · {site.vat} · {site.tagline}
-    </p>
+    <div class="f-col">
+      <h4>App di marketing</h4>
+      <ul>
+        {apps.map((a) => <li><a href={`/${a.slug}`}>{a.name}</a></li>)}
+      </ul>
+    </div>
 
-    <p class="ftr-legal">
-      <a href={u('/privacy-policy')}>Privacy Policy</a>
-      <span aria-hidden="true">·</span>
-      <a href={u('/cookie-policy')}>Cookie Policy</a>
-      <span aria-hidden="true">·</span>
-      <button type="button" class="ftr-btn" data-cookie-settings>Preferenze cookie</button>
+    <div class="f-col">
+      <h4>CRM Hotellerie</h4>
+      <ul>
+        <li><a href="/#ospite">L’ospite al centro</a></li>
+        <li><a href="/#perche-zoho">Perché Zoho</a></li>
+        <li><a href="/#faq">Domande frequenti</a></li>
+        <li><a href="/guida">Guida gratuita</a></li>
+        <li><a href={site.demoUrl} target="_blank" rel="noopener noreferrer">Hotel dimostrativo</a></li>
+        <li><a href={site.mainSite} target="_blank" rel="noopener noreferrer">Mineo &amp; Partners</a></li>
+      </ul>
+      <a
+        href={site.bookings}
+        class="btn btn-primary btn-sm f-cta"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Prenota una consulenza <Icon name="arrow" size={16} />
+      </a>
+    </div>
+
+    <div class="f-col">
+      <h4>Contatti</h4>
+      <ul class="f-contacts">
+        <li>
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+            <Icon name="whatsapp" size={17} /> {site.whatsapp}
+          </a>
+        </li>
+        <li><a href={`mailto:${site.email}`}><Icon name="mail" size={17} /> {site.email}</a></li>
+        <li>
+          <address class="f-address">
+            <Icon name="pin" size={17} />
+            <span>{site.street}<br />{site.zip} {site.city} ({site.province})</span>
+          </address>
+        </li>
+        <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer"><Icon name="link" size={17} /> LinkedIn</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="footer-bottom">
+      <p class="legal-line">
+        © {year} {site.legal} - {site.street.replace(',', '')}, {site.zip} {site.city} ({site.province})
+        - ITALIA - {site.vat} - SDI: {site.sdi} - pec: <a href={`mailto:${site.pec}`}>{site.pec}</a>
+      </p>
+      <nav aria-label="Note legali">
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/cookie-policy">Cookie Policy</a>
+        <button type="button" data-cookie-settings>Preferenze cookie</button>
+      </nav>
+    </div>
+    <p class="disclaimer">
+      Zoho e i relativi marchi sono proprietà di Zoho Corporation. {site.legal} è un partner
+      autorizzato indipendente e non è affiliata societariamente a Zoho Corporation.
     </p>
   </div>
 </footer>
 
 <style>
-  .ftr { background: #000; color: #fff; padding-block: 38px 34px; }
-  .ftr-in { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
-  .ftr-mineo { display: inline-flex; }
-  .ftr-logo { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: .1em; text-transform: uppercase; color: #fff; padding-left: 12px; border-left: 3px solid var(--accent); }
-  .ftr-line { font-size: .92rem; color: var(--muted-dark); }
-  .ftr-line a { color: #fff; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
-  .ftr-line a:hover { color: var(--accent); }
-  .ftr-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 12px; font-size: .8rem; color: rgba(255,255,255,.5); }
-  .ftr-legal a, .ftr-btn { color: rgba(255,255,255,.62); background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
-  .ftr-legal a:hover, .ftr-btn:hover { color: #fff; }
+  .site-footer {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--ink), #000000);
+    color: #fff;
+    padding-top: clamp(56px, 7vw, 84px);
+    padding-bottom: 28px;
+  }
+  .glow {
+    position: absolute;
+    top: -180px; left: 50%;
+    transform: translateX(-50%);
+    width: 900px; height: 400px;
+    background: radial-gradient(closest-side, rgba(241,196,14,.35), transparent);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+  .footer-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.5fr .9fr 1.1fr 1.1fr;
+    gap: 44px 32px;
+    padding-bottom: 48px;
+  }
+  .f-logo { display: inline-flex; align-items: center; gap: 14px; }
+  .f-logo span { padding-left: 14px; border-left: 1px solid var(--line-dark); font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: -.02em; }
+  .f-logo b { color: var(--accent); margin-left: 4px; }
+  .f-brand p {
+    margin-top: 20px;
+    max-width: 340px;
+    color: var(--muted-dark);
+    font-size: .94rem;
+    line-height: 1.65;
+  }
+  .f-col h4 {
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 18px;
+  }
+  .f-col h4 a { color: inherit; transition: color .25s var(--ease); }
+  .f-col h4 a:hover { color: var(--accent); }
+  .f-col ul { display: grid; gap: 11px; }
+  .f-col a, .f-col span {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--muted-dark);
+    font-size: .93rem;
+    transition: color .25s var(--ease), transform .3s var(--ease-out);
+  }
+  .f-col a:hover { color: #fff; transform: translateX(3px); }
+  .f-contacts :global(svg) { color: var(--accent); flex: none; }
+  .f-address {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-style: normal;
+    color: var(--muted-dark);
+    font-size: .93rem;
+    line-height: 1.5;
+  }
+  .f-address :global(svg) { margin-top: 3px; }
+  .f-hours {
+    display: inline-flex !important;
+    align-items: flex-start;
+    gap: 9px;
+    color: var(--muted-dark);
+    font-size: .93rem;
+    line-height: 1.5;
+  }
+  .f-hours :global(svg) { margin-top: 3px; }
+
+  .zoho-partner { margin-top: 26px; }
+  .zoho-badge {
+    display: block;
+    width: 210px;
+    height: auto;
+    border-radius: 8px;
+    opacity: .95;
+    transition: opacity .3s var(--ease);
+  }
+  .zoho-badge:hover { opacity: 1; }
+
+  /* CTA della colonna Azienda: stessa evidenza del pulsante in testata */
+  .f-cta {
+    margin-top: 22px;
+    color: var(--black) !important;
+    font-size: .88rem;
+    padding: 11px 20px;
+  }
+  .f-cta:hover { color: var(--black) !important; transform: translateY(-2px); }
+  .f-cta :global(svg) { color: var(--black); }
+  .legal-line { max-width: 72ch; }
+  .legal-line a { text-decoration: underline; text-underline-offset: 3px; }
+  .legal-line a:hover { color: #fff; }
+
+  .footer-bottom {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding-top: 26px;
+    border-top: 1px solid var(--line-dark);
+    font-size: .86rem;
+    color: var(--muted-dark);
+  }
+  .footer-bottom nav { display: flex; flex-wrap: wrap; gap: 22px; }
+  .footer-bottom a, .footer-bottom button {
+    color: var(--muted-dark);
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-size: .86rem;
+    transition: color .25s var(--ease);
+  }
+  .footer-bottom a:hover, .footer-bottom button:hover { color: #fff; }
+  .disclaimer {
+    position: relative;
+    margin-top: 20px;
+    font-size: .78rem;
+    line-height: 1.6;
+    color: rgba(168,165,162,.55);
+    max-width: 760px;
+  }
+
+  @media (max-width: 900px) {
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .footer-inner { grid-template-columns: 1fr; gap: 34px; }
+  }
 </style>

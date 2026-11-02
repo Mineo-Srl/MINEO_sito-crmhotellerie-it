@@ -1,0 +1,74 @@
+---
+/* Richiesta di informazioni con il form Zoho (contactFormUrl in site.js).
+   Il form riceve l'indirizzo della pagina (referrername), così nel CRM si vede
+   da quale app è partita la richiesta. */
+import Icon from './Icon.astro';
+import { site, contactFormUrl } from '../data/site.js';
+
+interface Props {
+  /** Nome dell'app di cui si chiedono informazioni (pagine app) */
+  topic?: string;
+}
+const { topic } = Astro.props;
+const id = `zf-${topic ? topic.toLowerCase().replace(/\W+/g, '-') : 'home'}`;
+---
+
+<section class="section section-dark rq" id="richiesta">
+  <div class="grid-lines" aria-hidden="true"></div>
+  <div class="container relative rq-grid">
+    <div data-reveal="left">
+      <p class="eyebrow">Richiedi informazioni</p>
+      <h2 class="h2">
+        {topic ? <>Vuoi {topic} <span class="gradient-text">nel tuo hotel?</span></> : <>Raccontaci <span class="gradient-text">il tuo hotel</span></>}
+      </h2>
+      <p class="lead mt-3">
+        Lascia i tuoi dati: ti ricontattiamo noi per capire come lavora oggi la struttura e cosa ti
+        serve davvero. Intanto ricevi subito la guida gratuita.
+      </p>
+      <ul class="check-list mt-4">
+        <li>Nessun impegno e nessun costo per la prima consulenza</li>
+        <li>Ti risponde {site.legal}, Zoho Authorized Partner da {site.partnerYears} anni</li>
+        <li>Puoi vedere l’hotel dimostrativo prima di parlarne</li>
+      </ul>
+      <p class="rq-alt">
+        Preferisci scegliere tu giorno e ora?
+        <a href={site.bookings} target="_blank" rel="noopener noreferrer">Prenota la consulenza <Icon name="arrowUpRight" size={15} /></a>
+      </p>
+    </div>
+    <div class="rq-form" data-reveal="right">
+      <iframe
+        id={id}
+        class="zf-frame"
+        aria-label="Modulo di richiesta informazioni"
+        title={topic ? `Richiedi informazioni su ${topic}` : 'Richiedi informazioni'}
+        src={contactFormUrl}
+        loading="lazy"
+      ></iframe>
+      <p class="rq-privacy">I dati sono trattati da {site.legal} secondo la <a href="/privacy-policy">Privacy Policy</a>.</p>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  /* Snippet di Zoho Forms: passa al modulo la pagina di provenienza */
+  document.querySelectorAll('iframe.zf-frame').forEach(function (f) {
+    try {
+      if (/[?&]referrername=/.test(f.src)) return;
+      var rfr = location.href.split('?')[0].slice(0, 1800);
+      f.src = f.src + (f.src.indexOf('?') > 0 ? '&' : '?') + 'referrername=' + encodeURIComponent(rfr);
+    } catch (e) {}
+  });
+</script>
+
+<style>
+  .rq-grid { display: grid; grid-template-columns: 1fr minmax(0, 480px); gap: clamp(36px, 5vw, 72px); align-items: center; }
+  .rq .check-list li { color: #fff; }
+  .rq-alt { margin-top: 28px; font-size: .95rem; }
+  .rq-alt a { display: inline-flex; align-items: center; gap: 6px; margin-left: 4px; color: #fff; font-weight: 650; border-bottom: 2px solid var(--accent); }
+  .rq-form { padding: 20px; border-radius: var(--radius-lg); background: #fff; box-shadow: 0 40px 80px -30px rgba(0,0,0,.8), 0 0 0 6px rgba(241,196,14,.2); }
+  .rq-form iframe { display: block; width: 100%; height: 680px; border: 0; border-radius: var(--radius); }
+  .rq-privacy { margin-top: 8px; font-size: .78rem; color: var(--muted) !important; }
+  .rq-privacy a { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+  @media (max-width: 960px) { .rq-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .rq-form iframe { height: 760px; } }
+</style>

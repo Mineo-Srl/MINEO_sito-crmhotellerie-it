@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Build della landing + creazione dello ZIP pronto per il deploy.
-# Uso:  npm run package     (oppure ./scripts/package.sh)
+# Build del sito + creazione dello ZIP pronto per il deploy.
+# Uso:  ./scripts/package.sh
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -18,10 +18,10 @@ npm run build
 
 STAMP="$(date +%Y%m%d-%H%M)"
 OUT="$ROOT/deploy"
-ZIP="$OUT/crm-hotellerie-widget-$STAMP.zip"
+ZIP="$OUT/crmhotellerie-sito-$STAMP.zip"
 mkdir -p "$OUT"
 
-# Pulizia dei file di sistema macOS
+# Pulizia di eventuali file di sistema
 find dist -name '.DS_Store' -delete 2>/dev/null || true
 
 echo "▸ Creazione dello ZIP…"
@@ -29,13 +29,10 @@ rm -f "$ZIP"
 # -X esclude gli attributi estesi macOS; i file finiscono nella root dello zip.
 ( cd dist && zip -q -r -X "$ZIP" . -x '.*' -x '__MACOSX/*' )
 
-# Copia "latest", comoda per gli upload ricorrenti
-cp "$ZIP" "$OUT/crm-hotellerie-widget-latest.zip"
+# Copia "latest" sempre allo stesso nome, comoda per gli upload ricorrenti
+cp "$ZIP" "$OUT/crmhotellerie-sito-latest.zip"
 
 echo "✓ Fatto:"
 echo "  $ZIP"
-echo "  $OUT/crm-hotellerie-widget-latest.zip"
+echo "  $OUT/crmhotellerie-sito-latest.zip"
 ls -lh "$ZIP" | awk '{print "  dimensione: " $5}'
-echo
-echo "  Il contenuto dello ZIP va caricato nella ROOT del dominio"
-echo "  (index.html deve trovarsi al primo livello, non in una sottocartella)."

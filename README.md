@@ -1,23 +1,29 @@
-# CRM Hotel — landing page (Mineo)
+# CRM Hotellerie — sito (www.crmhotellerie.it)
 
-Sito statico fatto con [Astro](https://astro.build). Contenuti e testi in `src/data/site.js`, pagine in `src/pages/`.
+Sito statico [Astro](https://astro.build) di CRM Hotellerie, servizio di MINEO S.r.l.
+Stile e componenti presi dal design system di mineoepartners.it (nero / giallo #f1c40e / grigio,
+Manrope + Inter).
 
-## Sviluppo locale
+## Pagine
 
-```bash
-npm install
-npm run dev        # sviluppo, http://localhost:4321
-npm run build      # genera dist/
-npm run serve      # anteprima di dist/ su http://localhost:4330
-```
+| Percorso | Contenuto |
+| --- | --- |
+| `/` | Home: hero, 7 app di marketing, ospite al centro, dashboard, perché Zoho, FAQ |
+| `/pagesense`, `/salesiq`, `/forms`, `/marketing-automation`, `/social`, `/survey`, `/thrive` | Una pagina per app (template `src/pages/[slug].astro`, testi in `src/data/apps.js`) |
+| `/guida` | Landing della guida PDF con form Zoho Forms |
+| `/grazie` | Thank you page con download del PDF (noindex) |
+| `/privacy-policy`, `/cookie-policy` | Note legali; banner cookie in `src/components/CookieBanner.astro` |
 
-## Pubblicazione con GitHub
+Recapiti, link e testi della home: `src/data/site.js`.
 
-Il workflow `.github/workflows/deploy.yml` costruisce il sito e lo pubblica su GitHub Pages a ogni push su `main`.
+## Da fare in Zoho Forms
 
-1. Crea il repository su GitHub e fai il push del ramo `main`.
-2. In **Settings → Pages** imposta **Source: GitHub Actions**.
-3. Dominio: `site` in `astro.config.mjs` è `https://crmhotel.mineoepartners.it`. Per usare questo dominio aggiungi un file `public/CNAME` con il dominio e il record DNS CNAME verso `<organizzazione>.github.io`.
-   Se invece il sito resta sull'indirizzo `https://<organizzazione>.github.io/<repo>/`, imposta in `astro.config.mjs` `site: 'https://<organizzazione>.github.io'` e `base: '/<repo>'` (i link interni usano l'helper `u()` e si adeguano da soli).
+Nel form "Funnel_hotellerie" impostare il reindirizzamento dopo l'invio su
+`https://www.crmhotellerie.it/grazie` (facoltativo: aggiungere `?nome=` con il nome compilato
+per personalizzare il titolo).
 
-Le intestazioni di `public/_headers` valgono solo su Netlify/Cloudflare Pages: GitHub Pages le ignora.
+## Anteprima e deploy
+
+- Doppio clic su **Anteprima sito.command** (apre il sito su http://localhost:4334).
+- `npm run package` → build + zip in `deploy/` (`crmhotellerie-sito-latest.zip`): il contenuto va
+  caricato nella radice del dominio.

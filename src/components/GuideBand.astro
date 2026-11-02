@@ -1,0 +1,51 @@
+---
+/* Richiamo alla guida PDF gratuita: alternativa leggera alla consulenza. */
+import Icon from './Icon.astro';
+import { guide } from '../data/site.js';
+---
+
+<section class="section-sm guide-band">
+  <div class="container">
+    <div class="gb" data-reveal>
+      <div class="gb-cover">
+        <img src="/img/guida/copertina.jpg" alt="Copertina della guida CRM Hotellerie" width="919" height="1300" loading="lazy" decoding="async" />
+      </div>
+      <div class="gb-text">
+        <p class="eyebrow">Guida gratuita · PDF, {guide.pages} pagine</p>
+        <h2 class="h3">{guide.title}</h2>
+        <p>Marketing, prenotazioni, CRM, reparti e numeri: come le app Zoho lavorano insieme in un hotel. Da leggere con calma, prima di parlarne con noi.</p>
+      </div>
+      <a href="/guida" class="btn btn-primary">Scarica la guida <Icon name="arrow" size={18} /></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gb {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    align-items: center;
+    gap: 28px 40px;
+    padding: 28px 40px;
+    border-radius: var(--radius-xl);
+    background: var(--accent-50);
+    border: 1px solid var(--accent-200);
+    overflow: hidden;
+  }
+  .gb-cover { perspective: 700px; }
+  .gb-cover img {
+    width: 120px;
+    border-radius: 6px;
+    transform: rotateY(-16deg) rotate(-3deg);
+    box-shadow: 18px 22px 40px -16px rgba(0,0,0,.45);
+    transition: transform .6s var(--ease-out);
+  }
+  .gb:hover .gb-cover img { transform: rotateY(0) rotate(0) translateY(-4px) scale(1.04); }
+  .gb-text .eyebrow { margin-bottom: 8px; }
+  .gb-text p:last-child { margin-top: 8px; color: var(--muted); font-size: .97rem; max-width: 60ch; }
+  @media (max-width: 860px) {
+    .gb { grid-template-columns: 90px 1fr; padding: 24px; }
+    .gb-cover img { width: 90px; }
+    .gb .btn { grid-column: 1 / -1; justify-self: start; }
+  }
+</style>

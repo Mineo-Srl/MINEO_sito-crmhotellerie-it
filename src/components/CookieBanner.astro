@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { site, u } from '../data/site.js';
+import { site } from '../data/site.js';
 ---
 
 <div id="cookieRoot">
@@ -9,13 +9,13 @@ import { site, u } from '../data/site.js';
        aria-labelledby="cookieTitle" aria-describedby="cookieDesc" hidden>
     <div class="cb-icon" aria-hidden="true"><Icon name="cookie" size={26} /></div>
     <div class="cb-body">
-      <h2 id="cookieTitle">Rispettiamo la tua privacy</h2>
+      <h2 id="cookieTitle">Rispettiamo la tua privacy</h2>
       <p id="cookieDesc">
         Utilizziamo cookie tecnici necessari al funzionamento del sito e, previo tuo consenso,
         cookie di analisi e di marketing per migliorare l’esperienza di navigazione e misurare
         le performance. Puoi accettare, rifiutare o scegliere quali categorie attivare.
-        Maggiori informazioni nella <a href={u('/cookie-policy')}>Cookie Policy</a> e nella
-        <a href={u('/privacy-policy')}>Privacy Policy</a>.
+        Maggiori informazioni nella <a href="/cookie-policy">Cookie Policy</a> e nella
+        <a href="/privacy-policy">Privacy Policy</a>.
       </p>
       <div class="cb-actions">
         <button type="button" class="btn btn-primary btn-sm" data-cc="accept-all">Accetta tutti</button>
@@ -24,7 +24,7 @@ import { site, u } from '../data/site.js';
       </div>
     </div>
     <button type="button" class="cb-close" data-cc="reject-all" aria-label="Chiudi e rifiuta i cookie non necessari">
-      <Icon name="close" size={18} stroke={2.2} />
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
   </div>
 
@@ -35,7 +35,7 @@ import { site, u } from '../data/site.js';
       <div class="cm-head">
         <h2 id="cmTitle">Preferenze cookie</h2>
         <button type="button" class="cb-close" data-cc="close-prefs" aria-label="Chiudi preferenze">
-          <Icon name="close" size={18} stroke={2.2} />
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
 
@@ -82,8 +82,8 @@ import { site, u } from '../data/site.js';
         </div>
 
         <p class="cm-note">
-          Titolare del trattamento: <strong>{site.legal}</strong> — {site.privacyEmail}.
-          Dettagli su finalità, durata e terze parti nella <a href={u('/cookie-policy')}>Cookie Policy</a>.
+          Titolare del trattamento: <strong>{site.legal}</strong>, {site.privacyEmail}.
+          Dettagli su finalità, durata e terze parti nella <a href="/cookie-policy">Cookie Policy</a>.
         </p>
       </div>
 
@@ -137,6 +137,7 @@ import { site, u } from '../data/site.js';
     gap: 10px;
     margin-top: 18px;
   }
+  .btn-sm { padding: 11px 20px; font-size: .87rem; }
   .cb-link {
     background: none;
     border: 0;
@@ -300,7 +301,7 @@ import { site, u } from '../data/site.js';
 
 <script is:inline>
   (function () {
-    var KEY = 'mineo_crmhotel_consent_v1';
+    var KEY = 'crmh_cookie_consent_v1';
     var banner = document.getElementById('cookieBanner');
     var modal = document.getElementById('cookieModal');
     var cbAnalytics = document.getElementById('ccAnalytics');
@@ -321,7 +322,8 @@ import { site, u } from '../data/site.js';
       consent.version = 1;
       try { localStorage.setItem(KEY, JSON.stringify(consent)); } catch (e) {}
       document.cookie =
-        'mineo_consent=' + encodeURIComponent((consent.analytics ? 'a' : '-') + (consent.marketing ? 'm' : '-')) +
+        'crmh_consent=' + encodeURIComponent(consent.analytics ? 'a' : '-') +
+        (consent.marketing ? 'm' : '-') +
         '; path=/; max-age=15552000; SameSite=Lax';
     }
 
@@ -345,9 +347,10 @@ import { site, u } from '../data/site.js';
         window.gtag('js', new Date());
         window.gtag('config', window.__MP_GA_ID__, { anonymize_ip: true });
       }
-      document.dispatchEvent(new CustomEvent('mineo:consent', { detail: c }));
+      document.dispatchEvent(new CustomEvent('mp:consent', { detail: c }));
     }
 
+    function showBanner() { if (banner) banner.hidden = false; }
     function hideBanner() { if (banner) banner.hidden = true; }
 
     var lastFocus = null;
@@ -395,6 +398,6 @@ import { site, u } from '../data/site.js';
 
     var saved = read();
     if (saved) applyConsent(saved);
-    else setTimeout(function () { if (banner) banner.hidden = false; }, 700);
+    else setTimeout(showBanner, 700);
   })();
 </script>
