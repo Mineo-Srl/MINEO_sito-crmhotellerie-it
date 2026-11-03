@@ -1,0 +1,73 @@
+---
+/* Strada B: per chi vuole sostituire anche il gestionale. Tenuta fuori dalla home
+   per non confondere il messaggio principale (canale diretto e fidelizzazione). */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import CTASection from '../components/CTASection.astro';
+import { site, pmsModules } from '../data/site.js';
+---
+
+<Base
+  title="Gestionale alberghiero su Zoho: la strada B"
+  description="Oltre a CRM e marketing, CRM Hotellerie può sostituire il gestionale: planning, housekeeping, channel manager Channex, Alloggiati Web, ISTAT e fatturazione elettronica su Zoho."
+  keywords={['gestionale hotel', 'PMS hotel Zoho', 'channel manager hotel', 'Alloggiati Web automatico']}
+  breadcrumbs={[{ name: 'Gestionale' }]}
+>
+  <section class="gs section-dark">
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="container relative">
+      <nav class="crumbs rise" aria-label="Percorso"><a href="/">Home</a><span>/</span><b>Gestionale</b></nav>
+      <p class="eyebrow rise" style="--d:60ms">Strada B</p>
+      <h1 class="h1 rise" style="--d:140ms">Anche il gestionale, <span class="gradient-text">sullo stesso sistema</span></h1>
+      <p class="lead rise" style="--d:240ms">
+        La maggior parte degli hotel parte da CRM e marketing e tiene il gestionale che ha (strada A).
+        Se invece vuoi un solo sistema per tutto, CRM Hotellerie copre anche il lavoro di ogni giorno
+        di reception, piani e amministrazione.
+      </p>
+      <div class="roads rise" style="--d:320ms">
+        <div class="road"><b>Strada A</b><span>CRM e marketing accanto al tuo gestionale</span></div>
+        <div class="road on"><b>Strada B</b><span>Tutto su Zoho, gestionale compreso</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-3" data-stagger="100">
+        {pmsModules.map((m) => (
+          <article class="card" data-reveal>
+            <span class="icon-chip"><Icon name={m.icon} /></span>
+            <h3 class="h4">{m.title}</h3>
+            <p>{m.text}</p>
+          </article>
+        ))}
+      </div>
+      <p class="gs-note" data-reveal>
+        Non devi decidere subito: si può partire dalla strada A e passare alla B quando sei pronto,
+        senza perdere dati.
+      </p>
+    </div>
+  </section>
+
+  <CTASection
+    eyebrow="Provalo"
+    title="Guarda planning e reparti nella demo"
+    text="Hotel Soleluna usa anche il gestionale su Zoho: sbloccalo e prova il planning camere."
+    primary={{ href: '/demo', label: 'Sblocca la demo gratuita' }}
+    secondary={{ href: site.bookings, label: 'Prenota una consulenza' }}
+  />
+</Base>
+
+<style>
+  .gs { padding-block: clamp(56px, 7vw, 96px); }
+  .gs .lead { margin-top: 20px; max-width: 62ch; }
+  .crumbs { display: flex; gap: 8px; margin-bottom: 22px; font-size: .84rem; color: var(--muted-dark); }
+  .crumbs b { color: #fff; font-weight: 600; }
+  .roads { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .road { display: grid; gap: 2px; padding: 14px 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,.18); }
+  .road b { color: #fff; font-family: var(--font-display); }
+  .road span { color: var(--muted-dark); font-size: .9rem; }
+  .road.on { background: var(--accent); border-color: var(--accent); }
+  .road.on b, .road.on span { color: #000; }
+  .gs-note { margin-top: 36px; padding: 18px 22px; border-radius: var(--radius); background: var(--accent-50); border: 1px solid var(--accent-200); }
+</style>

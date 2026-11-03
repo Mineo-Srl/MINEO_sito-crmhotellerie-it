@@ -1,20 +1,35 @@
-import type { APIRoute } from 'astro';
 import { site } from '../data/site.js';
 
-/** Solo le pagine indicizzabili: privacy e cookie policy sono in noindex. */
-const pages = [{ path: '/', priority: '1.0', changefreq: 'monthly' }];
+import { apps } from '../data/apps.js';
 
-export const GET: APIRoute = ({ site: astroSite }) => {
-  const origin = (astroSite?.origin ?? site.url).replace(/\/$/, '');
-  const lastmod = new Date().toISOString().split('T')[0];
+const pages: Array<[string, string]> = [
+  ['/', '1.0'],
+  ['/perche', '0.9'],
+  ['/come-funziona', '0.9'],
+  ['/app', '0.9'],
+  ['/casi', '0.8'],
+  ['/prezzi', '0.9'],
+  ['/chi-siamo', '0.7'],
+  ['/demo', '0.9'],
+  ['/calcolatore', '0.8'],
+  ['/faq', '0.7'],
+  ['/contatti', '0.6'],
+  ...apps.map((a) => [`/${a.slug}`, '0.9'] as [string, string]),
+  ['/guida', '0.7'],
+  ['/gestionale', '0.7'],
+  ['/privacy-policy', '0.2'],
+  ['/cookie-policy', '0.2'],
+];
 
+export function GET() {
+  const today = new Date().toISOString().slice(0, 10);
   const urls = pages
     .map(
-      (p) => `  <url>
-    <loc>${origin}${p.path === '/' ? '/' : p.path}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>${p.changefreq}</changefreq>
-    <priority>${p.priority}</priority>
+      ([path, priority]) => `  <url>
+    <loc>${site.url}${path === '/' ? '/' : path}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>${priority}</priority>
   </url>`
     )
     .join('\n');
@@ -22,10 +37,7 @@ export const GET: APIRoute = ({ site: astroSite }) => {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls}
-</urlset>
-`;
+</urlset>`;
 
-  return new Response(xml, {
-    headers: { 'Content-Type': 'application/xml; charset=utf-8' },
-  });
-};
+  return new Response(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
+}

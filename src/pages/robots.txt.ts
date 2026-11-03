@@ -1,16 +1,10 @@
-import type { APIRoute } from 'astro';
 import { site } from '../data/site.js';
 
-export const GET: APIRoute = ({ site: astroSite }) => {
-  const origin = (astroSite?.origin ?? site.url).replace(/\/$/, '');
-
+export function GET() {
   const body = `User-agent: *
 Allow: /
 
-Sitemap: ${origin}/sitemap.xml
+Sitemap: ${site.url}/sitemap.xml
 `;
-
-  return new Response(body, {
-    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-  });
-};
+  return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+}

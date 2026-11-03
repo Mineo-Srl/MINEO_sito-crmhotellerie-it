@@ -1,0 +1,131 @@
+---
+/* PageSense e SalesIQ caricati nel rispetto del consenso.
+   - Consenso ai cookie di analisi → PageSense e chat SalesIQ si caricano subito.
+   - Nessun consenso → niente PageSense; il pulsante "Scrivici in chat" carica SalesIQ
+     solo quando il visitatore lo chiede.
+   Deve stare prima di CookieBanner: ascolta l'evento mp:consent che il banner emette. */
+import { site } from '../data/site.js';
+---
+
+<button type="button" class="chat-fab" id="chatFab" aria-label="Apri la chat con Mineo">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.2 7.5L3 21l1.9-5.4A8.4 8.4 0 1 1 21 11.5Z"/></svg>
+  <span>Scrivici in chat</span>
+</button>
+
+<script is:inline define:vars={{ ps: site.pagesense, siq: site.salesiq }}>
+  (function () {
+    var psLoaded = false, siqLoaded = false;
+    var fab = document.getElementById('chatFab');
+
+    function add(src, id) {
+      var s = document.createElement('script');
+      s.src = src; s.async = true; s.defer = true;
+      if (id) s.id = id;
+      document.head.appendChild(s);
+    }
+
+    function loadSalesIQ(openNow) {
+      if (!siq) return;
+      if (!siqLoaded) {
+        siqLoaded = true;
+        window.$zoho = window.$zoho || {};
+        window.$zoho.salesiq = window.$zoho.salesiq || {};
+        window.$zoho.salesiq.ready = function () {
+          if (fab) fab.hidden = true;
+          if (openNow) { try { window.$zoho.salesiq.floatwindow.visible('show'); } catch (e) {} }
+        };
+        add(siq, 'zsiqscript');
+      } else if (openNow) {
+        try { window.$zoho.salesiq.floatwindow.visible('show'); } catch (e) {}
+      }
+    }
+
+    document.addEventListener('mp:consent', function (e) {
+      var c = e.detail || {};
+      if (c.analytics) {
+        if (!psLoaded && ps) { psLoaded = true; add(ps); }
+        loadSalesIQ(false);
+      } else if (fab && !siqLoaded) {
+        fab.hidden = false;
+      }
+    });
+
+    if (fab) fab.addEventListener('click', function () {
+      fab.classList.add('loading');
+      loadSalesIQ(true);
+      track('cta_chat');
+    });
+
+    // Eventi di conversione verso PageSense (e GA4 se attivo): clic sulle CTA principali.
+    function track(name, data) {
+      try { (window.pagesense = window.pagesense || []).push(['trackEvent', name]); } catch (e) {}
+      if (typeof window.gtag === 'function') window.gtag('event', name, data || {});
+    }
+    window.crmhTrack = track;
+
+    // Azioni personalizzate per i trigger di SalesIQ (da creare in SalesIQ →
+    // Trigger → "Azione personalizzata"): 60 secondi su Prezzi o FAQ, calcolatore usato.
+    function salesiqAction(action) {
+      try {
+        if (window.$zoho && $zoho.salesiq && $zoho.salesiq.visitor && $zoho.salesiq.visitor.customaction) {
+          $zoho.salesiq.visitor.customaction(JSON.stringify({ eventCategory: 'crmhotellerie', eventAction: action }));
+        }
+      } catch (e) {}
+    }
+    window.crmhSalesiq = salesiqAction;
+
+    // Tempo di lettura delle sezioni chiave: dopo 60 s di permanenza → evento
+    (function () {
+      if (!('IntersectionObserver' in window)) return;
+      ['prezzi', 'faq', 'calcolatore'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var visible = false, spent = 0, fired = false, t0 = 0;
+        new IntersectionObserver(function (entries) {
+          var on = entries[0].isIntersecting;
+          if (on && !visible) t0 = Date.now();
+          if (!on && visible) spent += Date.now() - t0;
+          visible = on;
+        }, { threshold: 0.35 }).observe(el);
+        var timer = setInterval(function () {
+          var total = spent + (visible ? Date.now() - t0 : 0);
+          if (!fired && total >= 60000) {
+            fired = true;
+            clearInterval(timer);
+            track('lettura_60s_' + id);
+            salesiqAction('lettura_60s_' + id);
+          }
+        }, 2000);
+      });
+    })();
+  })();
+</script>
+
+<style>
+  .chat-fab {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 90;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 20px 13px 16px;
+    border: 0;
+    border-radius: 100px;
+    background: var(--black);
+    color: #fff;
+    font-weight: 650;
+    font-size: .92rem;
+    cursor: pointer;
+    box-shadow: 0 14px 34px -10px rgba(0,0,0,.55), 0 0 0 3px rgba(241,196,14,.6);
+    animation: fab-in .6s var(--ease-out) .8s both;
+    transition: transform .3s var(--ease-out);
+  }
+  .chat-fab[hidden] { display: none; }
+  .chat-fab svg { color: var(--accent); }
+  .chat-fab:hover { transform: translateY(-3px); }
+  .chat-fab.loading { opacity: .7; pointer-events: none; }
+  @keyframes fab-in { from { opacity: 0; transform: translateY(20px) scale(.9); } }
+  @media (max-width: 560px) { .chat-fab span { display: none; } .chat-fab { padding: 15px; } }
+</style>

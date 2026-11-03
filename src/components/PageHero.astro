@@ -1,0 +1,176 @@
+---
+import Icon from './Icon.astro';
+import HeroVisual from './HeroVisual.astro';
+import { tighten } from '../utils/typo.js';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  highlight?: string;
+  lead?: string;
+  ctaPrimary?: { href: string; label: string };
+  ctaSecondary?: { href: string; label: string };
+  /** Illustrazione animata a destra: sales | operations | finance | ai */
+  visual?: string;
+  /** Fotografia di sfondo a tutta larghezza (percorso in /public) */
+  photo?: string;
+  /** Testo alternativo della fotografia */
+  photoAlt?: string;
+}
+const { eyebrow, title, highlight, lead, ctaPrimary, ctaSecondary, visual, photo, photoAlt = '' } = Astro.props;
+
+// I link verso servizi esterni (es. l'agenda Zoho Bookings) si aprono in una nuova scheda.
+const ext = (href = '') => /^https?:/.test(href);
+---
+
+<section class="page-hero section-dark">
+  <div class="grid-lines" aria-hidden="true"></div>
+  <div class="blob b1 drifting" aria-hidden="true"></div>
+  <div class="blob b2 drifting" aria-hidden="true"></div>
+  <div class:list={['container', 'relative', { 'has-visual': visual || photo }]}>
+    <div class="hero-body">
+      {eyebrow && <p class="eyebrow rise" style="--d:60ms">{eyebrow}</p>}
+      <h1 class="h1 rise" style="--d:140ms">
+        {tighten(title)}{highlight && <span class="gradient-text hl-line">{tighten(highlight)}</span>}
+      </h1>
+      {lead && <p class="lead rise" style="--d:240ms">{lead}</p>}
+      {(ctaPrimary || ctaSecondary) && (
+        <div class="btn-row rise" style="--d:340ms">
+          {ctaPrimary && (
+            <a
+              href={ctaPrimary.href}
+              class="btn btn-primary btn-lg"
+              target={ext(ctaPrimary.href) ? '_blank' : undefined}
+              rel={ext(ctaPrimary.href) ? 'noopener noreferrer' : undefined}
+            >
+              {ctaPrimary.label} <Icon name={ext(ctaPrimary.href) ? 'arrowUpRight' : 'arrow'} size={18} />
+            </a>
+          )}
+          {ctaSecondary && (
+            <a
+              href={ctaSecondary.href}
+              class="btn btn-ghost btn-lg"
+              target={ext(ctaSecondary.href) ? '_blank' : undefined}
+              rel={ext(ctaSecondary.href) ? 'noopener noreferrer' : undefined}
+            >{ctaSecondary.label}</a>
+          )}
+        </div>
+      )}
+    </div>
+
+    {visual && (
+      <div class="hero-art rise" style="--d:420ms">
+        <HeroVisual variant={visual} />
+      </div>
+    )}
+
+    {photo && (
+      <div class="hero-art hero-art-photo rise" style="--d:420ms">
+        <span class="photo-glow" aria-hidden="true"></span>
+        {/* Se il file manca, l'immagine si nasconde invece di mostrare
+            l'icona di immagine rotta. */}
+        <img
+          class="hero-photo"
+          src={photo}
+          alt={photoAlt}
+          fetchpriority="high"
+          decoding="async"
+          onerror="this.style.display='none'"
+        />
+      </div>
+    )}
+  </div>
+  <div class="hero-fade" aria-hidden="true"></div>
+</section>
+
+<style>
+  .hl-line { display: block; width: fit-content; }
+
+  .page-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(84px, 11vw, 148px) clamp(76px, 10vw, 130px);
+  }
+  .hero-body { max-width: 880px; }
+
+  /* ---- Fotografia nella colonna di destra ----
+     I bordi sono sfumati con una maschera, così l'immagine si fonde con il
+     fondo scuro invece di stagliarsi come un rettangolo netto. */
+  .hero-art-photo { position: relative; }
+  .photo-glow {
+    position: absolute;
+    inset: -12% -8%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(241,196,14,.18), transparent 72%);
+    filter: blur(30px);
+    pointer-events: none;
+  }
+  .hero-photo {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    object-position: 58% center;
+    border-radius: var(--radius-lg);
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 0%, #000 20%, #000 93%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to right, transparent 0%, #000 20%, #000 93%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+    mask-composite: intersect;
+  }
+
+  /* Con illustrazione il testo lascia spazio alla colonna di destra */
+  .has-visual {
+    display: grid;
+    grid-template-columns: 1.24fr .76fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .has-visual .hero-body { max-width: none; }
+  /* Colonna più stretta: il titolo scende un po' di corpo per non spezzarsi
+     in troppe righe corte. */
+  .has-visual .h1 { font-size: clamp(1.95rem, 3.3vw, 2.75rem); }
+  .has-visual .lead { max-width: 560px; }
+  @media (max-width: 1040px) {
+    .has-visual { grid-template-columns: 1fr; gap: 48px; }
+    .hero-art { order: 2; }
+  }
+  @media (max-width: 620px) {
+    /* Le illustrazioni sono decorative e su schermo stretto si tolgono;
+       la fotografia invece è contenuto e resta. */
+    .hero-art:not(.hero-art-photo) { display: none; }
+  }
+  @media (max-width: 1040px) {
+    /* Impilata, la sfumatura a sinistra non serve più: si sfumano solo
+       alto e basso. */
+    .hero-photo {
+      aspect-ratio: 16 / 9;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    }
+  }
+  .page-hero .lead { margin-top: 22px; max-width: 720px; font-size: clamp(1.05rem, 1.55vw, 1.2rem); }
+  .page-hero .btn-row { margin-top: 36px; }
+  .b1 {
+    width: 520px; height: 520px;
+    background: rgba(241,196,14,.55);
+    top: -180px; left: -120px;
+  }
+  .b2 {
+    width: 420px; height: 420px;
+    background: rgba(241,196,14,.42);
+    bottom: -200px; right: -80px;
+    animation-delay: -8s;
+  }
+  .hero-fade {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 120px;
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,.05));
+    pointer-events: none;
+  }
+</style>

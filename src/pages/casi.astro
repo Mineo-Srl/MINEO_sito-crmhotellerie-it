@@ -1,0 +1,74 @@
+---
+/* Capitolo 4 · Le prove. I casi in site.js sono SEGNAPOSTO finché non arrivano
+   quelli reali (bollino rosso visibile). */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHead from '../components/PageHead.astro';
+import Cases from '../components/sections/Cases.astro';
+import NextPage from '../components/NextPage.astro';
+import { casi } from '../data/pages.js';
+import { site } from '../data/site.js';
+---
+
+<Base
+  title="Casi: hotel che hanno recuperato il canale diretto"
+  description="Come lavorano gli hotel con CRM Hotellerie: quota di prenotazioni dirette, ospiti di ritorno, commissioni evitate e tempo risparmiato."
+  keywords={['casi CRM hotel', 'aumentare prenotazioni dirette', 'fidelizzazione ospiti risultati']}
+  breadcrumbs={[{ name: 'Casi' }]}
+>
+  <PageHead
+    eyebrow="Le prove"
+    crumb="Casi"
+    title="Hotel come il tuo, "
+    highlight="numeri veri"
+    lead="Strutture diverse, stesso obiettivo: far tornare gli ospiti sul proprio sito. Qui raccontiamo cosa hanno fatto e cosa è cambiato."
+    photo="/img/photos/rooftop-mare.webp"
+  />
+
+  <Cases head={false} />
+
+  <!-- Cosa misuriamo -->
+  <section class="section section-paper">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Come misuriamo</p>
+        <h2 class="h2">Quattro numeri, <span class="gradient-text">sempre gli stessi</span></h2>
+        <p class="lead">Li fissiamo all’inizio del progetto e li guardiamo insieme ogni mese. Così il risultato non è un’opinione.</p>
+      </div>
+      <div class="grid grid-4" data-stagger="100">
+        {casi.measure.map((m) => (
+          <article class="card" data-reveal>
+            <span class="icon-chip"><Icon name={m.icon} /></span>
+            <h3 class="h4">{m.title}</h3>
+            <p>{m.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Il tuo caso -->
+  <section class="section-sm">
+    <div class="container">
+      <div class="your" data-reveal="scale">
+        <div>
+          <p class="eyebrow">Il prossimo caso</p>
+          <h2 class="h3">Potrebbe essere il tuo hotel</h2>
+          <p>Calcola quanto paghi oggi ai portali, poi guarda la demo: è il punto di partenza di ogni progetto.</p>
+        </div>
+        <div class="your-btns">
+          <a href="/calcolatore" class="btn btn-dark">Fai il calcolo <Icon name="calc" size={17} /></a>
+          <a href={site.bookings} class="link-arrow" target="_blank" rel="noopener noreferrer">Oppure parliamone <Icon name="arrowUpRight" size={15} /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <NextPage current="/casi" />
+</Base>
+
+<style>
+  .your { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; padding: clamp(28px, 4vw, 44px); border-radius: var(--radius-xl); background: var(--accent-50); border: 1px solid var(--accent-200); }
+  .your p:not(.eyebrow) { margin-top: 8px; color: var(--muted); max-width: 56ch; }
+  .your-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+</style>

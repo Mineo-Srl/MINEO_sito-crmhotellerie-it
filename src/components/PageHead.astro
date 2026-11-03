@@ -1,0 +1,57 @@
+---
+/* Testata delle pagine interne: briciole, titolo con evidenziatore, sottotitolo,
+   azioni e, se c'è, una foto a destra. */
+import Icon from './Icon.astro';
+import { tighten } from '../utils/typo.js';
+import { site } from '../data/site.js';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  highlight?: string;
+  lead?: string;
+  photo?: string;
+  crumb?: string;
+  /** false per nascondere le azioni (es. pagina demo) */
+  actions?: boolean;
+}
+const { eyebrow, title, highlight, lead, photo, crumb, actions = true } = Astro.props;
+---
+
+<section class="ph section-dark">
+  {photo && <div class="ph-photo" aria-hidden="true"><img src={photo} alt="" /></div>}
+  <div class="grid-lines" aria-hidden="true"></div>
+  <div class="blob ph-blob drifting" aria-hidden="true"></div>
+  <div class="container relative">
+    <nav class="crumbs rise" aria-label="Percorso">
+      <a href="/">Home</a><span>/</span><b>{crumb ?? eyebrow}</b>
+    </nav>
+    <p class="eyebrow rise" style="--d:60ms">{eyebrow}</p>
+    <h1 class="h1 rise" style="--d:140ms">
+      {tighten(title)}{highlight && <span class="gradient-text">{tighten(highlight)}</span>}
+    </h1>
+    {lead && <p class="lead rise" style="--d:220ms">{lead}</p>}
+    {actions && (
+      <div class="btn-row rise" style="--d:300ms">
+        <a href="/demo" class="btn btn-primary btn-lg"><Icon name="key" size={18} /> Sblocca la demo gratuita</a>
+        <a href={site.bookings} class="btn btn-ghost btn-lg" target="_blank" rel="noopener noreferrer">Prenota una consulenza</a>
+      </div>
+    )}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .ph { padding-block: clamp(48px, 6vw, 88px) clamp(56px, 7vw, 96px); }
+  .ph-photo { position: absolute; inset: 0; }
+  .ph-photo img { width: 100%; height: 100%; object-fit: cover; opacity: .28; animation: kenburns 24s ease-in-out infinite alternate; }
+  .ph-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #000 25%, rgba(0,0,0,.55)); }
+  @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.1); } }
+  .ph-blob { width: 480px; height: 480px; right: -140px; top: -160px; background: rgba(241,196,14,.28); }
+  .crumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; font-size: .84rem; color: var(--muted-dark); }
+  .crumbs a:hover { color: #fff; }
+  .crumbs b { color: #fff; font-weight: 600; }
+  .ph h1 { max-width: 20ch; }
+  .ph .lead { margin-top: 20px; max-width: 62ch; color: #d6d3cf; }
+  .ph .btn-row { margin-top: 32px; }
+</style>

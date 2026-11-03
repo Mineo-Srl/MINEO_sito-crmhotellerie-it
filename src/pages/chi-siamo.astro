@@ -1,0 +1,107 @@
+---
+/* Capitolo 6 · Chi ti segue: Mineo (contenuti dal sito mineoepartners.it). */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHead from '../components/PageHead.astro';
+import NextPage from '../components/NextPage.astro';
+import { chiSiamo } from '../data/pages.js';
+import { site, whatsappUrl } from '../data/site.js';
+---
+
+<Base
+  title="Chi siamo: MINEO S.r.l., Zoho Authorized Partner"
+  description={`CRM Hotellerie è un servizio di ${site.legal}, Zoho Authorized Partner da ${site.partnerYears} anni con sede a Lainate (Milano): analisi, configurazione, formazione e supporto.`}
+  keywords={['Mineo Srl', 'partner Zoho hotel', 'partner Zoho Milano', 'consulenza Zoho hotel']}
+  breadcrumbs={[{ name: 'Chi siamo' }]}
+  schema={[{ '@type': 'AboutPage', name: 'Chi siamo, CRM Hotellerie' }]}
+>
+  <PageHead
+    eyebrow="Chi ti segue"
+    crumb="Chi siamo"
+    title="Non installiamo software. "
+    highlight="Costruiamo il sistema del tuo hotel."
+    lead={`CRM Hotellerie è un servizio di ${site.legal}, Zoho Authorized Partner da ${site.partnerYears} anni. Da Lainate (Milano) aiutiamo aziende e hotel a trasformare processi complessi in procedure semplici e automatiche.`}
+  />
+
+  <!-- Manifesto -->
+  <section class="section">
+    <div class="container mani" data-reveal>
+      <p class="eyebrow">Il nostro punto di partenza</p>
+      <p class="mani-q">Un hotel non ha bisogno di più strumenti. Ha bisogno di <span class="gradient-text">conoscere meglio i suoi ospiti</span>, e di un sistema che lo faccia senza aggiungere lavoro.</p>
+    </div>
+  </section>
+
+  <!-- Principi -->
+  <section class="section section-paper">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Come lavoriamo</p>
+        <h2 class="h2">Quattro principi <span class="gradient-text">in ogni progetto</span></h2>
+      </div>
+      <div class="grid grid-2" data-stagger="110">
+        {chiSiamo.values.map((v) => (
+          <article class="card" data-reveal data-tilt>
+            <span class="icon-chip"><Icon name={v.icon} /></span>
+            <h3 class="h4">{v.title}</h3>
+            <p>{v.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Metodo -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow">Il metodo</p>
+        <h2 class="h2">Dalla prima analisi <span class="gradient-text">al miglioramento continuo</span></h2>
+      </div>
+      <ol class="method" data-stagger="140">
+        {chiSiamo.method.map((m) => (
+          <li data-reveal>
+            <span class="me-n">{m.n}</span>
+            <h3 class="h4">{m.title}</h3>
+            <p>{m.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Partner e sede -->
+  <section class="section-sm">
+    <div class="container">
+      <div class="id" data-reveal="scale">
+        <img src="/img/partner-autorizzato-zoho.webp" alt="Zoho Authorized Partner" width="700" height="195" loading="lazy" />
+        <div class="id-txt">
+          <b>{site.legal}</b>
+          <span>{site.street}, {site.zip} {site.city} ({site.province}) · {site.vat}</span>
+        </div>
+        <div class="id-links">
+          <a href={whatsappUrl} class="btn btn-ghost" target="_blank" rel="noopener noreferrer"><Icon name="whatsapp" size={17} /> WhatsApp</a>
+          <a href={site.mainSite} class="btn btn-ghost" target="_blank" rel="noopener noreferrer">mineoepartners.it <Icon name="arrowUpRight" size={15} /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <NextPage current="/chi-siamo" />
+</Base>
+
+<style>
+  .mani { max-width: 900px; }
+  .mani-q { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem, 3.2vw, 2.4rem); line-height: 1.25; letter-spacing: -.02em; }
+  .method { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+  .method li { padding: 26px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: #fff; transition: border-color .3s var(--ease), transform .4s var(--ease-out); }
+  .method li:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .me-n { display: block; margin-bottom: 14px; font-family: var(--font-display); font-weight: 800; font-size: 2.2rem; line-height: 1; background: linear-gradient(transparent 55%, rgba(241,196,14,.6) 55%); width: max-content; }
+  .method p { margin-top: 8px; color: var(--muted); font-size: .95rem; }
+  @media (max-width: 900px) { .method { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .method { grid-template-columns: 1fr; } }
+  .id { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 32px; padding: 28px; border-radius: var(--radius-xl); background: var(--paper); }
+  .id img { width: 200px; height: auto; border-radius: 8px; }
+  .id-txt { flex: 1; min-width: 220px; display: grid; gap: 4px; }
+  .id-txt span { color: var(--muted); font-size: .92rem; }
+  .id-links { display: flex; flex-wrap: wrap; gap: 10px; }
+</style>

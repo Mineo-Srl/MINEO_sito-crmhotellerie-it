@@ -1,0 +1,64 @@
+---
+/* Fondo delle pagine del percorso: indica il capitolo successivo della storia,
+   così chi legge prosegue invece di tornare al menu. */
+import Icon from './Icon.astro';
+import { journey } from '../data/pages.js';
+
+interface Props { current: string }
+const { current } = Astro.props;
+const i = journey.findIndex((j) => j.href === current);
+const next = i >= 0 && i < journey.length - 1 ? journey[i + 1] : null;
+---
+
+<section class="section-sm np-sec">
+  <div class="container">
+    <ol class="np-steps" aria-label="Il percorso del sito">
+      {journey.map((j, k) => (
+        <li class:list={{ done: k < i, now: k === i }}>
+          <a href={j.href}><span>{k + 1}</span>{j.label}</a>
+        </li>
+      ))}
+    </ol>
+    {next ? (
+      <a href={next.href} class="np" data-reveal>
+        <span class="np-lbl">Capitolo successivo · {next.title}</span>
+        <span class="np-title">{next.label}</span>
+        <span class="np-desc">{next.desc}</span>
+        <span class="np-go"><Icon name="arrow" size={26} stroke={2.2} /></span>
+      </a>
+    ) : (
+      <a href="/demo" class="np" data-reveal>
+        <span class="np-lbl">Ultimo passo</span>
+        <span class="np-title">Sblocca la demo</span>
+        <span class="np-desc">Hai visto tutto: ora prova Hotel Soleluna come se fosse il tuo.</span>
+        <span class="np-go"><Icon name="key" size={26} stroke={2.2} /></span>
+      </a>
+    )}
+  </div>
+</section>
+
+<style>
+  .np-sec { border-top: 1px solid var(--line); }
+  .np-steps { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+  .np-steps a { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 100px; font-size: .84rem; font-weight: 600; color: var(--muted); border: 1px solid var(--line); transition: border-color .25s var(--ease), color .25s var(--ease); }
+  .np-steps a:hover { border-color: var(--accent); color: var(--text); }
+  .np-steps span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--paper); font-size: .74rem; }
+  .np-steps .done span { background: var(--accent-200); }
+  .np-steps .now a { background: var(--black); border-color: var(--black); color: #fff; }
+  .np-steps .now span { background: var(--accent); color: #000; }
+  .np {
+    position: relative; display: grid; gap: 4px;
+    padding: clamp(24px, 4vw, 40px); padding-right: 110px;
+    border-radius: var(--radius-xl);
+    background: var(--accent);
+    overflow: hidden;
+    transition: transform .4s var(--ease-out), box-shadow .4s var(--ease-out);
+  }
+  .np:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .np-lbl { font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .np-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing: -.03em; line-height: 1.1; }
+  .np-desc { color: rgba(0,0,0,.7); }
+  .np-go { position: absolute; right: clamp(20px, 4vw, 40px); top: 50%; display: grid; place-items: center; width: 64px; height: 64px; margin-top: -32px; border-radius: 50%; background: #000; color: var(--accent); transition: transform .4s var(--ease-out); }
+  .np:hover .np-go { transform: translateX(6px); }
+  @media (max-width: 560px) { .np { padding-right: 24px; padding-bottom: 96px; } .np-go { top: auto; bottom: 20px; margin-top: 0; } }
+</style>

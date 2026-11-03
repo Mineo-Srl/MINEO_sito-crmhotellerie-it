@@ -1,55 +1,33 @@
 ---
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
-import { site, u } from '../data/site.js';
+import { apps } from '../data/apps.js';
 ---
 
-<Base
-  title={`Pagina non trovata | ${site.product}`}
-  description="La pagina che stai cercando non esiste o è stata spostata."
-  path="/404"
-  noindex={true}
->
+<Base title="Pagina non trovata" description="La pagina che stai cercando non esiste o è stata spostata. Torna alla home di CRM Hotellerie." noindex>
   <section class="nf section-dark">
     <div class="grid-lines" aria-hidden="true"></div>
-    <div class="container relative nf-in">
-      <span class="nf-ic"><Icon name="deskbell" size={34} /></span>
-      <p class="eyebrow">Errore 404</p>
-      <h1 class="h1">Questa camera non esiste</h1>
-      <p class="lead">
-        La pagina che cercavi è stata spostata o non è mai esistita. Torna alla home per scoprire come il CRM Hotellerie riunisce prenotazioni dirette, reparti e adempimenti in un unico sistema Zoho.
-      </p>
-      <div class="btn-row center mt-4">
-        <a href={u('/')} class="btn btn-primary btn-lg">
-          Torna alla home
-          <Icon name="arrow" size={19} />
-        </a>
+    <div class="container relative">
+      <span class="nf-code rise">404</span>
+      <h1 class="h1 mt-3 rise" style="--d:100ms">Questa camera <span class="gradient-text">non è a planning</span></h1>
+      <p class="lead mt-3 rise" style="--d:200ms">La pagina che cerchi non esiste, è stata spostata o l’indirizzo contiene un errore.</p>
+      <div class="btn-row mt-4 rise" style="--d:300ms">
+        <a href="/" class="btn btn-primary btn-lg">Torna alla home <Icon name="arrow" size={18} /></a>
+        <a href="/guida" class="btn btn-ghost btn-lg">Scarica la guida</a>
+      </div>
+      <div class="nf-links rise" style="--d:400ms">
+        {apps.map((a) => <a href={`/${a.slug}`}><Icon name={a.icon} size={17} /> {a.name}</a>)}
       </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .nf {
-    display: grid;
-    place-items: center;
-    min-height: 74vh;
-    padding-block: calc(var(--header-h) + 60px) 90px;
-    text-align: center;
-    overflow: hidden;
-  }
-  .nf-in { max-width: 640px; }
-  .nf-ic {
-    display: inline-grid;
-    place-items: center;
-    width: 76px; height: 76px;
-    margin-bottom: 26px;
-    border-radius: 22px;
-    background: rgba(241,196,14,.12);
-    border: 1px solid rgba(241,196,14,.3);
-    color: var(--accent);
-    animation: float-y 6s ease-in-out infinite;
-  }
-  .nf .eyebrow { display: flex; justify-content: center; }
-  .nf .lead { margin-top: 18px; }
+  .nf { min-height: 70vh; display: flex; align-items: center; padding-block: 80px; }
+  .nf-code { display: block; font-family: var(--font-display); font-weight: 800; font-size: clamp(5rem, 16vw, 10rem); line-height: .9; letter-spacing: -.05em; color: var(--accent); }
+  .nf .lead { max-width: 52ch; }
+  .nf-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 44px; }
+  .nf-links a { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,.18); color: #fff; font-size: .9rem; transition: border-color .25s var(--ease), background .25s var(--ease); }
+  .nf-links a:hover { border-color: var(--accent); background: rgba(241,196,14,.1); }
+  .nf-links :global(svg) { color: var(--accent); }
 </style>

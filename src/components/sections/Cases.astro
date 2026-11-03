@@ -1,0 +1,69 @@
+---
+/* Le prove: casi (SEGNAPOSTO in site.js finché non arrivano quelli reali)
+   e numeri di credibilità, separando quelli di Mineo da quelli di Zoho. */
+import Icon from '../Icon.astro';
+import { cases, trust } from '../../data/site.js';
+
+interface Props { more?: boolean; head?: boolean }
+const { more = false, head = true } = Astro.props;
+---
+
+<section class="section" id="casi">
+  <div class="container">
+    {head && (
+      <div class="head-row">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Le prove</p>
+          <h2 class="h2">Hotel come il tuo, <span class="gradient-text">numeri veri</span></h2>
+        </div>
+        {more && <a href="/casi" class="link-arrow" data-reveal>Tutti i casi <Icon name="arrow" size={16} /></a>}
+      </div>
+    )}
+    <div class="grid grid-3" data-stagger="120">
+      {cases.map((c) => (
+        <figure class="case" data-reveal data-tilt>
+          {c.placeholder && <span class="ph-flag">Esempio da sostituire con un caso reale</span>}
+          <p class="case-hotel">{c.hotel} · <span>{c.size}</span></p>
+          <p class="case-metric">{c.metric}</p>
+          <p class="case-lbl">{c.metricLabel}</p>
+          <blockquote>“{c.quote}”</blockquote>
+          <figcaption><span class="case-av" aria-hidden="true"></span>{c.person}</figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <div class="trust" data-stagger="80">
+      {trust.map((t) => (
+        <div class="tr" data-reveal>
+          <b><span data-count={t.value}>{t.value}</span>{t.suffix}</b>
+          <small>{t.label}</small>
+          <em class:list={{ z: t.who === 'Zoho' }}>{t.who === 'Zoho' ? 'Dato Zoho' : 'Mineo'}</em>
+        </div>
+      ))}
+      <div class="tr tr-badge" data-reveal>
+        <img src="/img/partner-autorizzato-zoho.webp" alt="Zoho Authorized Partner" width="700" height="195" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .case { position: relative; margin: 0; padding: 28px; border-radius: var(--radius-lg); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
+  .ph-flag { position: absolute; top: -12px; left: 20px; padding: 4px 10px; border-radius: 100px; background: #ff5a3c; color: #fff; font-size: .7rem; font-weight: 700; }
+  .case-hotel { font-weight: 700; font-size: .92rem; }
+  .case-hotel span { color: var(--muted); font-weight: 500; }
+  .case-metric { margin-top: 14px; font-family: var(--font-display); font-weight: 800; font-size: 2.4rem; line-height: 1; letter-spacing: -.03em; background: linear-gradient(transparent 60%, rgba(241,196,14,.6) 60%); width: max-content; }
+  .case-lbl { margin-top: 8px; color: var(--muted); font-size: .92rem; }
+  .case blockquote { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line); font-size: 1rem; font-style: italic; }
+  .case figcaption { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: .85rem; font-weight: 600; }
+  .case-av { width: 34px; height: 34px; border-radius: 50%; background: var(--grey-100); }
+  .trust { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-top: 44px; }
+  .tr { position: relative; padding: 20px; border-radius: var(--radius); background: var(--paper); }
+  .tr b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 1.9rem; line-height: 1; }
+  .tr small { display: block; margin-top: 8px; color: var(--muted); font-size: .84rem; line-height: 1.4; }
+  .tr em { position: absolute; top: 12px; right: 12px; font-style: normal; font-size: .64rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; background: var(--accent); }
+  .tr em.z { background: #fff; color: var(--muted); border: 1px solid var(--line); }
+  .tr-badge { display: grid; place-items: center; background: #fff; border: 1px solid var(--line); }
+  .tr-badge img { width: 100%; max-width: 180px; height: auto; }
+  @media (max-width: 1000px) { .trust { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

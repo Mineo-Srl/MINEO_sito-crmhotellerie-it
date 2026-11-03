@@ -1,667 +1,205 @@
 ---
+/* Home: la sintesi del sito, nell'ordine in cui si convince una persona.
+   1 Promessa · 2 Per chi · 3 Problema · 4 Quanto ti costa · 5 Soluzione ·
+   6 Come funziona · 7 Prove · 8 Prezzi · 9 Chi siamo · 10 Azione (demo) ·
+   11 Dubbi · 12 Chiusura. Ogni capitolo rimanda alla sua pagina completa. */
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
-import Waves from '../components/Waves.astro';
-import LeadForm from '../components/LeadForm.astro';
-import ZohoLeadForm from '../components/ZohoLeadForm.astro';
-import ZohoLeadFormFull from '../components/ZohoLeadFormFull.astro';
-import CtaBand from '../components/CtaBand.astro';
-import WidgetShowcase from '../components/WidgetShowcase.astro';
-import Faq from '../components/Faq.astro';
-import {
-  site, u, seo, photo, heroPhases, benefits, marketing, tailor, zohoStats, insights,
-  modules, pmsPoints, steps, consultPoints, faq, demoUnlock,
-  guestRecord, guestCard, guestUses, zohoRoles, payItems, zohoApps,
-} from '../data/site.js';
-
-const heroImg = photo('struttura-hero');
+import CTASection from '../components/CTASection.astro';
+import RequestForm from '../components/RequestForm.astro';
+import Calculator from '../components/Calculator.astro';
+import FaqList from '../components/FaqList.astro';
+import Pains from '../components/sections/Pains.astro';
+import GuestIdea from '../components/sections/GuestIdea.astro';
+import Phases from '../components/sections/Phases.astro';
+import Cases from '../components/sections/Cases.astro';
+import Pricing from '../components/sections/Pricing.astro';
+import { site, propertyTypes, faq } from '../data/site.js';
+import { chiSiamo } from '../data/pages.js';
 
 const schema = [
   {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: site.product,
-    applicationCategory: 'BusinessApplication',
-    applicationSubCategory: 'CRM e marketing per hotel',
-    operatingSystem: 'Web',
-    url: site.url,
-    description: seo.description,
-    inLanguage: 'it-IT',
-    audience: { '@type': 'BusinessAudience', audienceType: 'Proprietari e direttori di hotel e strutture ricettive' },
-    featureList: [
-      'Scheda ospite e segmentazione', 'Marketing automation', 'Chat sul sito e analisi del funnel',
-      'Booking engine collegato al sito', 'Channel manager Channex', 'Planning camere anti-overbooking',
-      'Housekeeping e manutenzione', 'Alloggiati Web e ISTAT', 'Fatturazione elettronica SdI', 'Dashboard RevPAR e ADR',
-    ],
-    provider: { '@id': `${site.url}/#org` },
-    offers: { '@type': 'Offer', description: 'Consulenza gratuita sui numeri reali della struttura', price: '0', priceCurrency: 'EUR', availability: 'https://schema.org/InStock' },
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    '@id': `${site.url}/#org`,
-    name: site.legal,
-    url: site.mainSite,
-    email: site.email,
-    vatID: site.vatNumber,
-    sameAs: [site.linkedin],
-    address: { '@type': 'PostalAddress', streetAddress: site.addressStreet, postalCode: site.addressZip, addressLocality: site.addressCity, addressRegion: site.addressRegion, addressCountry: 'IT' },
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: site.brand,
-    url: site.url,
-    inLanguage: 'it-IT',
-  },
-  {
-    '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
   },
 ];
 ---
 
-<Base title={seo.title} description={seo.description} path="/" home={true} schema={schema}>
-  <!-- ============================================ STEP 1 · HERO: SI CAPISCE IN 3 SECONDI + STEP 2 · LEAD -->
-  <section class="hero" aria-labelledby="h1">
-    <Waves />
-    <div class="container hero-in">
-      <div class="hero-copy">
-        <p class="badge rise" style="--d:40ms"><span class="dot"></span> Marketing + CRM per hotel · su Zoho</p>
-        <h1 class="display rise" id="h1" style="--d:120ms">
-          <span class="mark">Tutto Zoho</span>, cucito sul tuo hotel
+<Base
+  title="CRM Hotellerie | Più conosci l’ospite, meno paghi per riaverlo"
+  description="Porta gli ospiti dai portali al tuo sito e falli tornare. Sblocca gratis la demo di Hotel Soleluna e scopri CRM Hotellerie, costruito su Zoho da MINEO S.r.l."
+  keywords={['CRM hotel', 'prenotazioni dirette hotel', 'fidelizzazione ospiti', 'commissioni OTA', 'marketing hotel', 'Zoho hotel']}
+  schema={schema}
+>
+  <!-- 1 · LA PROMESSA -->
+  <section class="hero section-dark">
+    <div class="hero-photo" aria-hidden="true">
+      <img src="/img/photos/davanti-mare.webp" alt="" fetchpriority="high" />
+    </div>
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="container relative hero-grid">
+      <div>
+        <p class="badge rise"><span class="dot"></span> Per hotel che vogliono più ospiti diretti</p>
+        <h1 class="display rise" style="--d:100ms">
+          Più conosci l’ospite, <span class="gradient-text">meno paghi per riaverlo</span>
         </h1>
         <p class="lead rise" style="--d:200ms">
-          Zoho è una piattaforma con oltre 45 applicazioni. Noi, partner ufficiali Zoho, le abbiamo
-          adattate al tuo hotel. CRM Hotellerie è lo <b>strumento completo per gestire in modo efficiente
-          il tuo hotel</b>: integra booking engine, channel manager, CRM, preventivi e marketing automation. Dalla prenotazione al ritorno dell’ospite,
-          in <b>un unico sistema</b>.
+          CRM Hotellerie porta gli ospiti dai portali al tuo sito e li fa tornare, anno dopo anno,
+          senza commissioni. È costruito su Zoho e configurato sul tuo hotel da {site.legal},
+          Zoho Authorized Partner da {site.partnerYears} anni.
         </p>
-
-        <div class="htailor rise" style="--d:260ms" aria-label="Come lo cuciamo sul tuo hotel">
-          {tailor.map((t) => (
-            <article class="ht-card">
-              <span class="ht-ic"><Icon name={t.icon} size={20} /></span>
-              <div><h3>{t.title}</h3><p>{t.text}</p></div>
-            </article>
-          ))}
+        <div class="btn-row rise" style="--d:300ms">
+          <a href="/demo" class="btn btn-primary btn-lg"><Icon name="key" size={18} /> Sblocca la demo gratuita</a>
+          <a href="#calcolatore" class="btn btn-ghost btn-lg">Quanto paghi ai portali?</a>
         </div>
-
-        <p class="punch rise" style="--d:380ms"><b>Tieni traccia di tutto.</b> Più conosci l’ospite, meno paghi per riaverlo.</p>
-
-        <div class="hero-trust rise" style="--d:440ms">
-          <img src={u('/img/zoho-authorized-partner.png')} alt="Zoho Authorized Partner" width="900" height="251" />
-          <span>Zoho CRM e marketing, personalizzati per l’hotel.<br />Zoho Authorized Partner da {site.partnerYears} anni.</span>
-        </div>
+        <p class="hero-note rise" style="--d:380ms">
+          Si apre subito, senza chiamate.
+          <a href={site.bookings} target="_blank" rel="noopener noreferrer">Preferisci parlarne? Prenota una consulenza</a>
+        </p>
       </div>
 
-      <div class="lead-card rise" id="hero-lead" style="--d:240ms">
-        <span class="lead-tag">Demo gratuita</span>
-        <h2>Scopri come seguire ogni ospite dall’inizio alla fine</h2>
-        <p class="lead-sub">Sblocca la demo gratuita: chat, eventi e storico in funzione sull’hotel dimostrativo, poi ti richiamiamo per la consulenza.</p>
-        <ol class="lead-steps" aria-label="Come funziona">
-          <li><b>1</b> Dati</li>
-          <li><b>2</b> Demo</li>
-          <li><b>3</b> Consulenza</li>
-        </ol>
-        <ZohoLeadForm />
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================ L'OSPITE AL CENTRO: LA SCHEDA OSPITE (CRM) -->
-  <section class="section section-paper" id="ospite">
-    <div class="container">
-      <div class="split">
-        <div data-reveal="left">
-          <p class="eyebrow">L’ospite al centro</p>
-          <h2 class="h2">Una scheda per ogni ospite, <strong>che il gestionale non ti dà</strong></h2>
-          <p class="lead mt-2">Il gestionale registra soggiorni e conti. CRM Hotellerie ricorda chi è l’ospite: da dove arriva, cosa spende, cosa gli piace e cosa ha accettato di ricevere. Da qui partono le campagne che lo riportano sul tuo sito.</p>
-          <ul class="check-list mt-3">{guestRecord.map((g) => <li><b>{g.title}</b>: {g.text}</li>)}</ul>
-        </div>
-        <div class="gcard" data-reveal="right" aria-label="Esempio di scheda ospite con dati dimostrativi">
-          <div class="gcard-head">
-            <span class="gcard-av" aria-hidden="true">{guestCard.initials}</span>
-            <div><b>{guestCard.name}</b><span>{guestCard.sub}</span></div>
-            <span class="gcard-seg">{guestCard.segment}</span>
+      <!-- Il momento: l'ospite torna, e prenota da te -->
+      <div class="moment rise" style="--d:260ms" aria-hidden="true">
+        <div class="guest">
+          <div class="g-head">
+            <span class="g-av">GR</span>
+            <div><b>Giulia R.</b><small>4° soggiorno · ospite abituale</small></div>
           </div>
-          <dl class="gcard-grid">
-            {guestCard.rows.map((r) => <div><dt>{r.k}</dt><dd>{r.v}</dd></div>)}
-          </dl>
-          <div class="gcard-next"><Icon name="bolt" size={16} /><span><b>Prossima azione</b>{guestCard.next}</span></div>
-          <p class="gcard-note">Esempio con dati dimostrativi</p>
+          <div class="g-tags"><span>Vista mare</span><span>Spa</span><span>Anniversario a giugno</span></div>
+        </div>
+        <div class="notes">
+          <div class="note n1"><Icon name="mail" size={15} stroke={2} /><span><b>“Il vostro anniversario si avvicina”</b><small>email aperta · 2 clic</small></span></div>
+          <div class="note n2"><Icon name="key" size={15} stroke={2} /><span><b>Prenotazione diretta</b><small>3 notti · Deluxe vista mare</small></span></div>
+          <div class="note n3 hl"><Icon name="wallet" size={15} stroke={2} /><span><b>€ 97 di commissione risparmiata</b><small>questa volta non è passata dal portale</small></span></div>
+        </div>
+        <p class="moment-cap">Esempio dimostrativo</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · PER CHI -->
+  <section class="types" aria-label="Per chi è">
+    <div class="marquee">
+      <div class="marquee-track">
+        {[...propertyTypes, ...propertyTypes].map((t) => <span class="type"><Icon name="building" size={16} /> {t}</span>)}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 3 · IL PROBLEMA -->
+  <Pains more />
+
+  <!-- 4 · QUANTO TI COSTA -->
+  <div class="section-paper"><Calculator /></div>
+
+  <!-- 5 · LA SOLUZIONE -->
+  <GuestIdea more />
+
+  <!-- 6 · COME FUNZIONA -->
+  <Phases more />
+
+  <!-- 7 · LE PROVE -->
+  <Cases more />
+
+  <!-- 8 · I PREZZI -->
+  <div class="section-paper"><Pricing more /></div>
+
+  <!-- 9 · CHI SIAMO -->
+  <section class="section-sm">
+    <div class="container">
+      <div class="who" data-reveal>
+        <div class="who-txt">
+          <p class="eyebrow">Chi ti segue</p>
+          <h2 class="h3">{site.legal}, Zoho Authorized Partner da {site.partnerYears} anni</h2>
+          <p>Da Lainate (Milano) configuriamo Zoho per aziende e hotel. Prima ascoltiamo come lavori, poi costruiamo il sistema intorno a te, e restiamo al tuo fianco dopo.</p>
+          <ul class="who-vals">{chiSiamo.values.map((v) => <li><Icon name={v.icon} size={16} /> {v.title}</li>)}</ul>
+        </div>
+        <div class="who-side">
+          <img src="/img/partner-autorizzato-zoho.webp" alt="Zoho Authorized Partner" width="700" height="195" loading="lazy" />
+          <a href="/chi-siamo" class="link-arrow">Conosci Mineo <Icon name="arrow" size={16} /></a>
         </div>
       </div>
-
-      <div class="grid grid-3 uses" data-stagger="90">
-        {guestUses.map((g) => (
-          <article class="card" data-reveal>
-            <span class="icon-chip"><Icon name={g.icon} /></span>
-            <h3 class="h4">{g.title}</h3>
-            <p>{g.text}</p>
-          </article>
-        ))}
-      </div>
-
-      <CtaBand id="cta-ospite" dark={false} title="Quanti dei tuoi ospiti sono tornati l’anno scorso?" text="Nella consulenza lo misuriamo sui tuoi dati e vediamo quanti potresti riportare sul canale diretto." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
     </div>
   </section>
 
-  <!-- ============================================ MARKETING ALBERGHIERO -->
-  <section class="section section-dark" id="marketing">
-    <Waves flip class="waves-soft" />
-    <div class="container relative">
-      <div class="section-head" data-reveal>
-        <p class="eyebrow">Marketing alberghiero</p>
-        <h2 class="h2">Dal widget alla fidelizzazione: <strong>recupera la domanda che il tuo sito oggi perde</strong></h2>
-        <p class="lead">Un gestionale sa dire quanto hai venduto. Il nostro stack sa dire anche quanto ti è stato chiesto e non hai potuto vendere: sessioni, ricerche senza esito e abbandoni, dati che un booking engine chiuso non restituisce mai.</p>
-      </div>
-      <div class="grid grid-4" data-stagger="70">
-        {marketing.map((m) => (
-          <article class="card card-dark" data-reveal>
-            <span class="icon-chip"><Icon name={m.icon} /></span>
-            <h3 class="h4">{m.tool}</h3>
-            <p>{m.text}</p>
-          </article>
-        ))}
-        <article class="card cta-card" data-reveal>
-          <h3 class="h4">Vuoi vedere dove perdi prenotazioni?</h3>
-          <a href={site.bookingUrl} target="_blank" rel="noopener" class="btn btn-white btn-sm" data-cta="marketing-card">Prenota una consulenza gratuita <Icon name="arrow" size={16} /></a>
-        </article>
-      </div>
-    </div>
-  </section>
+  <!-- 10 · L'AZIONE -->
+  <RequestForm />
 
-  <!-- ============================================ DASHBOARD -->
-  <section class="section" id="dashboard">
-    <div class="container">
-      <div class="split">
-        <div data-reveal="left">
-          <p class="eyebrow">Dashboard</p>
-          <h2 class="h2">I numeri che un gestionale da solo <strong>non mostra</strong></h2>
-          <p class="lead mt-2">Occupazione e fatturato li sa dire chiunque. Qui si legge anche la domanda che la struttura ha respinto: scoprire di aver respinto quattrocento richieste in agosto fa capire in un secondo quanti soldi restano sul tavolo.</p>
-          <ul class="check-list mt-3">{insights.map((i) => <li><b>{i.title}</b> — {i.text}</li>)}</ul>
-        </div>
-        <div class="cfg" data-reveal="right">
-          <div class="cfg-glow" aria-hidden="true"></div>
-          <figure class="cfg-main">
-            <div class="cfg-chrome" aria-hidden="true"><i></i><i></i><i></i><span>Configurazione Hotel · Tariffe</span></div>
-            <img src={u('/img/widget/config-tariffe.jpg')} alt="Configurazione Hotel: periodi di stagione, regole per giorno della settimana e calendario tariffe" width="1800" height="880" loading="lazy" decoding="async" />
-          </figure>
-          <figure class="cfg-side">
-            <div class="cfg-chrome" aria-hidden="true"><i></i><i></i><i></i><span>Configurazione · Hotel</span></div>
-            <img src={u('/img/widget/config-menu.jpg')} alt="Menu di configurazione con le aree Hotel - Prenotazioni e Hotel - Interventi" width="1800" height="880" loading="lazy" decoding="async" />
-          </figure>
-          <span class="cfg-badge cfg-b1"><Icon name="sun" size={15} /> Stagioni e tariffe</span>
-          <span class="cfg-badge cfg-b2"><Icon name="cog" size={15} /> Tutto configurabile</span>
-          <p class="cfg-note">Schermate reali del CRM Hotellerie · dati dimostrativi</p>
-        </div>
-      </div>
-      <CtaBand id="cta-dashboard" dark={false} title="Scopri quanto margine resta sul tavolo" text="Nella consulenza leggiamo insieme i numeri della tua struttura." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
-    </div>
-  </section>
-
-  <!-- ============================================ PERCHÉ CRM HOTEL (compatto) -->
-  <section class="section section-paper" id="perche-crm">
-    <div class="container">
-      <div class="section-head center" data-reveal>
-        <p class="eyebrow">Perché CRM Hotellerie</p>
-        <h2 class="h2">Tre risultati, <strong>un solo sistema</strong></h2>
-        <p class="lead">Vendi di più sul canale diretto, coordini i reparti su un unico calendario e lasci che gli adempimenti partano da soli.</p>
-      </div>
-
-      <div class="why3" data-stagger="110">
-        {benefits.map((b) => (
-          <article class="why-card" id={b.id} data-reveal>
-            <div class="photo why-photo"><img src={photo(b.img)} alt={b.alt} width="1400" height="1050" loading="lazy" decoding="async" style={b.pos ? `--pos:${b.pos}` : undefined} /></div>
-            <div class="why-body">
-              <p class={`kick kick-${b.color}`}><i class={`pdot pdot-${b.color}`}></i>{b.kicker}</p>
-              <h3 class="h3">{b.title}</h3>
-              <p class="why-text">{b.text}</p>
-              <ul class="check-list">{b.bullets.map((x) => <li>{x}</li>)}</ul>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      <CtaBand id="cta-why" title="Scopri quanto vale riprenderti i tuoi dati" text="Prenota la consulenza: vedi come il dato dell’ospite resta tuo, dal primo clic al ritorno." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
-    </div>
-  </section>
-
-  <!-- ============================================ IL WIDGET DAL VIVO: SCHERMATE REALI -->
-  <section class="section" id="widget">
-    <div class="container">
-      <div class="section-head center" data-reveal>
-        <p class="eyebrow">Il widget dal vivo</p>
-        <h2 class="h2">Guarda cosa succede dentro: <strong>dalla prima visita al check-out</strong></h2>
-        <p class="lead">Schermate reali del CRM Hotellerie e delle app Zoho di marketing: ogni passaggio dell’ospite, dalla visita al sito al check-out, è registrato e consultabile da tutti i reparti.</p>
-      </div>
-      <div data-reveal="none"><WidgetShowcase /></div>
-      <CtaBand id="cta-widget" dark={false} title="Vuoi vederlo con i dati del tuo hotel?" text="Nella consulenza ti mostriamo il widget in funzione sulla tua struttura." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
-    </div>
-  </section>
-
-  <!-- ============================================ CHI FA COSA: LA COLLABORAZIONE CON ZOHO -->
-  <section class="section section-paper" id="perche-zoho">
-    <div class="container">
-      <div class="section-head center" data-reveal>
-        <p class="eyebrow">Perché Zoho</p>
-        <h2 class="h2">Non un software preconfezionato: <strong>un sistema cucito su misura</strong> sul tuo hotel</h2>
-        <p class="lead">Zoho è una piattaforma, non una scatola chiusa. La modelliamo su come lavora la tua struttura — widget, pipeline, reparti, automazioni, dashboard — e la facciamo crescere con te, senza cambiare sistema.</p>
-      </div>
-
-      <div class="grid grid-3" data-stagger="100">
-        {zohoRoles.map((r) => (
-          <article class="card role-card" data-reveal>
-            <span class="role-who">{r.who}</span>
-            <span class="icon-chip"><Icon name={r.icon} /></span>
-            <h3 class="h4">{r.title}</h3>
-            <p>{r.text}</p>
-            <ul class="check-list role-list">{r.items.map((x) => <li>{x}</li>)}</ul>
-          </article>
-        ))}
-      </div>
-
-      <ul class="zstats" data-stagger="90">
-        {zohoStats.map((s) => <li data-reveal="scale"><b>{s.value}</b><span>{s.label}</span></li>)}
-      </ul>
-
-      <div class="apps" data-reveal>
-        <p class="apps-t">Le app Zoho su cui lavoriamo ogni giorno</p>
-        <ul>{zohoApps.map((a) => <li>{a}</li>)}</ul>
-      </div>
-
-      <div class="pay" data-reveal>
-        <p class="pay-t"><Icon name="wallet" size={18} /> Cosa paghi</p>
-        <ul>{payItems.map((x) => <li><b>{x.title}</b>{x.text}</li>)}</ul>
-        <p class="pay-note">Le cifre le vediamo in consulenza, sui numeri reali della tua struttura.</p>
-      </div>
-
-      <CtaBand id="cta-zoho" dark={false} title="Raccontaci come lavora il tuo hotel" text="Lo cuciamo su di te, a partire dal gestionale che usi oggi." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
-    </div>
-  </section>
-
-  <!-- ============================================ LA DEMO: LEAD MAGNET -->
-  <section class="section demo-site" id="demo-hotel">
-    <div class="demo-site-bg" aria-hidden="true"><img src={photo('prenota-ora')} alt="" width="1800" height="1125" loading="lazy" decoding="async" /></div>
-    <div class="container relative demo-site-in">
-      <div data-reveal>
-        <p class="eyebrow">La demo</p>
-        <h2 class="h2">Visita l’hotel dimostrativo con il <strong>widget di prenotazione attivo</strong></h2>
-        <p class="lead mt-2">Hotel Soleluna è la nostra struttura di prova: sito, widget e CRM collegati. L’accesso si sblocca lasciando i tuoi dati, e subito dopo ti richiamiamo per la consulenza.</p>
-        <div class="btn-row mt-4">
-          <a href={site.bookingUrl} target="_blank" rel="noopener" class="btn btn-primary btn-lg" data-cta="demo-unlock">Prenota una consulenza gratuita <Icon name="arrow" size={19} /></a>
-        </div>
-        <p class="lockline"><Icon name="lock" size={16} /> Accesso riservato: lo ricevi subito dopo l’invio dei dati.</p>
-      </div>
-      <div class="unlock" data-stagger="90">
-        {demoUnlock.map((d) => (
-          <article class="card card-dark" data-reveal>
-            <span class="icon-chip"><Icon name={d.icon} /></span>
-            <h3 class="h4">{d.title}</h3>
-            <p>{d.text}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================ DA DOVE PARTI TU -->
-  <section class="section" id="percorsi">
-    <div class="container">
-      <div class="section-head center" data-reveal>
-        <p class="eyebrow">Da dove parti tu</p>
-        <h2 class="h2">Due strade, <strong>un solo obiettivo</strong></h2>
-        <p class="lead">Tutti i dati dell’ospite in un posto solo, qualunque sia il punto di partenza.</p>
-      </div>
-      <div class="paths" data-stagger="120">
-        <article class="path path-a" data-reveal="left">
-          <span class="path-tag">Strada A</span>
-          <h3 class="h3">Affiancare il PMS che hai già</h3>
-          <p>Non devi scegliere: il CRM aggiunge ciò che manca (marketing, fidelizzazione, reparti) e il tuo gestionale resta al suo posto.</p>
-          <ul class="check-list mt-3 on-dark">{pmsPoints.map((p) => <li><b>{p.title}</b> — {p.text}</li>)}</ul>
-        </article>
-        <article class="path path-b" data-reveal="right">
-          <span class="path-tag path-tag-alt">Strada B</span>
-          <h3 class="h3">Ripartire da zero</h3>
-          <p>Per chi apre una nuova struttura o vuole lasciare fogli Excel e messaggi WhatsApp: un solo fornitore, un solo numero da chiamare, un solo conto da pagare.</p>
-          <ul class="check-list mt-3">{modules.map((m) => <li><b>{m.title}</b> — {m.text}</li>)}</ul>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================ COME SI PARTE -->
-  <section class="section section-paper" id="come-si-parte">
-    <div class="container">
-      <div class="section-head center" data-reveal>
-        <p class="eyebrow">Come si parte</p>
-        <h2 class="h2">Tre passi, <strong>nessun impegno</strong></h2>
-      </div>
-      <ol class="steps" data-stagger="110">
-        {steps.map((s) => (
-          <li class="step" data-reveal><span class="step-n">{s.n}</span><div><h3 class="h4">{s.title}</h3><p>{s.text}</p></div></li>
-        ))}
-      </ol>
-      <p class="text-center mt-4"><a href={site.bookingUrl} target="_blank" rel="noopener" class="btn btn-primary btn-lg" data-cta="steps">Prenota una consulenza gratuita <Icon name="arrow" size={19} /></a></p>
-    </div>
-  </section>
-
-  <!-- ============================================ FORM FINALE (stesso lead magnet) -->
-  <section class="section demo" id="demo">
-    <Waves class="waves-soft" />
-    <div class="container relative">
-      <div class="demo-grid">
-        <div class="demo-copy" data-reveal="left">
-          <p class="eyebrow">Demo gratuita</p>
-          <h2 class="h2">Più conosci l’ospite, <strong>meno paghi per riaverlo</strong></h2>
-          <p class="lead mt-2">Lasci i dati, ricevi subito l’accesso all’hotel dimostrativo e ti richiamiamo per un confronto sui numeri reali del tuo hotel. Il gestionale che usi oggi resta al suo posto.</p>
-          <ul class="demo-points mt-4" data-stagger="90">
-            {consultPoints.map((d) => (
-              <li data-reveal>
-                <span class="demo-ic"><Icon name={d.icon} size={20} /></span>
-                <span><b>{d.title}</b><em>{d.text}</em></span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div class="demo-form" id="form" data-reveal="right"><ZohoLeadFormFull /></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================ FAQ -->
+  <!-- 11 · I DUBBI -->
   <section class="section section-paper" id="faq">
     <div class="container container-narrow">
       <div class="section-head center" data-reveal>
         <p class="eyebrow">Domande frequenti</p>
-        <h2 class="h2">Le domande che ci fanno <strong>i proprietari di hotel</strong></h2>
+        <h2 class="h2">Prima di <span class="gradient-text">iniziare</span></h2>
       </div>
-      <Faq />
-      <CtaBand id="cta-faq" title="Hai ancora un dubbio?" text="Prenota la consulenza o scrivici: rispondiamo noi, in italiano." label="Prenota una consulenza gratuita" href={site.bookingUrl} />
+      <FaqList items={faq} />
+      <p class="faq-more" data-reveal><a href="/faq" class="link-arrow">Tutte le domande <Icon name="arrow" size={16} /></a></p>
     </div>
   </section>
 
+  <!-- 12 · CHIUSURA -->
+  <CTASection
+    eyebrow="L’ultima cosa"
+    title="Il prossimo ospite che torna, fallo prenotare da te"
+    text="Apri Hotel Soleluna e guarda con i tuoi occhi come un ospite diventa un ospite di ritorno."
+    primary={{ href: '/demo', label: 'Sblocca la demo gratuita' }}
+  />
 </Base>
 
 <style>
   /* ---------- Hero ---------- */
-  .hero { position: relative; overflow: hidden; padding-block: calc(var(--header-h) + clamp(40px, 6vw, 80px)) clamp(60px, 8vw, 100px); background: #fff; }
-  .hero-in { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(28px, 4.5vw, 60px); align-items: center; }
-  @media (max-width: 1000px) { .hero-in { grid-template-columns: minmax(0, 1fr); } }
-  .hero-copy .badge { margin-bottom: 22px; }
-  .hero-copy .lead { margin-top: 20px; max-width: 54ch; }
-  .pillars { display: flex; flex-wrap: wrap; gap: 12px 30px; margin-top: 26px; }
-  .pillars li { display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; letter-spacing: .02em; }
-  .pdot { display: inline-block; width: 26px; height: 26px; border-radius: 50%; flex: none; }
-  .pdot-magenta { background: var(--magenta); } .pdot-teal { background: var(--teal); } .pdot-orange { background: var(--orange); }
-  .hero-copy .btn-row { margin-top: 32px; }
-  .hero-fine { display: flex; align-items: center; gap: 8px; margin-top: 18px; font-size: .9rem; color: var(--muted); }
-  .hero-fine :global(svg) { color: var(--accent-700); }
+  .hero { padding-block: clamp(56px, 7vw, 100px) clamp(72px, 9vw, 120px); }
+  .hero-photo { position: absolute; inset: 0; overflow: hidden; }
+  .hero-photo img { width: 100%; height: 120%; object-fit: cover; opacity: .32; animation: kenburns 24s ease-in-out infinite alternate; }
+  .hero-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #000 18%, rgba(0,0,0,.72) 55%, rgba(0,0,0,.35)), linear-gradient(0deg, #0b0b0b, transparent 40%); }
+  @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.12) translateX(-2%); } }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
+  .hero .badge { margin-bottom: 26px; }
+  .hero .lead { margin-top: 24px; max-width: 56ch; color: #d6d3cf; }
+  .hero .btn-row { margin-top: 34px; }
+  .hero-note { margin-top: 18px; font-size: .9rem; }
+  .hero-note a { margin-left: 6px; color: #fff; border-bottom: 2px solid var(--accent); }
+  @media (max-width: 1000px) { .hero-grid { grid-template-columns: 1fr; } }
 
-  /* ---------- Trust ---------- */
-  .trust { background: #000; color: #fff; padding-block: 30px; }
-  .trust-in { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; text-align: center; }
-  .trust-in b { color: var(--accent); display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.7rem, 3vw, 2.4rem); line-height: 1.1; }
-  .trust-in span { font-size: .86rem; color: var(--muted-dark); font-weight: 300; }
-  @media (max-width: 720px) { .trust-in { grid-template-columns: 1fr 1fr; } }
+  /* Il momento */
+  .moment { position: relative; display: grid; gap: 14px; max-width: 420px; justify-self: center; width: 100%; }
+  .guest { padding: 18px; border-radius: 20px; background: #fff; color: #111; box-shadow: 0 30px 70px -20px rgba(0,0,0,.9), 0 0 0 6px rgba(241,196,14,.15); animation: float-y 7s ease-in-out infinite; }
+  .g-head { display: flex; align-items: center; gap: 10px; }
+  .g-av { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--accent); font-weight: 800; }
+  .guest b { display: block; font-weight: 700; }
+  .guest small { display: block; font-size: .76rem; color: var(--muted); }
+  .g-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .g-tags span { padding: 4px 10px; border-radius: 100px; background: var(--accent-100); font-size: .72rem; font-weight: 600; }
+  .notes { display: grid; gap: 10px; padding-left: 28px; border-left: 2px dashed rgba(241,196,14,.4); margin-left: 22px; }
+  .note { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(20,20,20,.88); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(8px); opacity: 0; animation: note-in .7s var(--ease-out) both; }
+  .note > :global(svg) { color: var(--accent); flex: none; }
+  .note b { display: block; font-size: .86rem; color: #fff; font-weight: 650; }
+  .note small { display: block; font-size: .74rem; color: var(--muted-dark); }
+  .note.hl { background: var(--accent); border-color: var(--accent); }
+  .note.hl b, .note.hl small, .note.hl > :global(svg) { color: #000; }
+  .n1 { animation-delay: 1s; } .n2 { animation-delay: 1.9s; } .n3 { animation-delay: 2.8s; }
+  @keyframes note-in { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: none; } }
+  .moment-cap { font-size: .72rem; color: var(--muted-dark); text-align: right; }
 
-  .strip { background: #fff; padding-block: 28px; border-bottom: 1px solid var(--line); }
-  .chip { display: inline-flex; align-items: center; gap: 9px; padding: 10px 20px; border-radius: 100px; border: 1px solid var(--accent-200); background: var(--accent-50); font-family: var(--font-display); font-size: 1rem; color: var(--ink); white-space: nowrap; }
-
-  /* ---------- Zigzag vantaggi ---------- */
-  .zig { display: grid; gap: clamp(54px, 7vw, 96px); }
-  .zig-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 70px); align-items: center; }
-  .zig-row.rev .zig-media { order: 2; }
-  .zig-media { position: relative; }
-  .zig-photo { aspect-ratio: 4 / 3; box-shadow: var(--shadow-lg); border-radius: 28px; }
-  .zig-tag { position: absolute; left: 18px; bottom: 18px; padding: 8px 16px; border-radius: 100px; color: #fff; font-family: var(--font-display); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .82rem; }
-  .tag-magenta { background: var(--accent); color: #000; } .tag-teal { background: var(--grey); } .tag-orange { background: #000; }
-  .kick { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: .9rem; margin-bottom: 12px; }
-  .kick .pdot { width: 14px; height: 14px; }
-  .kick-magenta { color: var(--accent-700); } .kick-teal { color: var(--grey); } .kick-orange { color: #000; }
-  .zig-copy .h2 { margin-bottom: 14px; }
-  .zig-copy .mt-3 { margin-top: 22px; }
-  @media (max-width: 860px) { .zig-row { grid-template-columns: minmax(0, 1fr); } .zig-row.rev .zig-media { order: 0; } }
-
-  /* ---------- Calcolatore ---------- */
-  .calc-wrap { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(28px, 4vw, 56px); align-items: center; }
-  @media (max-width: 1000px) { .calc-wrap { grid-template-columns: minmax(0, 1fr); } }
-
-  /* ---------- Funzioni ---------- */
-  .band { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 30px; margin-top: 36px; padding: 24px 32px; border-radius: var(--radius-lg); background: var(--accent-50); border: 1px solid var(--accent-200); }
-  .band p { font-family: var(--font-display); font-size: 1.25rem; font-weight: 300; }
-  .band b { font-weight: 700; color: var(--ink); }
-
-  /* ---------- Percorsi ---------- */
-  .paths { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  @media (max-width: 900px) { .paths { grid-template-columns: minmax(0, 1fr); } }
-  .path { padding: clamp(26px, 3vw, 38px); border-radius: var(--radius-xl); background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column; align-items: flex-start; }
-  .path p { color: var(--muted); margin-top: 10px; }
-  .path-a { background: #000; border: 0; color: #fff; box-shadow: var(--shadow-lg); }
-  .path-a h3 { color: #fff; font-weight: 700; } .path-a p { color: rgba(255,255,255,.88); }
-  .path-tag { padding: 5px 14px; border-radius: 100px; background: var(--accent); color: #000; font-family: var(--font-display); font-weight: 700; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 14px; }
-  .path-tag-alt { background: var(--paper-2); }
-  .path .check-list li { font-size: .95rem; } .path b { font-weight: 700; color: var(--ink); }
-  .path-a .check-list li { color: rgba(255,255,255,.9); } .path-a .check-list b { color: #fff; }
-  
-  /* ---------- Reparti ---------- */
-  .shots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .shot { aspect-ratio: 3 / 4; margin: 0; }
-  .shot figcaption { position: absolute; inset: auto 0 0 0; padding: 40px 16px 16px; background: linear-gradient(transparent, rgba(0,0,0,.88)); color: #fff; font-family: var(--font-display); font-size: 1.05rem; line-height: 1.25; }
-  @media (max-width: 900px) { .shots { grid-template-columns: 1fr 1fr; } }
-
-  /* ---------- Marketing ---------- */
-  .section-dark { overflow: hidden; }
-  :global(.waves-soft) { opacity: .14; }
-  @media (max-width: 760px) { :global(.hero .waves) { opacity: .3; } }
-  .demo :global(.waves-soft) { opacity: .5; }
-  .cta-card .btn { white-space: normal; text-align: center; line-height: 1.2; }
-  .cta-card { background: #fff; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; border: 0; }
-  .cta-card h3 { color: var(--ink) !important; font-weight: 700; }
-  .cta-card-grad { background: var(--accent); justify-content: center; align-items: flex-start; }
-  .cta-card-grad h3, .cta-card-grad p { color: #000 !important; }
-  .cta-card-grad .btn-white { background: #000; color: #fff; }
-
-  /* ---------- Numeri ---------- */
-  .split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
-  @media (max-width: 900px) { .split { grid-template-columns: minmax(0, 1fr); } }
-  .check-list b { color: var(--ink); font-weight: 700; }
-  .dash { padding: 24px; border-radius: var(--radius-xl); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-lg); }
-  .dash-top { display: flex; align-items: center; gap: 6px; margin-bottom: 18px; }
-  .dash-top i { width: 10px; height: 10px; border-radius: 50%; background: var(--grey-100); } .dash-top i:first-child { background: var(--accent); } .dash-top i:nth-child(2) { background: var(--grey); } .dash-top i:nth-child(3) { background: #000; }
-  .dash-top span { margin-left: auto; font-size: .8rem; color: var(--muted); }
-  .dash-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .dash-kpis div { padding: 14px 16px; border-radius: 14px; background: var(--paper); }
-  .dash-kpis small { display: block; font-family: var(--font-display); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--grey); }
-  .dash-kpis b { font-family: var(--font-display); font-size: 1.7rem; color: var(--ink); }
-  .dash-h { margin: 22px 0 10px; font-family: var(--font-display); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .82rem; color: var(--grey); }
-  .dash-bars { display: grid; gap: 12px; }
-  .dash-bars li { display: grid; grid-template-columns: 110px 1fr; gap: 12px; align-items: center; font-size: .9rem; }
-  .dash-bars div { height: 14px; border-radius: 8px; background: var(--paper-2); overflow: hidden; }
-  .dash-bars i { display: block; height: 100%; width: var(--v); border-radius: 8px; }
-  .b-m { background: var(--accent); } .b-t { background: var(--grey); } .b-o { background: #000; } .b-p { background: #000; } .b-g { background: var(--grey-300); }
-  .dash-stack { display: flex; gap: 4px; height: 38px; }
-  .dash-stack i { display: grid; place-items: center; border-radius: 8px; font-style: normal; font-size: .78rem; font-weight: 700; color: #fff; }
-  .dash-stack .b-m { color: #000; } .dash-stack .b-g { color: var(--ink); }
-  .dash-note { margin-top: 14px; text-align: right; font-size: .72rem; color: var(--grey-300); }
-
-  /* ---------- Demo hotel ---------- */
-  .demo-site { position: relative; color: #fff; overflow: hidden; padding-block: clamp(80px, 11vw, 150px); }
-  .demo-site-bg, .demo-site-bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .demo-site-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(0,0,0,.92) 0%, rgba(0,0,0,.76) 55%, rgba(0,0,0,.4) 100%); }
-  .demo-site-in > div:first-child { max-width: 720px; }
-  .demo-site h2, .demo-site .lead { color: #fff; } .demo-site .eyebrow { color: var(--accent); }
-  .demo-site .lead { color: rgba(255,255,255,.88); }
-  .demo-site .btn-ghost { border-color: rgba(255,255,255,.7); color: #fff; } .demo-site .btn-ghost:hover { background: #fff; color: #000; }
-
-  /* ---------- Steps ---------- */
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; counter-reset: s; }
-  @media (max-width: 860px) { .steps { grid-template-columns: minmax(0, 1fr); } }
-  .step { display: flex; gap: 18px; padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: #fff; }
-  .step p { color: var(--muted); font-size: .96rem; margin-top: 6px; }
-  .step-n { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: #000; font-family: var(--font-display); font-weight: 700; font-size: 1.4rem; }
-
-  /* ---------- Form ---------- */
-  .demo { position: relative; overflow: hidden; background: #fff; }
-  .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 4.5vw, 62px); align-items: start; }
-  @media (max-width: 1000px) { .demo-grid { grid-template-columns: minmax(0, 1fr); } }
-  .demo-points { display: grid; gap: 18px; }
-  .demo-points li { display: flex; gap: 14px; }
-  .demo-ic { display: grid; place-items: center; width: 44px; height: 44px; flex: none; border-radius: 50%; background: var(--accent); color: #000; }
-  .demo-points b { display: block; font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; }
-  .demo-points em { display: block; font-style: normal; font-size: .93rem; color: var(--muted); margin-top: 2px; }
-  .demo-form { position: relative; }
-  @media (min-width: 1001px) { .demo-form { position: sticky; top: calc(var(--header-h) + 24px); } }
+  /* ---------- Per chi ---------- */
+  .types { padding-block: 22px; border-bottom: 1px solid var(--line); background: #fff; }
+  .type { display: inline-flex; align-items: center; gap: 9px; padding: 10px 18px; border-radius: 100px; background: var(--paper); font-weight: 600; font-size: .92rem; white-space: nowrap; }
+  .type :global(svg) { color: var(--accent-700); }
 
 
-  /* ---------- Partner ufficiale Zoho ---------- */
-  .partner { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 70px); align-items: center; }
-  @media (max-width: 900px) { .partner { grid-template-columns: minmax(0, 1fr); } }
-  .partner-badge { padding: clamp(22px, 3vw, 36px); border-radius: var(--radius-xl); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-lg); text-align: center; }
-  .partner-badge img { width: 100%; height: auto; border-radius: 18px; }
-  .partner-badge p { margin-top: 16px; font-family: var(--font-display); font-size: 1rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-  .partner-badge b { color: var(--ink); }
-  .promises { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; margin-top: 36px; padding: 20px 26px; border-radius: 100px; background: #000; }
-  .promises li { display: inline-flex; align-items: center; gap: 9px; font-size: .94rem; color: #fff; }
-  .promises :global(svg) { color: var(--accent); flex: none; }
-  @media (max-width: 760px) { .promises { border-radius: var(--radius-lg); flex-direction: column; } }
-
-  /* ---------- Hero lead magnet ---------- */
-  .hero { background: #000; color: #fff; }
-  .hero::after { content: ''; position: absolute; inset: 0; background: radial-gradient(900px 520px at 8% 0%, rgba(241,196,14,.14), transparent 62%); pointer-events: none; z-index: 1; }
-  .hero h1, .hero .display { color: #fff; }
-  .hero .mark { color: var(--accent); background-image: none; padding: 0; }
-  .hero-copy .lead { color: rgba(255,255,255,.8); }
-  .hero .badge { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); color: #fff; }
-  .hero-copy .lead b { color: #fff; font-weight: 700; }
-  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; max-width: 620px; }
-  @media (max-width: 560px) { .compare { grid-template-columns: minmax(0, 1fr); } }
-  .cmp { padding: 14px 16px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.05); }
-  .cmp p { margin-top: 6px; font-size: .9rem; line-height: 1.4; color: rgba(255,255,255,.72); }
-  .cmp-t { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .86rem; color: rgba(255,255,255,.6); }
-  .cmp-t :global(svg) { padding: 2px; border-radius: 50%; background: rgba(255,255,255,.18); width: 20px; height: 20px; }
-  .cmp-new { background: var(--accent); border-color: var(--accent-600); box-shadow: var(--shadow-accent); }
-  .cmp-new .cmp-t { color: #000; } .cmp-new .cmp-t :global(svg) { background: #000; color: var(--accent); }
-  .cmp-new p { color: #000; font-weight: 500; }
-  .phases { position: relative; display: grid; gap: 16px; margin-top: 26px; max-width: 600px; }
-  .phases::before { content: ''; position: absolute; left: 21px; top: 26px; bottom: 26px; width: 3px; border-radius: 3px; background: linear-gradient(var(--accent), rgba(241,196,14,.15)); }
-  .phases li { position: relative; display: flex; gap: 16px; align-items: flex-start; }
-  .ph-n { position: relative; z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; flex: none; border-radius: 50%; background: var(--accent); color: #000; box-shadow: 0 0 0 4px #000; }
-  .ph-t b { display: block; font-family: var(--font-display); font-size: 1.22rem; line-height: 1.2; color: #fff; }
-  .ph-t em { display: block; font-style: normal; font-size: .93rem; line-height: 1.45; color: rgba(255,255,255,.72); margin-top: 2px; }
-  .ph-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-  .ph-tags i { font-style: normal; padding: 3px 11px; border-radius: 100px; border: 1px solid rgba(241,196,14,.5); color: var(--accent); font-family: var(--font-display); font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; }
-  .punch { margin-top: 24px; padding-left: 18px; border-left: 4px solid var(--accent); font-family: var(--font-display); font-size: clamp(1.35rem, 2.4vw, 1.8rem); font-weight: 300; line-height: 1.2; color: #fff; }
-  .punch b { font-weight: 700; color: var(--accent); }
-  .hero-trust { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 26px; font-size: .9rem; color: rgba(255,255,255,.7); }
-  .hero-trust img { width: 150px; height: auto; border-radius: 10px; box-shadow: var(--shadow-sm); }
-  .lead-card { padding: clamp(20px, 2.6vw, 30px); border-radius: var(--radius-xl); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-lg); }
-  .lead-tag { display: inline-block; padding: 5px 14px; border-radius: 100px; background: #000; color: var(--accent); font-family: var(--font-display); font-weight: 700; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; }
-  .lead-card { color: var(--ink); }
-  .lead-card h2 { color: var(--ink); margin-top: 12px; font-size: clamp(1.5rem, 2.4vw, 1.9rem); font-weight: 700; line-height: 1.1; }
-  .lead-card .lead-sub { margin-top: 8px; font-size: .95rem; color: var(--muted); }
-  .lead-steps { display: flex; gap: 8px; margin: 16px 0 6px; font-family: var(--font-display); font-size: .88rem; letter-spacing: .06em; text-transform: uppercase; }
-  .lead-steps li { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 5px; line-height: 1.2; padding: 10px 6px; border-radius: 10px; background: var(--paper); text-align: center; color: var(--muted); }
-  @media (max-width: 420px) { .lead-steps { font-size: .76rem; letter-spacing: .02em; gap: 6px; } .lead-steps li { padding-inline: 2px; } }
-  .lead-steps li b { display: grid; place-items: center; width: 22px; height: 22px; margin: 0; border-radius: 50%; background: var(--accent); color: #000; font-size: .78rem; }
-  .lead-card :global(.df) { padding: 0; border: 0; box-shadow: none; background: transparent; }
-
-  /* ---------- Perché CRM Hotellerie: tre blocchi orizzontali ---------- */
-  .why3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
-  @media (max-width: 980px) { .why3 { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-inline: auto; } }
-  .why-card { display: flex; flex-direction: column; border-radius: var(--radius-xl); background: #fff; border: 1px solid var(--line); overflow: hidden; }
-  .why-photo { aspect-ratio: 4 / 3; border-radius: 0; }
-  .why-photo img { object-position: var(--pos, 50% 50%); }
-  .why-body { display: flex; flex-direction: column; gap: 14px; padding: 26px 26px 30px; flex: 1; }
-  .why-body .h3 { font-weight: 700; font-size: 1.5rem; line-height: 1.15; }
-  .why-text { color: var(--muted); font-size: .98rem; }
-  .why-body .check-list li { font-size: .93rem; }
-  .why-body .link-arrow { margin-top: auto; align-self: flex-start; }
-
-  /* ---------- La demo (lead magnet) ---------- */
-  .unlock { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 34px; }
-  @media (max-width: 980px) { .unlock { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 560px) { .unlock { grid-template-columns: minmax(0, 1fr); } }
-  .unlock .card { padding: 22px; }
-  .lockline { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; font-size: .92rem; color: rgba(255,255,255,.85); }
-  .lockline :global(svg) { color: var(--accent); }
-
-  /* ---------- Dashboard: schermate di configurazione ---------- */
-  .cfg { position: relative; padding: 38px 24px 74px 18px; max-width: 100%; }
-  .cfg-glow { position: absolute; inset: 0 -3% 4% 6%; border-radius: 36px; background: linear-gradient(140deg, var(--accent), #ffd52e 50%, rgba(114,112,112,.5)); transform: rotate(2.5deg); }
-  .cfg figure { margin: 0; border-radius: 14px; overflow: hidden; background: #fff; border: 1px solid rgba(0,0,0,.14); box-shadow: 0 34px 70px -26px rgba(0,0,0,.55); }
-  .cfg img { display: block; width: 100%; height: auto; }
-  .cfg-main { position: relative; z-index: 1; width: 92%; transform: perspective(1800px) rotateY(3deg); transition: transform .5s var(--ease-out); }
-  .cfg-side { position: absolute; z-index: 2; right: 0; bottom: 44px; width: 60%; transform: rotate(-2deg); border: 4px solid #fff !important; transition: transform .5s var(--ease-out); animation: cfg-float 6.5s ease-in-out infinite; }
-  .cfg:hover .cfg-main { transform: perspective(1800px) rotateY(0); }
-  .cfg-side:hover { transform: rotate(0) scale(1.05); animation-play-state: paused; }
-  @keyframes cfg-float { 0%,100% { translate: 0 0; } 50% { translate: 0 -9px; } }
-  .cfg-chrome { display: flex; align-items: center; gap: 6px; padding: 7px 12px; background: #1b1b1b; }
-  .cfg-chrome i { width: 9px; height: 9px; border-radius: 50%; background: #444; } .cfg-chrome i:first-child { background: var(--accent); }
-  .cfg-chrome span { margin-left: 8px; padding: 2px 12px; border-radius: 100px; background: #2c2c2c; color: rgba(255,255,255,.7); font-size: .68rem; }
-  .cfg-badge { position: absolute; z-index: 3; display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 100px; background: #000; color: #fff; font-family: var(--font-display); font-size: .98rem; box-shadow: var(--shadow-lg); }
-  .cfg-badge :global(svg) { color: var(--accent); }
-  .cfg-b1 { left: 0; top: 6px; } .cfg-b2 { left: 6px; bottom: 40px; }
-  .cfg-note { position: absolute; right: 24px; bottom: 14px; font-size: .72rem; color: var(--grey); }
-  @media (max-width: 900px) {
-    .cfg-badge { display: none; }
-    .cfg { padding: 14px 0 6px; overflow: clip; }
-    .cfg-main { transform: none; width: 100%; }
-    .cfg .cfg-side { position: relative; right: auto; bottom: auto; width: 68%; margin: -30px 0 0 auto; transform: rotate(-1.5deg); animation: none; }
-    .cfg .cfg-note { position: static; margin-top: 14px; text-align: center; }
-    .cfg-glow { inset: 0 0 10% 4%; }
-  }
-  @media (prefers-reduced-motion: reduce) { .cfg-side { animation: none; } .cfg-main { transform: none; } }
-  /* ---------- L'ospite al centro: scheda ospite d'esempio ---------- */
-  .gcard { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); padding: clamp(20px, 2.6vw, 30px); }
-  .gcard-head { display: flex; align-items: center; gap: 14px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
-  .gcard-av { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: #000; color: var(--accent); font-family: var(--font-display); font-weight: 700; letter-spacing: .04em; }
-  .gcard-head div { display: grid; gap: 2px; min-width: 0; }
-  .gcard-head b { font-size: 1.1rem; color: var(--ink); }
-  .gcard-head div span { font-size: .88rem; color: var(--muted); }
-  .gcard-seg { margin-left: auto; padding: 4px 12px; border-radius: 100px; background: var(--accent); color: #000; font-family: var(--font-display); font-weight: 700; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; }
-  .gcard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 22px; margin-top: 18px; }
-  .gcard-grid dt { font-family: var(--font-display); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-  .gcard-grid dd { margin: 3px 0 0; font-size: .95rem; line-height: 1.4; color: var(--ink); }
-  .gcard-next { display: flex; gap: 10px; align-items: flex-start; margin-top: 18px; padding: 14px 16px; border-radius: var(--radius); background: var(--paper); font-size: .92rem; line-height: 1.45; color: var(--muted); }
-  .gcard-next :global(svg) { flex: none; margin-top: 2px; color: var(--accent-700); }
-  .gcard-next b { color: var(--ink); margin-right: 6px; }
-  .gcard-note { margin-top: 12px; font-size: .8rem; color: var(--muted); text-align: right; }
-  .uses { margin-top: clamp(36px, 5vw, 56px); }
-  @media (max-width: 560px) { .gcard-grid { grid-template-columns: minmax(0, 1fr); } .gcard-seg { display: none; } }
-
-  /* ---------- Chi fa cosa: ruoli, app della suite e voci di costo ---------- */
-  .apps { margin-top: 32px; text-align: center; }
-  .apps-t { font-family: var(--font-display); font-weight: 700; font-size: .86rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-  .apps ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 14px; }
-  .apps li { padding: 7px 16px; border-radius: 100px; background: #fff; border: 1px solid var(--line); font-size: .92rem; color: var(--ink); }
-  .role-card { position: relative; }
-  .role-who { position: absolute; top: 18px; right: 18px; padding: 4px 12px; border-radius: 100px; background: var(--paper-2); font-family: var(--font-display); font-weight: 700; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
-  .role-list { margin-top: 14px; gap: 8px; }
-  .role-list li { font-size: .92rem; }
-  .pay { display: grid; gap: 14px; margin-top: 32px; padding: clamp(22px, 3vw, 32px); border-radius: var(--radius-xl); background: #000; color: #fff; }
-  .pay-t { display: inline-flex; align-items: center; gap: 9px; font-family: var(--font-display); font-weight: 700; font-size: .86rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
-  .pay ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 24px; }
-  .pay li { font-size: .95rem; line-height: 1.5; color: rgba(255,255,255,.82); }
-  .pay li b { display: block; margin-bottom: 4px; color: #fff; }
-  .pay-note { font-size: .88rem; color: rgba(255,255,255,.6); }
-  @media (max-width: 860px) { .pay ul { grid-template-columns: minmax(0, 1fr); } }
-
-  /* ---------- Hero: come lo cuciamo sul tuo hotel ---------- */
-  .htailor { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 26px; max-width: 640px; }
-  @media (max-width: 560px) { .htailor { grid-template-columns: minmax(0, 1fr); } }
-  .ht-card { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: var(--radius); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); transition: transform .3s var(--ease-out), border-color .25s, background .25s; }
-  .ht-card:hover { transform: scale(1.04); border-color: var(--accent); background: rgba(255,255,255,.1); }
-  .ht-ic { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 50%; background: var(--accent); color: #000; }
-  .ht-card h3 { font-family: var(--font-display); font-size: 1.1rem; line-height: 1.15; color: #fff; }
-  .ht-card p { margin-top: 3px; font-size: .85rem; line-height: 1.4; color: rgba(255,255,255,.72); }
-
-  /* ---------- Perché Zoho: numeri sotto i tre box ---------- */
-  .zstats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 22px; }
-  @media (max-width: 860px) { .zstats { grid-template-columns: 1fr 1fr; } }
-  .zstats li { padding: 16px 12px; text-align: center; border-radius: var(--radius); background: #000; }
-  .zstats b { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 2.6vw, 2rem); color: var(--accent); line-height: 1.1; }
-  .zstats span { display: block; margin-top: 3px; font-size: .8rem; line-height: 1.3; color: var(--muted-dark); }
+  /* ---------- Chi siamo (anteprima) ---------- */
+  .who { display: grid; grid-template-columns: 1.5fr .7fr; gap: 32px 48px; align-items: center; padding: clamp(28px, 4vw, 44px); border-radius: var(--radius-xl); background: var(--paper); border: 1px solid var(--line); }
+  .who-txt p:not(.eyebrow) { margin-top: 10px; color: var(--muted); }
+  .who-vals { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .who-vals li { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 100px; background: #fff; border: 1px solid var(--line); font-size: .86rem; font-weight: 600; }
+  .who-vals :global(svg) { color: var(--accent-700); }
+  .who-side { display: grid; gap: 18px; justify-items: start; }
+  .who-side img { width: 220px; height: auto; border-radius: 8px; }
+  .faq-more { margin-top: 28px; text-align: center; }
+  @media (max-width: 860px) { .who { grid-template-columns: 1fr; } }
 </style>

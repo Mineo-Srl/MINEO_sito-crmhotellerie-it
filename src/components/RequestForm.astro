@@ -1,0 +1,104 @@
+---
+/* "Sblocca la demo": l'azione principale del sito, in home e in ogni pagina app.
+   Form Zoho (demoFormUrl in site.js) → redirect da impostare in Zoho verso /grazie,
+   dove si apre la demo e c'è la guida. Il form riceve l'indirizzo della pagina
+   (referrername), così nel CRM si vede da dove è partita la richiesta. */
+import Icon from './Icon.astro';
+import { site, demoFormUrl, demoPoints } from '../data/site.js';
+
+interface Props {
+  /** Nome dell'app (pagine app): personalizza il titolo */
+  topic?: string;
+}
+const { topic } = Astro.props;
+const id = `zf-${topic ? topic.toLowerCase().replace(/\W+/g, '-') : 'home'}`;
+---
+
+<section class="section section-dark rq" id="demo">
+  <div class="grid-lines" aria-hidden="true"></div>
+  <div class="blob rq-blob drifting" aria-hidden="true"></div>
+  <div class="container relative rq-grid">
+    <div data-reveal="left">
+      <p class="badge"><span class="dot"></span> Demo gratuita · nessuna chiamata obbligatoria</p>
+      <h2 class="h2 mt-3">
+        {topic
+          ? <>Guarda {topic} <span class="gradient-text">all’opera in un hotel vero</span></>
+          : <>Entra in Hotel Soleluna <span class="gradient-text">come se fosse il tuo</span></>}
+      </h2>
+      <p class="lead mt-3">
+        Lasci quattro dati e la demo si apre subito. Provi il widget come un ospite e vedi cosa
+        succede dall’altra parte, nel CRM. Con la demo ricevi anche la guida in PDF.
+      </p>
+      <ul class="check-list mt-4">{demoPoints.map((p) => <li>{p}</li>)}</ul>
+
+      <div class="rq-calc" id="rqCalc" hidden>
+        <Icon name="calc" size={20} />
+        <p>Dal tuo calcolo: <b id="rqCalcVal"></b> l’anno in commissioni ai portali. In demo ti mostriamo dove recuperarle.</p>
+      </div>
+
+      <p class="rq-alt">
+        Hai già le idee chiare?
+        <a href={site.bookings} target="_blank" rel="noopener noreferrer">Prenota direttamente una consulenza <Icon name="arrowUpRight" size={15} /></a>
+      </p>
+    </div>
+    <div class="rq-form" data-reveal="right">
+      <div class="rq-head">
+        <span class="rq-key"><Icon name="key" size={20} /></span>
+        <div><b>Sblocca la demo</b><small>Nome, struttura, email, telefono. 30 secondi.</small></div>
+      </div>
+      <iframe
+        id={id}
+        class="zf-frame"
+        aria-label="Modulo per sbloccare la demo"
+        title={topic ? `Sblocca la demo di ${topic}` : 'Sblocca la demo'}
+        src={demoFormUrl}
+        loading="lazy"
+      ></iframe>
+      <p class="rq-privacy">I dati sono trattati da {site.legal} secondo la <a href="/privacy-policy">Privacy Policy</a>. Niente spam.</p>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  /* Snippet di Zoho Forms: passa al modulo la pagina di provenienza */
+  document.querySelectorAll('iframe.zf-frame').forEach(function (f) {
+    try {
+      if (/[?&]referrername=/.test(f.src)) return;
+      var rfr = location.href.split('?')[0].slice(0, 1800);
+      f.src = f.src + (f.src.indexOf('?') > 0 ? '&' : '?') + 'referrername=' + encodeURIComponent(rfr);
+    } catch (e) {}
+  });
+  /* Se il visitatore ha usato il calcolatore, ricordiamo il risultato accanto al form */
+  (function () {
+    try {
+      var c = JSON.parse(sessionStorage.getItem('crmh_calc') || 'null');
+      if (!c || !c.commissions) return;
+      document.getElementById('rqCalcVal').textContent = c.commissionsLabel;
+      document.getElementById('rqCalc').hidden = false;
+    } catch (e) {}
+  })();
+</script>
+
+<style>
+  .rq-blob { width: 480px; height: 480px; right: -140px; top: -120px; background: rgba(241,196,14,.28); }
+  .rq-grid { display: grid; grid-template-columns: 1fr minmax(0, 480px); gap: clamp(36px, 5vw, 72px); align-items: center; }
+  .rq .check-list li { color: #fff; }
+  .rq-calc { display: flex; align-items: center; gap: 12px; margin-top: 24px; padding: 14px 18px; border-radius: 16px; background: rgba(241,196,14,.12); border: 1px solid rgba(241,196,14,.4); }
+  .rq-calc[hidden] { display: none; }
+  .rq-calc :global(svg) { color: var(--accent); flex: none; }
+  .rq-calc p { color: #fff !important; font-size: .95rem; }
+  .rq-calc b { color: var(--accent); }
+  .rq-alt { margin-top: 28px; font-size: .95rem; }
+  .rq-alt a { display: inline-flex; align-items: center; gap: 6px; margin-left: 4px; color: #fff; font-weight: 650; border-bottom: 2px solid var(--accent); }
+  .rq-form { padding: 20px; border-radius: var(--radius-lg); background: #fff; box-shadow: 0 40px 80px -30px rgba(0,0,0,.8), 0 0 0 6px rgba(241,196,14,.25); }
+  .rq-head { display: flex; align-items: center; gap: 12px; padding: 4px 4px 14px; border-bottom: 1px solid var(--line); }
+  .rq-key { display: grid; place-items: center; width: 42px; height: 42px; flex: none; border-radius: 50%; background: var(--accent); color: #000; animation: key-turn 3.2s var(--ease) 1.2s infinite; }
+  @keyframes key-turn { 0%, 70%, 100% { transform: rotate(0); } 80% { transform: rotate(-18deg); } 90% { transform: rotate(8deg); } }
+  .rq-head b { display: block; color: var(--text); font-family: var(--font-display); font-size: 1.1rem; }
+  .rq-head small { display: block; color: var(--muted); font-size: .84rem; }
+  .rq-form iframe { display: block; width: 100%; height: 680px; margin-top: 10px; border: 0; border-radius: var(--radius); }
+  .rq-privacy { margin-top: 8px; font-size: .78rem; color: var(--muted) !important; }
+  .rq-privacy a { color: var(--text); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+  @media (max-width: 960px) { .rq-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .rq-form iframe { height: 760px; } }
+</style>

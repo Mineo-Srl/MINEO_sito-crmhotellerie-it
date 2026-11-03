@@ -1,0 +1,34 @@
+---
+/* Il problema: tre dolori dell'albergatore. */
+import Icon from '../Icon.astro';
+import { pains } from '../../data/site.js';
+
+interface Props { more?: boolean }
+const { more = false } = Astro.props;
+---
+
+<section class="section" id="perche">
+  <div class="container">
+    <div class="head-row">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Il problema</p>
+        <h2 class="h2">Ogni ospite che riprenota dal portale <span class="gradient-text">ti costa due volte</span></h2>
+        <p class="lead">Non è colpa del tuo servizio. È che il portale lo ricorda meglio di te.</p>
+      </div>
+      {more && <a href="/perche" class="link-arrow" data-reveal>Leggi tutta la storia <Icon name="arrow" size={16} /></a>}
+    </div>
+    <div class="grid grid-3" data-stagger="120">
+      {pains.map((p) => (
+        <article class="card pain" data-reveal data-tilt>
+          <span class="icon-chip icon-chip-alt"><Icon name={p.icon} /></span>
+          <h3 class="h4">{p.title}</h3>
+          <p>{p.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pain .icon-chip { color: var(--accent); }
+</style>

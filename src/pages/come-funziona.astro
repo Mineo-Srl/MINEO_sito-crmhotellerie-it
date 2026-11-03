@@ -1,0 +1,172 @@
+---
+/* Capitolo 2 · La soluzione: la scheda ospite, i tre momenti, le integrazioni,
+   la dashboard e come si attiva. */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHead from '../components/PageHead.astro';
+import GuestIdea from '../components/sections/GuestIdea.astro';
+import NextPage from '../components/NextPage.astro';
+import { comeFunziona as cf } from '../data/pages.js';
+import { appBySlug } from '../data/apps.js';
+---
+
+<Base
+  title="Come funziona CRM Hotellerie"
+  description="Una scheda per ogni ospite e sette app Zoho che lavorano nei tre momenti che contano: prima della prenotazione, al primo contatto, dopo il soggiorno."
+  keywords={['come funziona CRM hotel', 'scheda ospite', 'percorso ospite hotel', 'automazioni hotel']}
+  breadcrumbs={[{ name: 'Come funziona' }]}
+>
+  <PageHead
+    eyebrow="La soluzione"
+    crumb="Come funziona"
+    title="Un ospite, una scheda, "
+    highlight="tre momenti per farlo tornare"
+    lead="CRM Hotellerie raccoglie tutto ciò che sai di ogni ospite in un solo posto e lo usa nei momenti in cui si decide se prenoterà da te."
+    photo="/img/photos/hall.webp"
+  />
+
+  <GuestIdea />
+
+  <!-- I tre momenti, in dettaglio -->
+  <section class="section section-paper" id="percorso">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow">I tre momenti</p>
+        <h2 class="h2">Cosa succede, <span class="gradient-text">passo per passo</span></h2>
+      </div>
+      <div class="moments">
+        {cf.moments.map((m, i) => (
+          <article class:list={['moment', { alt: i % 2 }]} data-reveal={i % 2 ? 'right' : 'left'}>
+            <div class="m-head">
+              <span class="m-n">{m.n}</span>
+              <div><h3 class="h3">{m.title}</h3><p>{m.lead}</p></div>
+            </div>
+            <ul class="check-list">{m.points.map((p) => <li>{p}</li>)}</ul>
+            <div class="m-apps">
+              {m.apps.map((s) => (
+                <a href={`/${s}`}><Icon name={appBySlug[s].icon} size={15} /> {appBySlug[s].name}</a>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrazioni -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Con quello che hai già</p>
+        <h2 class="h2">Si collega al tuo hotel, <span class="gradient-text">non lo stravolge</span></h2>
+      </div>
+      <div class="grid grid-3" data-stagger="120">
+        {cf.connects.map((c) => (
+          <article class="card" data-reveal data-tilt>
+            <span class="icon-chip"><Icon name={c.icon} /></span>
+            <h3 class="h4">{c.title}</h3>
+            <p>{c.text}</p>
+          </article>
+        ))}
+      </div>
+      <a href="/gestionale" class="road-b" data-reveal>
+        <span class="rb-tag">Strada B</span>
+        <span class="rb-txt"><b>Vuoi sostituire anche il gestionale?</b> Planning, pulizie, channel manager, Alloggiati Web e fatture sullo stesso sistema.</span>
+        <span class="rb-go">Scopri il gestionale <Icon name="arrow" size={16} /></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Dashboard -->
+  <section class="section section-dark">
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="container relative">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">I numeri</p>
+        <h2 class="h2">Vedi cosa funziona, <span class="gradient-text">mese per mese</span></h2>
+      </div>
+      <div class="grid grid-4" data-stagger="100">
+        {cf.insights.map((s) => (
+          <article class="card card-dark" data-reveal>
+            <span class="icon-chip"><Icon name={s.icon} /></span>
+            <h3 class="h4">{s.title}</h3>
+            <p>{s.text}</p>
+          </article>
+        ))}
+      </div>
+      <div class="dash" data-reveal data-play aria-hidden="true">
+        <div class="dash-bars">
+          {[22, 24, 23, 27, 29, 31, 33, 36, 35, 38, 40, 43].map((v, i) => (
+            <span style={`--v:${v * 2}%;--i:${i}`}><i></i><em>{v}%</em></span>
+          ))}
+        </div>
+        <div class="dash-legend"><span><i class="k1"></i> Quota di prenotazioni dirette</span><span>Dati dimostrativi · 12 mesi</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Come si attiva -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow">Come si parte</p>
+        <h2 class="h2">Quattro passi, <span class="gradient-text">li facciamo con te</span></h2>
+      </div>
+      <ol class="steps" data-stagger="150">
+        {cf.steps.map((s, i) => (
+          <li data-reveal>
+            <span class="step-num">{i + 1}</span>
+            <h3 class="h4">{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <NextPage current="/come-funziona" />
+</Base>
+
+<style>
+  .moments { display: grid; gap: 22px; max-width: 980px; margin-inline: auto; }
+  .moment { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 40px; padding: clamp(24px, 3vw, 36px); border-radius: var(--radius-xl); background: #fff; border: 1px solid var(--line); }
+  .moment.alt { background: var(--black); border-color: var(--black); }
+  .moment.alt h3 { color: #fff; }
+  .moment.alt .m-head p, .moment.alt .check-list li { color: var(--muted-dark); }
+  .m-head { display: flex; gap: 16px; }
+  .m-head p { margin-top: 6px; color: var(--muted); }
+  .m-n { display: grid; place-items: center; width: 52px; height: 52px; flex: none; border-radius: 50%; background: var(--accent); font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; }
+  .m-apps { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+  .m-apps a { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 100px; background: var(--accent-100); font-size: .86rem; font-weight: 650; transition: background .25s var(--ease); }
+  .m-apps a:hover { background: var(--accent); }
+  .moment.alt .m-apps a { background: rgba(241,196,14,.14); color: var(--accent); }
+  .moment.alt .m-apps a:hover { background: var(--accent); color: #000; }
+  @media (max-width: 860px) { .moment { grid-template-columns: 1fr; } }
+
+  .road-b { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 28px; padding: 22px 28px; border-radius: var(--radius-lg); border: 1px dashed var(--grey-300); transition: border-color .3s var(--ease), background .3s var(--ease); }
+  .road-b:hover { border-color: var(--accent); background: var(--accent-50); }
+  .rb-tag { padding: 5px 12px; border-radius: 100px; background: var(--black); color: var(--accent); font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .rb-txt { flex: 1; min-width: 240px; color: var(--muted); }
+  .rb-txt b { color: var(--text); }
+  .rb-go { display: inline-flex; align-items: center; gap: 8px; font-weight: 650; border-bottom: 2px solid var(--accent); }
+
+  .dash { margin-top: 40px; padding: 28px; border-radius: var(--radius-lg); background: rgba(255,255,255,.04); border: 1px solid var(--line-dark); }
+  .dash-bars { display: grid; grid-template-columns: repeat(12, 1fr); align-items: end; gap: 10px; height: 200px; }
+  .dash-bars span { position: relative; display: flex; align-items: flex-end; height: 100%; }
+  .dash-bars i { display: block; width: 100%; height: var(--v); border-radius: 8px 8px 3px 3px; background: linear-gradient(180deg, var(--accent), rgba(241,196,14,.35)); transform-origin: bottom; }
+  .dash-bars em { position: absolute; left: 0; right: 0; bottom: calc(var(--v) + 6px); text-align: center; font-style: normal; font-size: .72rem; color: var(--muted-dark); }
+  .dash.playing .dash-bars i { animation: grow-y 1s var(--ease-out) calc(var(--i) * 70ms) both; }
+  @keyframes grow-y { from { transform: scaleY(0); } }
+  .dash-legend { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 16px; font-size: .84rem; color: var(--muted-dark); }
+  .dash-legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .k1 { width: 12px; height: 12px; border-radius: 3px; background: var(--accent); }
+  @media (max-width: 560px) { .dash-bars em { display: none; } }
+
+  .steps { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+  .steps::before { content: ''; position: absolute; left: 22px; right: 22px; top: 22px; height: 2px; background: repeating-linear-gradient(90deg, var(--accent-600) 0 8px, transparent 8px 16px); }
+  .steps li { position: relative; }
+  .steps .step-num { position: relative; margin-bottom: 18px; }
+  .steps p { margin-top: 8px; color: var(--muted); font-size: .96rem; }
+  @media (max-width: 900px) { .steps { grid-template-columns: 1fr 1fr; } .steps::before { display: none; } }
+  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+</style>

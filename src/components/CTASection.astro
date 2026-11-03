@@ -1,0 +1,142 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site.js';
+import { tighten } from '../utils/typo.js';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  text?: string;
+  primary?: { href: string; label: string };
+  secondary?: { href: string; label: string };
+  /** Richiamo alla guida gratuita per chi non è ancora pronto a prenotare. */
+  guide?: boolean;
+}
+const {
+  eyebrow = 'Parliamone',
+  title,
+  text,
+  primary = { href: '/demo', label: 'Sblocca la demo gratuita' },
+  secondary = { href: site.bookings, label: 'Prenota una consulenza' },
+  guide = true,
+} = Astro.props;
+
+const ext = (href = '') => /^https?:/.test(href);
+// Rassicurazione sotto i pulsanti quando l'azione principale è l'agenda delle demo.
+const isBooking = primary.href === site.bookings;
+const isDemo = /demo$/.test(primary.href);
+---
+
+<section class="section cta-band">
+  <div class="container">
+    <div class="cta-card" data-reveal="scale">
+      <div class="cta-glow" aria-hidden="true"></div>
+      <div class="cta-rings" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="cta-content">
+        <p class="eyebrow">{eyebrow}</p>
+        <h2 class="h2">{tighten(title)}</h2>
+        {text && <p class="lead mt-3">{text}</p>}
+        <div class="btn-row mt-4">
+          <a
+            href={primary.href}
+            class="btn btn-primary btn-lg"
+            target={ext(primary.href) ? '_blank' : undefined}
+            rel={ext(primary.href) ? 'noopener noreferrer' : undefined}
+          >
+            {primary.label} <Icon name={ext(primary.href) ? 'arrowUpRight' : 'arrow'} size={18} />
+          </a>
+          {secondary && (
+            <a
+              href={secondary.href}
+              class="btn btn-ghost-light btn-lg"
+              target={ext(secondary.href) ? '_blank' : undefined}
+              rel={ext(secondary.href) ? 'noopener noreferrer' : undefined}
+            >{secondary.label}</a>
+          )}
+        </div>
+        {(isBooking || isDemo || guide) && (
+          <p class="cta-note">
+            {isBooking && <span>Gratuita e senza impegno · scegli tu giorno e ora</span>}
+            {isDemo && <span>Si apre subito · nessuna chiamata obbligatoria</span>}
+            {guide && secondary?.href !== '/guida' && (
+              <span>
+                Non sei ancora pronto? <a href="/guida">Scarica la guida gratuita</a>
+              </span>
+            )}
+          </p>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-note {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 22px;
+    margin-top: 18px;
+    font-size: .88rem;
+    color: var(--muted-dark);
+  }
+  .cta-note a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  .cta-note a:hover { color: var(--accent); }
+  .cta-band { padding-block: clamp(48px, 6vw, 80px); }
+  .cta-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    padding: clamp(40px, 6vw, 76px);
+    color: #fff;
+    background:
+      radial-gradient(700px 420px at 85% 110%, rgba(241,196,14,.22), transparent 60%),
+      radial-gradient(600px 380px at 10% -20%, rgba(241,196,14,.35), transparent 62%),
+      linear-gradient(120deg, #151515, #000000 55%, #1c1c1c);
+  }
+  .cta-glow {
+    position: absolute;
+    width: 460px; height: 460px;
+    right: -120px; top: -140px;
+    background: radial-gradient(closest-side, rgba(241,196,14,.6), transparent);
+    filter: blur(30px);
+    animation: drift 20s ease-in-out infinite;
+  }
+  .cta-rings {
+    position: absolute;
+    right: 6%;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .cta-rings span {
+    position: absolute;
+    top: 50%; left: 50%;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: ring-pulse 5s ease-out infinite;
+  }
+  .cta-rings span:nth-child(1) { width: 180px; height: 180px; }
+  .cta-rings span:nth-child(2) { width: 320px; height: 320px; animation-delay: 1.2s; }
+  .cta-rings span:nth-child(3) { width: 470px; height: 470px; animation-delay: 2.4s; }
+  @keyframes ring-pulse {
+    0%   { opacity: 0; transform: translate(-50%,-50%) scale(.8); }
+    35%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%,-50%) scale(1.15); }
+  }
+  /* Il titolo ha bisogno di respiro: con una colonna troppo stretta
+     si spezzava in quattro righe corte. */
+  .cta-content { position: relative; max-width: 790px; }
+  .cta-content .lead { max-width: 640px; }
+  .cta-content .eyebrow { color: var(--accent); }
+  .cta-content .lead { color: var(--muted-dark); }
+</style>

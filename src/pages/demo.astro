@@ -1,0 +1,64 @@
+---
+/* L'azione principale del sito: sbloccare la demo di Hotel Soleluna. */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHead from '../components/PageHead.astro';
+import RequestForm from '../components/RequestForm.astro';
+import FaqList from '../components/FaqList.astro';
+import { demo } from '../data/pages.js';
+---
+
+<Base
+  title="Sblocca la demo gratuita di CRM Hotellerie"
+  description="Lascia nome, struttura, email e telefono e prova subito Hotel Soleluna, l’hotel dimostrativo di CRM Hotellerie: widget di prenotazione, scheda ospite e automazioni."
+  keywords={['demo CRM hotel', 'prova CRM hotel gratis', 'demo Zoho hotel']}
+  breadcrumbs={[{ name: 'Demo' }]}
+>
+  <PageHead
+    eyebrow="Demo gratuita"
+    crumb="Demo"
+    title="Prova Hotel Soleluna "
+    highlight="come se fosse il tuo"
+    lead="Quattro dati, trenta secondi, nessuna chiamata obbligatoria. La demo si apre subito e con lei ricevi anche la guida in PDF."
+    actions={false}
+    photo="/img/photos/davanti-mare.webp"
+  >
+    <a href="#demo" class="btn btn-primary btn-lg dm-go"><Icon name="key" size={18} /> Vai al modulo</a>
+  </PageHead>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow">Cosa vedrai</p>
+        <h2 class="h2">Dieci minuti <span class="gradient-text">che valgono una riunione</span></h2>
+      </div>
+      <div class="grid grid-3" data-stagger="120">
+        {demo.what.map((w, i) => (
+          <article class="card" data-reveal data-tilt>
+            <span class="w-n">{i + 1}</span>
+            <span class="icon-chip"><Icon name={w.icon} /></span>
+            <h3 class="h4">{w.title}</h3>
+            <p>{w.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <RequestForm />
+
+  <section class="section section-paper">
+    <div class="container container-narrow">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow">Prima di compilare</p>
+        <h2 class="h2">Due domande <span class="gradient-text">legittime</span></h2>
+      </div>
+      <FaqList items={demo.faq} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .dm-go { margin-top: 30px; }
+  .w-n { position: absolute; top: 20px; right: 26px; font-family: var(--font-display); font-weight: 800; font-size: 2.4rem; line-height: 1; color: var(--grey-100); }
+</style>

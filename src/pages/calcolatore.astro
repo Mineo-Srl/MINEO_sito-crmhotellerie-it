@@ -1,0 +1,59 @@
+---
+/* Lead magnet a bassa soglia: il calcolatore delle commissioni, con la demo subito sotto. */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHead from '../components/PageHead.astro';
+import Calculator from '../components/Calculator.astro';
+import RequestForm from '../components/RequestForm.astro';
+
+const how = [
+  { icon: 'bed', title: 'Notti vendute', text: 'Camere × occupazione media × 365 giorni.' },
+  { icon: 'wallet', title: 'Ricavo camere', text: 'Notti vendute × prezzo medio a notte (ADR).' },
+  { icon: 'layers', title: 'Commissioni', text: 'Ricavo × quota dai portali × commissione media.' },
+  { icon: 'refresh', title: 'Risparmio', text: 'Lo stesso calcolo su 10 punti di quota spostati sul diretto.' },
+];
+---
+
+<Base
+  title="Calcolatore: quanto paghi ai portali ogni anno"
+  description="Calcola in un minuto quante commissioni paga il tuo hotel a Booking.com e agli altri portali e quanto risparmieresti spostando dieci punti sul canale diretto."
+  keywords={['calcolo commissioni booking', 'calcolatore commissioni OTA', 'risparmio prenotazioni dirette']}
+  breadcrumbs={[{ name: 'Calcolatore' }]}
+>
+  <PageHead
+    eyebrow="Calcolatore"
+    title="Quanto paghi ai portali, "
+    highlight="ogni anno?"
+    lead="Cinque numeri del tuo hotel, un minuto. Il calcolo avviene nel tuo browser: non inviamo nulla finché non decidi tu."
+    actions={false}
+  />
+
+  <Calculator />
+
+  <section class="section-sm section-paper">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Come calcoliamo</p>
+        <h2 class="h3">Una stima semplice, <span class="gradient-text">volutamente prudente</span></h2>
+      </div>
+      <div class="grid grid-4" data-stagger="100">
+        {how.map((h) => (
+          <div class="how" data-reveal>
+            <span><Icon name={h.icon} size={20} /></span>
+            <b>{h.title}</b>
+            <p>{h.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <RequestForm />
+</Base>
+
+<style>
+  .how { padding: 22px; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); }
+  .how span { display: grid; place-items: center; width: 40px; height: 40px; margin-bottom: 12px; border-radius: 12px; background: var(--accent); }
+  .how b { display: block; }
+  .how p { margin-top: 6px; color: var(--muted); font-size: .92rem; }
+</style>

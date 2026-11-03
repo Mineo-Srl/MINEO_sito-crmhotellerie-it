@@ -1,0 +1,70 @@
+---
+/* La soluzione: la scheda dell'ospite che ogni app aggiorna. */
+import Icon from '../Icon.astro';
+import { guestFacts } from '../../data/site.js';
+
+interface Props { more?: boolean; paper?: boolean }
+const { more = false, paper = false } = Astro.props;
+
+const feed = [
+  ['inbox', 'Forms', 'Richiesta preventivo · agosto'],
+  ['chat', 'SalesIQ', 'Chat · “accettate cani?”'],
+  ['mail', 'Marketing Automation', 'Email pre-arrivo aperta'],
+  ['star', 'Survey', 'NPS 10 · “torneremo”'],
+  ['gift', 'Thrive', '+120 punti · livello Habitué'],
+];
+---
+
+<section class:list={['section', { 'section-paper': paper }]} id="ospite">
+  <div class="container guest-grid">
+    <div data-reveal="left">
+      <p class="eyebrow">La soluzione</p>
+      <h2 class="h2">Ricordati di ogni ospite, <span class="gradient-text">e lui si ricorderà di te</span></h2>
+      <p class="lead mt-3">
+        Una scheda per ogni ospite, scritta da tutto ciò che fa: la richiesta, la chat, le email
+        aperte, il voto a fine soggiorno, i punti fedeltà. Così sai quando scrivergli, cosa
+        proporgli e come farlo tornare sul tuo sito invece che sul portale.
+      </p>
+      <div class="grid grid-2 mt-4" data-stagger="100">
+        {guestFacts.map((g) => (
+          <div class="gf" data-reveal>
+            <span class="gf-ic"><Icon name={g.icon} size={20} /></span>
+            <div><h3 class="h4">{g.title}</h3><p>{g.text}</p></div>
+          </div>
+        ))}
+      </div>
+      {more && <a href="/come-funziona" class="link-arrow more">Scopri come funziona <Icon name="arrow" size={16} /></a>}
+    </div>
+    <div class="guest-visual" data-reveal="right">
+      <img src="/img/photos/camera-deluxe.webp" alt="Camera deluxe dell’hotel dimostrativo" loading="lazy" decoding="async" />
+      <div class="feed" data-play>
+        {feed.map(([ic, app, t], i) => (
+          <div class="feed-item" style={`--i:${i}`}>
+            <span><Icon name={ic} size={15} stroke={2} /></span>
+            <div><b>{app}</b><small>{t}</small></div>
+          </div>
+        ))}
+      </div>
+      <p class="demo-note">Dati dimostrativi</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .guest-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(36px, 5vw, 72px); align-items: center; }
+  .gf { display: flex; gap: 14px; }
+  .gf-ic { display: grid; place-items: center; width: 42px; height: 42px; flex: none; border-radius: 12px; background: var(--accent); }
+  .gf p { margin-top: 4px; color: var(--muted); font-size: .94rem; }
+  .guest-visual { position: relative; }
+  .guest-visual img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius-xl); }
+  .feed { position: absolute; left: -28px; bottom: 28px; display: grid; gap: 8px; width: min(300px, 80%); }
+  .feed-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 14px; background: rgba(255,255,255,.96); box-shadow: var(--shadow-lg); }
+  .feed-item > span { display: grid; place-items: center; width: 30px; height: 30px; flex: none; border-radius: 9px; background: var(--black); color: var(--accent); }
+  .feed-item b { display: block; font-size: .82rem; }
+  .feed-item small { display: block; font-size: .76rem; color: var(--muted); }
+  :global(html.js) .feed:not(.playing) .feed-item { opacity: 0; }
+  .feed.playing .feed-item { animation: feed-in .6s var(--ease-out) calc(.2s + var(--i) * .45s) both; }
+  @keyframes feed-in { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+  .demo-note { position: absolute; top: 16px; right: 16px; padding: 4px 10px; border-radius: 100px; background: rgba(0,0,0,.6); color: #fff; font-size: .72rem; }
+  @media (max-width: 900px) { .guest-grid { grid-template-columns: 1fr; } .feed { left: 16px; } }
+</style>

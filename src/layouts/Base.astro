@@ -1,28 +1,154 @@
 ---
 import '../styles/global.css';
-import bodyFont from '../fonts2/roboto-400.woff2?url';
-import dispFont from '../fonts2/roboto-condensed-300.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieBanner from '../components/CookieBanner.astro';
+import Tracking from '../components/Tracking.astro';
 import ConsentInit from '../components/ConsentInit.astro';
-import { site, u } from '../data/site.js';
+import { site } from '../data/site.js';
 
 interface Props {
   title: string;
   description: string;
-  path?: string;
-  home?: boolean;
-  noindex?: boolean;
+  keywords?: string[];
+  ogImage?: string;
+  ogType?: string;
+  /** Briciole di pane per lo schema BreadcrumbList (la home è già inclusa). */
+  breadcrumbs?: Array<{ name: string; href?: string }>;
+  /** Nodi JSON-LD aggiuntivi da aggiungere al @graph della pagina. */
   schema?: unknown[];
-  preloadImage?: string;
-  /* header ridotto (solo logo e telefono) per le pagine del funnel */
-  minimal?: boolean;
+  noindex?: boolean;
+  /** Pagine di conversione (landing lead magnet): niente banda Zoho One né popup. */
+  focus?: boolean;
 }
-const { title, description, path = '/', home = false, noindex = false, schema = [], preloadImage, minimal = false } = Astro.props;
+const {
+  title,
+  description,
+  keywords = [],
+  ogImage = '/img/og-default.png',
+  ogType = 'website',
+  breadcrumbs = [],
+  schema = [],
+  noindex = false,
+  focus = false,
+} = Astro.props;
 
-const pageUrl = site.url + (path === '/' ? '' : path);
-const ogImage = site.url + u('/img/og-crm-hotellerie.png');
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', site.url).href;
+const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
+const abs = (p: string) => new URL(p, site.url).href;
+
+const ORG_ID = `${site.url}/#organization`;
+const SITE_ID = `${site.url}/#website`;
+
+// Parole chiave trasversali, presenti su tutte le pagine.
+const baseKeywords = [
+  "CRM hotel",
+  "CRM per hotel",
+  "Zoho per hotel",
+  "CRM Hotellerie",
+  "Mineo Srl",
+];
+const allKeywords = [...new Set([...keywords, ...baseKeywords])].join(', ');
+
+const graph: any[] = [
+  {
+    // ProfessionalService è insieme Organization e LocalBusiness:
+    // copre sia la knowledge panel sia la ricerca locale.
+    '@type': 'ProfessionalService',
+    brand: { '@type': 'Brand', name: 'CRM Hotellerie' },
+    '@id': ORG_ID,
+    name: site.legal,
+    alternateName: site.name,
+    legalName: site.legal,
+    url: site.url,
+    logo: { '@type': 'ImageObject', url: abs('/img/logo-mineo.png'), width: 320, height: 120 },
+    image: abs('/img/og-default.png'),
+    description:
+      'CRM Hotellerie: il CRM e il marketing per hotel costruiti su Zoho da MINEO S.r.l., Zoho Authorized Partner.',
+    email: site.email,
+        vatID: site.vatId,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: site.street,
+      postalCode: site.zip,
+      addressLocality: site.city,
+      addressRegion: site.province,
+      addressCountry: site.country,
+    },
+    areaServed: [
+      { '@type': 'Country', name: 'Italia' },
+      { '@type': 'AdministrativeArea', name: 'Lombardia' },
+    ],
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '09:00',
+        closes: '13:00',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '14:00',
+        closes: '18:00',
+      },
+    ],
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        contactType: 'sales',
+                email: site.email,
+        availableLanguage: ['it'],
+        areaServed: 'IT',
+      },
+      {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+                email: site.email,
+        availableLanguage: ['it'],
+        areaServed: 'IT',
+      },
+    ],
+    knowsAbout: ['Zoho CRM', 'Zoho PageSense', 'Zoho SalesIQ', 'Zoho Forms', 'Zoho Marketing Automation', 'Zoho Social', 'Zoho Survey', 'Zoho Thrive', 'CRM per hotel', 'marketing alberghiero', 'prenotazioni dirette'],
+    sameAs: [site.linkedin],
+  },
+  {
+    '@type': 'WebSite',
+    '@id': SITE_ID,
+    url: site.url,
+    name: site.name,
+    inLanguage: 'it-IT',
+    publisher: { '@id': ORG_ID },
+  },
+  {
+    '@type': 'WebPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: fullTitle,
+    description,
+    inLanguage: 'it-IT',
+    isPartOf: { '@id': SITE_ID },
+    about: { '@id': ORG_ID },
+    primaryImageOfPage: abs(ogImage),
+  },
+];
+
+if (breadcrumbs.length) {
+  graph.push({
+    '@type': 'BreadcrumbList',
+    '@id': `${canonical}#breadcrumb`,
+    itemListElement: [{ name: 'Home', href: '/' }, ...breadcrumbs].map((b, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: b.name,
+      ...(b.href ? { item: abs(b.href) } : {}),
+    })),
+  });
+}
+
+graph.push(...(schema as any[]));
+
+const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
 ---
 
 <!doctype html>
@@ -30,67 +156,195 @@ const ogImage = site.url + u('/img/og-crm-hotellerie.png');
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
+    <script is:inline>document.documentElement.classList.add("js")</script>
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={pageUrl} />
+    <meta name="keywords" content={allKeywords} />
+    <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#000000" />
-    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    <meta
+      name="robots"
+      content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1'}
+    />
     <meta name="author" content={site.legal} />
-    <link rel="alternate" hreflang="it" href={pageUrl} />
 
-    <link rel="icon" type="image/png" sizes="32x32" href={u('/img/favicon-32.png')} />
-    <link rel="icon" type="image/png" sizes="192x192" href={u('/img/favicon-192.png')} />
-    <link rel="apple-touch-icon" href={u('/img/apple-touch-icon.png')} />
+    {/* favicon.ico serve anche a chi lo cerca alla radice del sito:
+        browser vecchi, segnalibri, crawler e risultati di ricerca. */}
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/img/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-400.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/manrope-800.woff2" crossorigin />
 
-    <link rel="preload" as="font" type="font/woff2" href={bodyFont} crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href={dispFont} crossorigin />
-    {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
-
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="it_IT" />
-    <meta property="og:site_name" content={site.brand} />
-    <meta property="og:title" content={title} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={pageUrl} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={abs(ogImage)} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name}, ${site.tagline}`} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={abs(ogImage)} />
 
-    {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
-    <!-- Zoho PageSense (analisi del sito): codice fornito da Zoho, invariato -->
-    <script is:inline id="pagesenseCode">!function(){var e="1.0",t=document,a=window,n="zps-page-screen",r=t.head||t.getElementsByTagName("head")[0],i=t.getElementById("pagesenseCode");if(!t.getElementById(n)){var o=t.createElement("style");o.type="text/css",o.id=n;var s="body { background: transparent !important; opacity: 0 !important; visibility: hidden !important; } html { opacity: 0 !important; visibility: hidden !important; }";o.styleSheet?o.styleSheet.cssText=s:o.appendChild(t.createTextNode(s)),r.firstChild?r.insertBefore(o,r.firstChild):r.appendChild(o),a._ps_conf={};var c={addScript:function(e){try{var n=t.createElement("script");if(n.type="text/javascript",n.async=!0,e.src?n.src=e.src:e.text&&(void 0!==n.text?n.text=e.text:n.appendChild(t.createTextNode(e.text))),i&&i.getAttribute){var o=i.getAttribute("nonce");o&&n.setAttribute("nonce",o)}n.onload=n.onreadystatechange=function(){this.readyState&&"loaded"!==this.readyState&&"complete"!==this.readyState||(n.onload=n.onreadystatechange=null,a._ps_conf&&a._ps_conf.pauseRenderForManualActivation?clearTimeout(d):c.revealPage())},n.onerror=function(){c.revealPage()},r.appendChild(n)}catch(e){throw c.revealPage(),e}},revealPage:function(){var e=t.getElementById(n);e&&e.parentNode&&e.parentNode.removeChild(e)}},d=setTimeout((function(){c.revealPage()}),1e4),p=c.revealPage;c.revealPage=function(){clearTimeout(d),p()};try{a._ps_conf&&a._ps_conf.pauseRenderForManualActivation&&(a.pagesense=a.pagesense||[],a.pagesense.push=function(e){e&&"activate"==e[0]&&c&&c.revealPage()}),a._ps_conf?a._ps_conf.version=e:a._ps_conf={version:e},c.addScript({src:"https://cdn-eu.pagesense.io/js/portaleswm/a01f018e8ebe4d4cadf1aa8128000557.js"})}catch(e){c.revealPage()}}}();
-    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <slot name="head" />
+
+    {/* Senza JavaScript le animazioni di ingresso non partono: mostriamo tutto subito. */}
+    <noscript>
+      <style>
+        [data-reveal] { opacity: 1 !important; transform: none !important; }
+        .rise { opacity: 1 !important; animation: none !important; }
+        [data-reveal] .gradient-text,
+        .rise .gradient-text { background-size: 100% 100% !important; }
+      </style>
+    </noscript>
+
     <ConsentInit />
   </head>
 
   <body>
     <a href="#main" class="skip-link">Vai al contenuto</a>
-    <span id="top"></span>
-    <Header home={home} minimal={minimal} />
-    <main id="main"><slot /></main>
-    <Footer home={home} />
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <Tracking />
     <CookieBanner />
 
     <script is:inline>
+      // Scroll reveal — un solo observer per tutta la pagina, con stagger automatico
       (function () {
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var nodes = document.querySelectorAll('[data-reveal]');
-        if (reduce || !('IntersectionObserver' in window)) { nodes.forEach(function (n) { n.classList.add('is-visible', 'is-done'); }); return; }
+        if (reduce || !('IntersectionObserver' in window)) {
+          nodes.forEach(function (n) { n.classList.add('is-visible'); });
+          return;
+        }
+        // stagger: elementi figli diretti di un contenitore [data-stagger]
         document.querySelectorAll('[data-stagger]').forEach(function (group) {
           var step = parseInt(group.getAttribute('data-stagger') || '90', 10);
           Array.prototype.forEach.call(group.children, function (child, i) {
-            if (child.hasAttribute('data-reveal')) child.style.setProperty('--reveal-delay', i * step + 'ms');
+            if (child.hasAttribute('data-reveal')) {
+              child.style.setProperty('--reveal-delay', i * step + 'ms');
+            }
           });
         });
         var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) { if (e.isIntersecting) { var t = e.target; t.classList.add('is-visible'); io.unobserve(t); var d = parseInt((t.style.getPropertyValue('--reveal-delay') || '0'), 10) || 0; setTimeout(function () { t.classList.add('is-done'); }, 950 + d); } });
-        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
         nodes.forEach(function (n) { io.observe(n); });
       })();
+
+      // Contatori che salgono quando entrano in viewport: <span data-count="45">
+      (function () {
+        var els = document.querySelectorAll('[data-count]');
+        if (!els.length) return;
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var run = function (el) {
+          var to = parseFloat(el.getAttribute('data-count')) || 0;
+          if (reduce) { el.textContent = to; return; }
+          var t0 = null, dur = 1600;
+          var tick = function (t) {
+            if (!t0) t0 = t;
+            var p = Math.min((t - t0) / dur, 1);
+            el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        };
+        if (!('IntersectionObserver' in window)) { els.forEach(run); return; }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { run(e.target); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.5 });
+        els.forEach(function (el) { io.observe(el); });
+      })();
+
+      // Inclinazione 3D al passaggio del mouse sulle card con [data-tilt]
+      (function () {
+        if (window.matchMedia('(prefers-reduced-motion: reduce), (hover: none)').matches) return;
+        document.querySelectorAll('[data-tilt]').forEach(function (card) {
+          card.addEventListener('mousemove', function (e) {
+            var r = card.getBoundingClientRect();
+            var x = (e.clientX - r.left) / r.width - 0.5;
+            var y = (e.clientY - r.top) / r.height - 0.5;
+            card.style.transform = 'perspective(900px) rotateX(' + (-y * 6).toFixed(2) + 'deg) rotateY(' + (x * 8).toFixed(2) + 'deg) translateY(-6px)';
+            card.style.setProperty('--mx', (x + 0.5) * 100 + '%');
+            card.style.setProperty('--my', (y + 0.5) * 100 + '%');
+          });
+          card.addEventListener('mouseleave', function () { card.style.transform = ''; });
+        });
+      })();
+
+      // Le animazioni dei mockup partono solo quando sono visibili
+      (function () {
+        var els = document.querySelectorAll('[data-play]');
+        if (!els.length) return;
+        if (!('IntersectionObserver' in window)) { els.forEach(function (el) { el.classList.add('playing'); }); return; }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { e.target.classList.toggle('playing', e.isIntersecting); });
+        }, { threshold: 0.2 });
+        els.forEach(function (el) { io.observe(el); });
+      })();
+
+      // Parallax leggero sugli elementi decorativi
+      (function () {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var items = document.querySelectorAll('[data-parallax]');
+        if (!items.length) return;
+        var ticking = false;
+        var update = function () {
+          var y = window.scrollY;
+          items.forEach(function (el) {
+            var speed = parseFloat(el.getAttribute('data-parallax')) || 0.12;
+            el.style.transform = 'translate3d(0,' + (-y * speed).toFixed(1) + 'px,0)';
+          });
+          ticking = false;
+        };
+        window.addEventListener('scroll', function () {
+          if (!ticking) { ticking = true; requestAnimationFrame(update); }
+        }, { passive: true });
+        update();
+      })();
+    </script>
+
+    <script is:inline>
+      // Misura delle conversioni: ogni clic su una CTA diventa un evento GA4
+      // (inviato solo se Analytics è attivo e nel rispetto del consenso).
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[href]');
+        if (!a || typeof window.crmhTrack !== 'function') return;
+        var h = a.getAttribute('href') || '';
+        var tipo =
+          /zohobookings/.test(h) ? 'cta_demo' :
+          /^\/guida/.test(h) ? 'cta_guida' :
+          /^\/download\/guida/.test(h) ? 'guida_download' :
+          /wa\.me/.test(h) ? 'cta_whatsapp' :
+          /^tel:/.test(h) ? 'cta_telefono' :
+          /^mailto:/.test(h) ? 'cta_email' :
+          /^\/contatti/.test(h) ? 'cta_contatti' :
+          '';
+        if (!tipo) return;
+        var zona = a.closest('header') ? 'header' : a.closest('footer') ? 'footer' : 'pagina';
+        window.crmhTrack(tipo, {
+          link_text: (a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80),
+          cta_zona: zona,
+          page_path: location.pathname,
+        });
+      });
     </script>
   </body>
 </html>

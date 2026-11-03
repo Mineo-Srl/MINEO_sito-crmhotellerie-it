@@ -1,0 +1,63 @@
+---
+/* Tutte le domande, divise per argomento. */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHead from '../components/PageHead.astro';
+import FaqList from '../components/FaqList.astro';
+import CTASection from '../components/CTASection.astro';
+import { faqGroups } from '../data/pages.js';
+
+const slug = (t) => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\W+/g, '-');
+const schema = [{
+  '@type': 'FAQPage',
+  mainEntity: faqGroups.flatMap((g) => g.items).map((f) => ({
+    '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+}];
+---
+
+<Base
+  title="Domande frequenti su CRM Hotellerie"
+  description="Risposte su CRM Hotellerie: cosa fa, come si integra con gestionale e portali, dati e privacy, costi e tempi."
+  breadcrumbs={[{ name: 'FAQ' }]}
+  schema={schema}
+>
+  <PageHead
+    eyebrow="Domande frequenti"
+    crumb="FAQ"
+    title="Tutto quello che "
+    highlight="ci chiedono gli albergatori"
+    actions={false}
+  >
+    <nav class="fq-nav rise" style="--d:300ms" aria-label="Argomenti">
+      {faqGroups.map((g) => <a href={`#${slug(g.title)}`}>{g.title}</a>)}
+    </nav>
+  </PageHead>
+
+  <section class="section">
+    <div class="container fq-grid">
+      {faqGroups.map((g) => (
+        <div class="fq-g" id={slug(g.title)}>
+          <h2 class="h3" data-reveal>{g.title}</h2>
+          <FaqList items={g.items} openFirst={false} />
+        </div>
+      ))}
+      <p class="fq-ask" data-reveal>
+        Non trovi la tua domanda? <a href="/contatti">Scrivici <Icon name="arrow" size={15} /></a>
+      </p>
+    </div>
+  </section>
+
+  <CTASection eyebrow="Il modo più veloce" title="La risposta migliore è vederlo" text="Sblocca la demo di Hotel Soleluna e prova tu stesso." />
+</Base>
+
+<style>
+  .fq-nav { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .fq-nav a { padding: 9px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,.2); color: #fff; font-size: .9rem; font-weight: 600; transition: background .25s var(--ease), border-color .25s var(--ease); }
+  .fq-nav a:hover { background: rgba(241,196,14,.12); border-color: var(--accent); }
+  .fq-grid { max-width: 860px; display: grid; gap: 52px; }
+  .fq-g { scroll-margin-top: 110px; }
+  .fq-g h2 { margin-bottom: 18px; }
+  .fq-ask { text-align: center; font-size: 1.05rem; }
+  .fq-ask a { display: inline-flex; align-items: center; gap: 6px; font-weight: 650; border-bottom: 2px solid var(--accent); }
+</style>

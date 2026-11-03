@@ -1,0 +1,61 @@
+---
+/* Contatti: le strade per parlare con noi, dalla più leggera alla più impegnativa. */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHead from '../components/PageHead.astro';
+import { site, whatsappUrl } from '../data/site.js';
+
+const ways = [
+  { icon: 'key', title: 'Sblocca la demo', text: 'Prova Hotel Soleluna da solo, quando vuoi.', cta: 'Vai alla demo', href: '/demo', primary: true },
+  { icon: 'calendar', title: 'Prenota una consulenza', text: 'Trenta minuti in videochiamata, gratis. Scegli tu giorno e ora.', cta: 'Apri l’agenda', href: site.bookings },
+  { icon: 'whatsapp', title: 'Scrivici su WhatsApp', text: 'Per una domanda veloce. Rispondiamo il prima possibile.', cta: site.whatsapp, href: whatsappUrl },
+  { icon: 'mail', title: 'Mandaci un’email', text: 'Per richieste più articolate o materiali da condividere.', cta: site.email, href: `mailto:${site.email}` },
+];
+const ext = (h) => /^https?:/.test(h);
+---
+
+<Base
+  title="Contatti"
+  description={`Contatta CRM Hotellerie (${site.legal}): demo gratuita, consulenza in videochiamata, WhatsApp o email.`}
+  breadcrumbs={[{ name: 'Contatti' }]}
+>
+  <PageHead eyebrow="Contatti" title="Parliamone, " highlight="nel modo che preferisci" actions={false} />
+
+  <section class="section">
+    <div class="container">
+      <div class="ways" data-stagger="100">
+        {ways.map((w) => (
+          <a href={w.href} class:list={['way', { pri: w.primary }]} target={ext(w.href) ? '_blank' : undefined} rel={ext(w.href) ? 'noopener noreferrer' : undefined} data-reveal data-tilt>
+            <span class="way-ic"><Icon name={w.icon} size={22} /></span>
+            <h2 class="h4">{w.title}</h2>
+            <p>{w.text}</p>
+            <span class="way-cta">{w.cta} <Icon name={ext(w.href) ? 'arrowUpRight' : 'arrow'} size={15} /></span>
+          </a>
+        ))}
+      </div>
+
+      <div class="addr" data-reveal>
+        <Icon name="pin" size={20} />
+        <p><b>{site.legal}</b> · {site.street}, {site.zip} {site.city} ({site.province}) · {site.vat} · PEC <a href={`mailto:${site.pec}`}>{site.pec}</a></p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ways { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+  .way { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 26px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: #fff; }
+  .way:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); }
+  .way p { color: var(--muted); font-size: .94rem; flex: 1; }
+  .way-ic { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 8px; border-radius: 14px; background: var(--accent); }
+  .way-cta { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-weight: 650; font-size: .92rem; border-bottom: 2px solid var(--accent); align-self: flex-start; word-break: break-all; }
+  .way.pri { background: var(--black); border-color: var(--black); color: #fff; }
+  .way.pri p { color: var(--muted-dark); }
+  @media (max-width: 1000px) { .ways { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .ways { grid-template-columns: 1fr; } }
+  .addr { display: flex; gap: 12px; align-items: flex-start; margin-top: 32px; padding: 20px 24px; border-radius: var(--radius); background: var(--paper); }
+  .addr :global(svg) { flex: none; color: var(--accent-700); margin-top: 3px; }
+  .addr p { color: var(--muted); }
+  .addr b { color: var(--text); }
+  .addr a { border-bottom: 2px solid var(--accent); }
+</style>

@@ -1,0 +1,55 @@
+---
+/* Prezzi: licenze Zoho e lavoro Mineo separati. Importi Mineo SEGNAPOSTO in site.js. */
+import Icon from '../Icon.astro';
+import { site, pricing } from '../../data/site.js';
+
+interface Props { more?: boolean; head?: boolean }
+const { more = false, head = true } = Astro.props;
+---
+
+<section class="section" id="prezzi">
+  <div class="container">
+    {head && (
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow">Prezzi</p>
+        <h2 class="h2">Quanto costa, <span class="gradient-text">senza sorprese</span></h2>
+        <p class="lead">Due voci separate e trasparenti. Esempio: {pricing.example.toLowerCase()}.</p>
+      </div>
+    )}
+    <div class="price" data-reveal="scale">
+      <ul class="price-rows">
+        {pricing.rows.map((r) => (
+          <li>
+            <div>
+              <b>{r.label}</b>
+              <small>{r.note}{r.link && <> <a href={r.link} target="_blank" rel="noopener noreferrer">Listino Zoho</a></>}</small>
+            </div>
+            <span class:list={['price-v', { todo: !r.value }]}>{r.value ?? 'da [importo] €'}</span>
+          </li>
+        ))}
+      </ul>
+      <div class="price-side">
+        <ul class="check-list">{pricing.reassure.map((x) => <li>{x}</li>)}</ul>
+        <a href="/demo" class="btn btn-primary">Prima prova la demo <Icon name="arrow" size={17} /></a>
+        {more
+          ? <a href="/prezzi" class="link-arrow">Cosa è incluso <Icon name="arrow" size={15} /></a>
+          : <a href={site.bookings} class="link-arrow" target="_blank" rel="noopener noreferrer">Chiedi un preventivo <Icon name="arrowUpRight" size={15} /></a>}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .price { display: grid; grid-template-columns: 1.4fr .8fr; border-radius: var(--radius-xl); border: 1px solid var(--line); overflow: hidden; box-shadow: var(--shadow); background: #fff; }
+  .price-rows { display: grid; }
+  .price-rows li { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 28px; border-bottom: 1px solid var(--line); }
+  .price-rows li:last-child { border-bottom: 0; }
+  .price-rows b { display: block; font-size: 1.02rem; }
+  .price-rows small { display: block; margin-top: 4px; color: var(--muted); font-size: .88rem; }
+  .price-rows small a { color: var(--text); border-bottom: 2px solid var(--accent); }
+  .price-v { flex: none; font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; text-align: right; max-width: 220px; }
+  .price-v.todo { padding: 4px 10px; border-radius: 8px; background: #ffe7e2; color: #b02a10; font-size: .9rem; }
+  .price-side { display: flex; flex-direction: column; gap: 18px; padding: 28px; background: var(--paper); }
+  .price-side .btn, .price-side .link-arrow { align-self: flex-start; }
+  @media (max-width: 900px) { .price { grid-template-columns: 1fr; } .price-rows li { flex-direction: column; align-items: flex-start; } .price-v { text-align: left; } }
+</style>

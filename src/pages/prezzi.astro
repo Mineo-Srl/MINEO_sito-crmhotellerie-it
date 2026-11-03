@@ -1,0 +1,72 @@
+---
+/* Capitolo 5 · Quanto costa. Importi Mineo SEGNAPOSTO in site.js (pricing). */
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHead from '../components/PageHead.astro';
+import Pricing from '../components/sections/Pricing.astro';
+import FaqList from '../components/FaqList.astro';
+import NextPage from '../components/NextPage.astro';
+import { prezzi } from '../data/pages.js';
+import { pricing } from '../data/site.js';
+---
+
+<Base
+  title="Prezzi di CRM Hotellerie: licenze Zoho e configurazione"
+  description="Quanto costa CRM Hotellerie: licenze Zoho pagate direttamente a Zoho e lavoro di configurazione Mineo, separati. Cosa è incluso e un esempio per un hotel di 25 camere."
+  keywords={['prezzo CRM hotel', 'costo Zoho CRM hotel', 'quanto costa CRM alberghiero']}
+  breadcrumbs={[{ name: 'Prezzi' }]}
+>
+  <PageHead
+    eyebrow="Quanto costa"
+    crumb="Prezzi"
+    title="Due voci, "
+    highlight="nessuna sorpresa"
+    lead={`Le licenze Zoho le paghi direttamente a Zoho, intestate al tuo hotel. Il nostro lavoro è a parte, con un preventivo scritto. Esempio: ${pricing.example.toLowerCase()}.`}
+    actions={false}
+  />
+
+  <Pricing head={false} />
+
+  <!-- Cosa è incluso -->
+  <section class="section section-paper">
+    <div class="container inc-grid">
+      <div data-reveal="left">
+        <p class="eyebrow">Nella configurazione</p>
+        <h2 class="h2">Cosa <span class="gradient-text">è incluso</span></h2>
+        <ul class="check-list mt-4">{prezzi.included.map((x) => <li>{x}</li>)}</ul>
+      </div>
+      <div class="inc-not" data-reveal="right">
+        <h3 class="h4">Non incluso</h3>
+        <ul>{prezzi.notIncluded.map((x) => <li><Icon name="close" size={15} stroke={2.4} /> {x}</li>)}</ul>
+        <div class="inc-tip">
+          <Icon name="calc" size={20} />
+          <p>Prima di parlare di cifre, guarda quanto paghi oggi ai portali: <a href="/calcolatore">fai il calcolo</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow">
+      <div class="section-head center" data-reveal>
+        <p class="eyebrow">Domande sui costi</p>
+        <h2 class="h2">Le risposte <span class="gradient-text">che cerchi</span></h2>
+      </div>
+      <FaqList items={prezzi.faq} />
+    </div>
+  </section>
+
+  <NextPage current="/prezzi" />
+</Base>
+
+<style>
+  .inc-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: clamp(32px, 5vw, 64px); align-items: start; }
+  .inc-not { padding: 28px; border-radius: var(--radius-lg); background: #fff; border: 1px solid var(--line); }
+  .inc-not ul { display: grid; gap: 12px; margin-top: 14px; }
+  .inc-not li { display: flex; gap: 10px; color: var(--muted); }
+  .inc-not li :global(svg) { flex: none; margin-top: 4px; color: var(--grey); }
+  .inc-tip { display: flex; gap: 12px; margin-top: 22px; padding: 16px; border-radius: 14px; background: var(--accent-50); }
+  .inc-tip :global(svg) { flex: none; color: var(--accent-700); }
+  .inc-tip a { font-weight: 650; border-bottom: 2px solid var(--accent); }
+  @media (max-width: 860px) { .inc-grid { grid-template-columns: 1fr; } }
+</style>

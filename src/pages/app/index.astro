@@ -1,0 +1,68 @@
+---
+/* Capitolo 3 · Gli strumenti: le sette app, raggruppate per momento,
+   ciascuna con la sua anteprima animata e il link alla pagina dedicata. */
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import PageHead from '../../components/PageHead.astro';
+import AppVisual from '../../components/AppVisual.astro';
+import NextPage from '../../components/NextPage.astro';
+import { apps, phases } from '../../data/apps.js';
+---
+
+<Base
+  title="Le 7 app di marketing per hotel su Zoho"
+  description="PageSense, SalesIQ, Forms, Marketing Automation, Social, Survey e Thrive: le sette app Zoho di CRM Hotellerie, configurate per far prenotare e tornare gli ospiti."
+  keywords={['app Zoho hotel', 'marketing hotel Zoho', 'PageSense', 'SalesIQ', 'Zoho Forms', 'Marketing Automation', 'Zoho Social', 'Zoho Survey', 'Zoho Thrive']}
+  breadcrumbs={[{ name: 'Le app' }]}
+>
+  <PageHead
+    eyebrow="Gli strumenti"
+    crumb="Le app"
+    title="Sette app Zoho, "
+    highlight="un solo ospite al centro"
+    lead="Ognuna fa una cosa precisa in uno dei tre momenti del percorso. Tutte scrivono nella stessa scheda dell’ospite. Si attivano una alla volta, quando servono."
+  />
+
+  <section class="section">
+    <div class="container">
+      {Object.keys(phases).map((k, n) => (
+        <div class="grp">
+          <p class="grp-h" data-reveal><span>{n + 1}</span> {phases[k]}</p>
+          <div class="cards" data-stagger="120">
+            {apps.filter((a) => a.phase === k).map((a) => (
+              <a href={`/${a.slug}`} class="app" data-reveal data-tilt>
+                <div class="app-txt">
+                  <span class="icon-chip"><Icon name={a.icon} /></span>
+                  <h2 class="h3">{a.name}</h2>
+                  <p class="app-menu">{a.menu}</p>
+                  <p>{a.site}</p>
+                  <span class="app-more">Scopri {a.name} <Icon name="arrow" size={16} /></span>
+                </div>
+                <div class="app-vis"><AppVisual type={a.visual} compact /></div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <NextPage current="/app" />
+</Base>
+
+<style>
+  .grp + .grp { margin-top: 56px; }
+  .grp-h { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; }
+  .grp-h span { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--black); color: var(--accent); font-size: 1rem; }
+  .cards { display: grid; gap: 20px; }
+  .app { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; padding: 28px; border-radius: var(--radius-xl); background: var(--paper); border: 1px solid var(--line); overflow: hidden; }
+  .app:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); }
+  .app:nth-child(even) .app-txt { order: 2; }
+  .app-menu { margin-top: 6px; font-weight: 650; }
+  .app-txt p:not(.app-menu) { margin-top: 10px; color: var(--muted); }
+  .app-more { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; font-weight: 650; border-bottom: 2px solid var(--accent); }
+  .app-more :global(svg) { transition: transform .3s var(--ease-out); }
+  .app:hover .app-more :global(svg) { transform: translateX(5px); }
+  .app-vis { display: flex; justify-content: center; }
+  @media (max-width: 900px) { .app { grid-template-columns: 1fr; } .app:nth-child(even) .app-txt { order: 0; } }
+</style>
