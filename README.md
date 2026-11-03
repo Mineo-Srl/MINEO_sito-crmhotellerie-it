@@ -1,4 +1,7 @@
-# CRM Hotellerie — versione "emozione"
+# CRM Hotellerie — variante azzurra
+
+Stessa struttura e contenuti di `~/Desktop/crmhotellerie_emozione`, con il giallo sostituito dall’azzurro
+(ciano 30%: `--accent: #b0dff7` e tonalità collegate in `src/styles/global.css`). Anteprima porta 4338.
 
 Variante del sito (copia di `Claude Workspace/crmhotelleriesito`) riscritta sull'analisi di
 conversione: messaggio sul risultato, demo come azione principale, prova sociale, prezzi,
@@ -31,4 +34,4 @@ Testi delle pagine interne in `src/data/pages.js`, sezioni condivise in `src/com
 4. SalesIQ: creare i trigger sulle azioni `lettura_60s_prezzi`, `lettura_60s_faq`, `calcolatore_usato`.
 5. PageSense: progetto dedicato a crmhotellerie.it con obiettivi `lead_form`, `booking_completed`, clic CTA.
 
-Anteprima: doppio clic su **Anteprima sito.command** (porta 4336). Zip: `npm run package` → `deploy/`.
+Anteprima: doppio clic su **Anteprima sito.command** (porta 4338). Zip: `npm run package` → `deploy/`.

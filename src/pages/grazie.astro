@@ -117,13 +117,13 @@ const tasks = [
   .ty { padding-block: clamp(56px, 7vw, 100px); }
   .ty-grid { display: grid; grid-template-columns: 1.3fr .7fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
   @media (max-width: 900px) { .ty-grid { grid-template-columns: 1fr; } }
-  .ty-check { display: inline-grid; place-items: center; width: 76px; height: 76px; margin-bottom: 24px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 rgba(241,196,14,.6); animation: rise-in .95s var(--ease-out) forwards, ring 2.4s ease-out 1s infinite; }
+  .ty-check { display: inline-grid; place-items: center; width: 76px; height: 76px; margin-bottom: 24px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 rgba(176,223,247,.6); animation: rise-in .95s var(--ease-out) forwards, ring 2.4s ease-out 1s infinite; }
   .ty-check path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw-line .6s var(--ease-out) .5s forwards; }
-  @keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(241,196,14,.55); } 80%, 100% { box-shadow: 0 0 0 22px rgba(241,196,14,0); } }
+  @keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(176,223,247,.55); } 80%, 100% { box-shadow: 0 0 0 22px rgba(176,223,247,0); } }
   .ty .lead { margin-top: 20px; max-width: 52ch; }
   .ty .btn-row { margin-top: 32px; }
   .ty-meta { margin-top: 14px; font-size: .88rem; }
-  .ty-demo { position: relative; justify-self: center; display: block; width: min(440px, 100%); border-radius: 16px; overflow: hidden; background: #fff; box-shadow: 0 34px 70px -22px rgba(0,0,0,.9), 0 0 0 6px rgba(241,196,14,.2); transform: rotate(2deg); transition: transform .5s var(--ease-out); }
+  .ty-demo { position: relative; justify-self: center; display: block; width: min(440px, 100%); border-radius: 16px; overflow: hidden; background: #fff; box-shadow: 0 34px 70px -22px rgba(0,0,0,.9), 0 0 0 6px rgba(176,223,247,.2); transform: rotate(2deg); transition: transform .5s var(--ease-out); }
   .ty-demo:hover { transform: rotate(0) translateY(-6px); }
   .ty-browser { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #f1f1f1; }
   .ty-browser i { width: 9px; height: 9px; border-radius: 50%; background: #ccc; }

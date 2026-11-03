@@ -139,7 +139,7 @@ import { appBySlug } from '../data/apps.js';
   .m-apps { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
   .m-apps a { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 100px; background: var(--accent-100); font-size: .86rem; font-weight: 650; transition: background .25s var(--ease); }
   .m-apps a:hover { background: var(--accent); }
-  .moment.alt .m-apps a { background: rgba(241,196,14,.14); color: var(--accent); }
+  .moment.alt .m-apps a { background: rgba(176,223,247,.14); color: var(--accent); }
   .moment.alt .m-apps a:hover { background: var(--accent); color: #000; }
   @media (max-width: 860px) { .moment { grid-template-columns: 1fr; } }
 
@@ -153,7 +153,7 @@ import { appBySlug } from '../data/apps.js';
   .dash { margin-top: 40px; padding: 28px; border-radius: var(--radius-lg); background: rgba(255,255,255,.04); border: 1px solid var(--line-dark); }
   .dash-bars { display: grid; grid-template-columns: repeat(12, 1fr); align-items: end; gap: 10px; height: 200px; }
   .dash-bars span { position: relative; display: flex; align-items: flex-end; height: 100%; }
-  .dash-bars i { display: block; width: 100%; height: var(--v); border-radius: 8px 8px 3px 3px; background: linear-gradient(180deg, var(--accent), rgba(241,196,14,.35)); transform-origin: bottom; }
+  .dash-bars i { display: block; width: 100%; height: var(--v); border-radius: 8px 8px 3px 3px; background: linear-gradient(180deg, var(--accent), rgba(176,223,247,.35)); transform-origin: bottom; }
   .dash-bars em { position: absolute; left: 0; right: 0; bottom: calc(var(--v) + 6px); text-align: center; font-style: normal; font-size: .72rem; color: var(--muted-dark); }
   .dash.playing .dash-bars i { animation: grow-y 1s var(--ease-out) calc(var(--i) * 70ms) both; }
   @keyframes grow-y { from { transform: scaleY(0); } }

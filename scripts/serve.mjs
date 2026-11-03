@@ -17,7 +17,7 @@ import { execFile } from 'node:child_process';
 
 const PROJECT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ROOT = resolve(process.argv[2] || join(PROJECT, 'dist'));
-const PORT = Number(process.argv[3] || 4336);
+const PORT = Number(process.argv[3] || 4338);
 
 if (!existsSync(ROOT)) {
   console.error(`✗ Cartella "${ROOT}" inesistente. Esegui prima "npm run build".`);

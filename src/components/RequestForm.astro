@@ -80,17 +80,17 @@ const id = `zf-${topic ? topic.toLowerCase().replace(/\W+/g, '-') : 'home'}`;
 </script>
 
 <style>
-  .rq-blob { width: 480px; height: 480px; right: -140px; top: -120px; background: rgba(241,196,14,.28); }
+  .rq-blob { width: 480px; height: 480px; right: -140px; top: -120px; background: rgba(176,223,247,.28); }
   .rq-grid { display: grid; grid-template-columns: 1fr minmax(0, 480px); gap: clamp(36px, 5vw, 72px); align-items: center; }
   .rq .check-list li { color: #fff; }
-  .rq-calc { display: flex; align-items: center; gap: 12px; margin-top: 24px; padding: 14px 18px; border-radius: 16px; background: rgba(241,196,14,.12); border: 1px solid rgba(241,196,14,.4); }
+  .rq-calc { display: flex; align-items: center; gap: 12px; margin-top: 24px; padding: 14px 18px; border-radius: 16px; background: rgba(176,223,247,.12); border: 1px solid rgba(176,223,247,.4); }
   .rq-calc[hidden] { display: none; }
   .rq-calc :global(svg) { color: var(--accent); flex: none; }
   .rq-calc p { color: #fff !important; font-size: .95rem; }
   .rq-calc b { color: var(--accent); }
   .rq-alt { margin-top: 28px; font-size: .95rem; }
   .rq-alt a { display: inline-flex; align-items: center; gap: 6px; margin-left: 4px; color: #fff; font-weight: 650; border-bottom: 2px solid var(--accent); }
-  .rq-form { padding: 20px; border-radius: var(--radius-lg); background: #fff; box-shadow: 0 40px 80px -30px rgba(0,0,0,.8), 0 0 0 6px rgba(241,196,14,.25); }
+  .rq-form { padding: 20px; border-radius: var(--radius-lg); background: #fff; box-shadow: 0 40px 80px -30px rgba(0,0,0,.8), 0 0 0 6px rgba(176,223,247,.25); }
   .rq-head { display: flex; align-items: center; gap: 12px; padding: 4px 4px 14px; border-bottom: 1px solid var(--line); }
   .rq-key { display: grid; place-items: center; width: 42px; height: 42px; flex: none; border-radius: 50%; background: var(--accent); color: #000; animation: key-turn 3.2s var(--ease) 1.2s infinite; }
   @keyframes key-turn { 0%, 70%, 100% { transform: rotate(0); } 80% { transform: rotate(-18deg); } 90% { transform: rotate(8deg); } }

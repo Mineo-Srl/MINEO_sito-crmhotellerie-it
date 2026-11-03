@@ -169,14 +169,14 @@ const groupActive = (item) =>
   .brand { flex: none; display: inline-flex; align-items: center; gap: 14px; }
   .brand-sep { width: 1px; height: 30px; background: var(--line); }
   .brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: -.02em; line-height: 1; white-space: nowrap; }
-  .brand-name b { font-weight: 800; margin-left: 4px; background: linear-gradient(transparent 60%, rgba(241,196,14,.6) 60%); padding-inline: 2px; }
+  .brand-name b { font-weight: 800; margin-left: 4px; background: linear-gradient(transparent 60%, rgba(176,223,247,.6) 60%); padding-inline: 2px; }
   .header-call { flex: none; font-size: .9rem; font-weight: 600; white-space: nowrap; border-bottom: 2px solid var(--accent); padding-bottom: 1px; }
   .header-call:hover { border-color: var(--black); }
   @media (max-width: 1400px) { .header-call { display: none; } }
   .main-nav .nav-link { padding-inline: 11px; }
   .mobile-nav a.m-soft { text-align: center; margin-top: 6px; font-size: .9rem; color: var(--muted); }
   .header-guide { animation: glow-pulse 3s ease-in-out 2s infinite; }
-  @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(241,196,14,0); } 50% { box-shadow: 0 0 0 6px rgba(241,196,14,.25); } }
+  @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(176,223,247,0); } 50% { box-shadow: 0 0 0 6px rgba(176,223,247,.25); } }
   .header-cta { display: inline-flex; align-items: center; flex: none; padding: 9px 18px; border-radius: 100px; background: var(--black); color: #fff; font-size: .88rem; font-weight: 650; white-space: nowrap; transition: transform .25s var(--ease), box-shadow .25s var(--ease); }
   .header-cta:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
   .mobile-nav a.m-cta { display: flex; justify-content: center; margin-top: 10px; padding: 14px 18px; border-radius: 100px; background: var(--black); color: #fff; font-weight: 650; }
@@ -414,7 +414,7 @@ const groupActive = (item) =>
     white-space: nowrap;
     transition: background .25s var(--ease), transform .25s var(--ease);
   }
-  .header-guide:hover { background: #ffd52e; transform: translateY(-1px); }
+  .header-guide:hover { background: #c9eafa; transform: translateY(-1px); }
   .mobile-nav a.m-guide {
     display: flex;
     align-items: center;
@@ -427,7 +427,7 @@ const groupActive = (item) =>
     color: var(--black);
     font-weight: 650;
   }
-  .mobile-nav a.m-guide:hover { background: #ffd52e; }
+  .mobile-nav a.m-guide:hover { background: #c9eafa; }
 
   @media (max-width: 1240px) {
     .header-guide, .header-cta, .header-call { display: none; }

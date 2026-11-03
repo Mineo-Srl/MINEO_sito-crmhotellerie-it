@@ -18,7 +18,7 @@ npm run build
 
 STAMP="$(date +%Y%m%d-%H%M)"
 OUT="$ROOT/deploy"
-ZIP="$OUT/crmhotellerie-emozione-$STAMP.zip"
+ZIP="$OUT/crmhotellerie-azzurro-$STAMP.zip"
 mkdir -p "$OUT"
 
 # Pulizia di eventuali file di sistema
@@ -30,9 +30,9 @@ rm -f "$ZIP"
 ( cd dist && zip -q -r -X "$ZIP" . -x '.*' -x '__MACOSX/*' )
 
 # Copia "latest" sempre allo stesso nome, comoda per gli upload ricorrenti
-cp "$ZIP" "$OUT/crmhotellerie-emozione-latest.zip"
+cp "$ZIP" "$OUT/crmhotellerie-azzurro-latest.zip"
 
 echo "✓ Fatto:"
 echo "  $ZIP"
-echo "  $OUT/crmhotellerie-emozione-latest.zip"
+echo "  $OUT/crmhotellerie-azzurro-latest.zip"
 ls -lh "$ZIP" | awk '{print "  dimensione: " $5}'

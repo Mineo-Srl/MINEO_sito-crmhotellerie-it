@@ -1,6 +1,6 @@
 /* ==========================================================================
    Mineo & Partners — Design System
-   Colori aziendali: nero #000000 · giallo #f1c40e · grigio #727070
+   Colori aziendali: nero #000000 · azzurro #b0dff7 · grigio #727070
    ========================================================================== */
 
 /* ---------- Fonts (self-hosted, GDPR friendly) ---------- */
@@ -43,12 +43,12 @@
   --ink-2:        #151515;
   --ink-3:        #232323;
 
-  --accent:       #f1c40e;   /* giallo aziendale */
-  --accent-600:   #d9ad0a;   /* hover / bordi */
-  --accent-700:   #9a7806;   /* giallo scuro: unico giallo leggibile su bianco */
-  --accent-200:   #fae9a4;
-  --accent-100:   #fdf3cd;
-  --accent-50:    #fefaea;
+  --accent:       #b0dff7;   /* ciano 30% (C30 M0 Y0 K0) */
+  --accent-600:   #6cc4ec;   /* hover / bordi */
+  --accent-700:   #0a6a99;   /* azzurro scuro: unico azzurro leggibile su bianco */
+  --accent-200:   #d6effb;
+  --accent-100:   #e7f6fd;
+  --accent-50:    #f4fbfe;
 
   --grey:         #727070;   /* grigio aziendale */
   --grey-600:     #5c5a5a;
@@ -82,7 +82,7 @@
   --shadow-sm: 0 1px 2px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.04);
   --shadow: 0 4px 12px rgba(0,0,0,.05), 0 16px 40px -12px rgba(0,0,0,.12);
   --shadow-lg: 0 8px 24px rgba(0,0,0,.07), 0 32px 64px -20px rgba(0,0,0,.24);
-  --shadow-accent: 0 10px 28px -8px rgba(241,196,14,.55);
+  --shadow-accent: 0 10px 28px -8px rgba(176,223,247,.55);
 
   /* Motion */
   --ease: cubic-bezier(.22,.61,.36,1);
@@ -143,8 +143,8 @@ p { text-wrap: pretty; }
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(900px 520px at 12% -10%, rgba(241,196,14,.14), transparent 62%),
-    radial-gradient(760px 420px at 92% 8%, rgba(241,196,14,.07), transparent 64%),
+    radial-gradient(900px 520px at 12% -10%, rgba(176,223,247,.14), transparent 62%),
+    radial-gradient(760px 420px at 92% 8%, rgba(176,223,247,.07), transparent 64%),
     linear-gradient(180deg, var(--black), var(--ink-2));
   color: #fff;
 }
@@ -205,7 +205,7 @@ p { text-wrap: pretty; }
    su scuro è testo giallo pieno. */
 .gradient-text {
   color: var(--text);
-  background-image: linear-gradient(transparent 58%, rgba(241,196,14,.55) 58%);
+  background-image: linear-gradient(transparent 58%, rgba(176,223,247,.55) 58%);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   -webkit-box-decoration-break: clone;
@@ -248,9 +248,9 @@ p { text-wrap: pretty; }
   box-shadow: var(--shadow-accent);
 }
 .btn-primary:hover {
-  background: #ffd52e;
+  background: #c9eafa;
   transform: translateY(-2px);
-  box-shadow: 0 16px 34px -10px rgba(241,196,14,.75);
+  box-shadow: 0 16px 34px -10px rgba(176,223,247,.75);
 }
 .btn-dark { background: var(--black); color: #fff; }
 .btn-dark:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
@@ -356,8 +356,8 @@ p { text-wrap: pretty; }
 .card:hover .icon-chip { transform: translateY(-3px) rotate(-4deg); }
 .icon-chip svg { width: 25px; height: 25px; }
 .card-dark .icon-chip {
-  background: rgba(241,196,14,.14);
-  border-color: rgba(241,196,14,.32);
+  background: rgba(176,223,247,.14);
+  border-color: rgba(176,223,247,.32);
   color: var(--accent);
 }
 .icon-chip-alt {
@@ -423,12 +423,12 @@ p { text-wrap: pretty; }
 .pointer span::before {
   content: '';
   width: 16px; height: 16px; flex: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d9ad0a' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236cc4ec' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 .section-dark .pointer { border-color: var(--line-dark); }
 .section-dark .pointer span { color: #fff; }
 .section-dark .pointer span::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f1c40e' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b0dff7' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
 }
 
 /* Pill / badge */
@@ -453,13 +453,13 @@ p { text-wrap: pretty; }
 .badge .dot {
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 0 rgba(241,196,14,.7);
+  box-shadow: 0 0 0 0 rgba(176,223,247,.7);
   animation: pulse-dot 2.4s infinite;
 }
 @keyframes pulse-dot {
-  0%   { box-shadow: 0 0 0 0 rgba(241,196,14,.6); }
-  70%  { box-shadow: 0 0 0 9px rgba(241,196,14,0); }
-  100% { box-shadow: 0 0 0 0 rgba(241,196,14,0); }
+  0%   { box-shadow: 0 0 0 0 rgba(176,223,247,.6); }
+  70%  { box-shadow: 0 0 0 9px rgba(176,223,247,0); }
+  100% { box-shadow: 0 0 0 0 rgba(176,223,247,0); }
 }
 
 /* ---------- Decorative ---------- */
@@ -682,7 +682,7 @@ p { text-wrap: pretty; }
 [data-tilt] { transition: transform .25s var(--ease-out), box-shadow .45s var(--ease-out), border-color .3s var(--ease); }
 .card[data-tilt]::before {
   content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(241,196,14,.18), transparent 60%);
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(176,223,247,.18), transparent 60%);
   opacity: 0; transition: opacity .3s var(--ease);
 }
 .card[data-tilt]:hover::before { opacity: 1; }

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "serve": "node scripts/serve.mjs dist 4336",
+    "serve": "node scripts/serve.mjs dist 4338",
     "package": "bash scripts/package.sh",
     "astro": "astro"
   },
