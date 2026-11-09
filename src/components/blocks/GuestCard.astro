@@ -1,0 +1,35 @@
+---
+/* Scheda ospite dimostrativa "Giulia R." della guida. */
+const rows = [
+  ['Ultimo soggiorno', 'Agosto · Junior suite · mezza pensione'],
+  ['Canale', 'La prima volta da un portale, poi sempre dal sito'],
+  ['Spesa extra media', '160 € a soggiorno (spa, cena)'],
+  ['Interessi', 'Spa · Enogastronomia · Bici'],
+  ['Consensi', 'Privacy, newsletter, WhatsApp'],
+];
+---
+<figure class="gc-wrap">
+  <div class="gc">
+    <div class="gc-head">
+      <span class="gc-av">GR</span>
+      <span class="gc-name"><strong>Giulia R.</strong><span>Ospite abituale · 4 soggiorni</span></span>
+      <span class="gc-badge">Abituale</span>
+    </div>
+    <dl>{rows.map(([k, v]) => <div><dt class="label">{k}</dt><dd>{v}</dd></div>)}</dl>
+    <p class="gc-next"><strong>Prossima azione.</strong> Offerta weekend spa a marzo, inviata solo a ospiti abituali interessati alla spa.</p>
+  </div>
+  <figcaption class="caption">Esempio con dati dimostrativi.</figcaption>
+</figure>
+<style>
+  .gc { border: 1.5px solid #c9c9c4; border-radius: 18px; padding: 26px; background: #fff; box-shadow: 0 30px 60px -36px rgba(0,0,0,.35); }
+  .gc-head { display: flex; align-items: center; gap: 14px; padding-bottom: 18px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+  .gc-av { width: 52px; height: 52px; border-radius: 50%; background: var(--yellow); color: #fff; display: grid; place-items: center; font-family: var(--font-head); font-weight: 700; font-size: 1.25rem; flex: none; }
+  .gc-name { display: grid; flex: 1; }
+  .gc-name strong { font-family: var(--font-head); font-size: 1.5rem; line-height: 1.1; }
+  .gc-name span { color: var(--muted); font-size: .92rem; }
+  .gc-badge { background: var(--black); color: #fff; font-weight: 700; font-size: .85rem; padding: 4px 14px; border-radius: 999px; }
+  dl { display: grid; gap: 12px; }
+  dt.label { margin-bottom: 0; font-size: .74rem; }
+  dd { color: var(--ink); }
+  .gc-next { margin-top: 20px; background: var(--yellow-soft); border-radius: 12px; padding: 14px 16px; color: var(--ink); }
+</style>

@@ -1,39 +1,91 @@
 ---
-import Logo from './Logo.astro';
-import { site, u } from '../data/site.js';
-
-interface Props { home?: boolean; }
-const { home = false } = Astro.props;
+import { existsSync } from 'node:fs';
+const newLogo = existsSync('public/img/logo-crm-hotellerie.png');
+import Icon from './Icon.astro';
+import { site, whatsappUrl, segments } from '../data/site.js';
+import { features, featureHref } from '../data/features.js';
+const year = new Date().getFullYear();
+const sistema = features.filter((f) => f.group === 'sistema');
+const reparti = features.filter((f) => f.group === 'reparti');
 ---
-
-<footer class="ftr">
-  <div class="container ftr-in">
-    <a href={site.mainSite} target="_blank" rel="noopener" aria-label="Mineo Srl — sito aziendale" class="ftr-mineo"><Logo light height={42} /></a>
-    <a href={u('/')} class="ftr-logo">{site.product}</a>
-
-    <p class="ftr-line">
-      © 2026 <a href={site.mainSite} target="_blank" rel="noopener">{site.legal}</a> · {site.vat} · {site.tagline}
-    </p>
-
-    <p class="ftr-legal">
-      <a href={u('/privacy-policy')}>Privacy Policy</a>
-      <span aria-hidden="true">·</span>
-      <a href={u('/cookie-policy')}>Cookie Policy</a>
-      <span aria-hidden="true">·</span>
-      <button type="button" class="ftr-btn" data-cookie-settings>Preferenze cookie</button>
-    </p>
+<footer class="footer section-dark">
+  <div class="container">
+    <div class="f-top">
+      <div class="f-brand">
+        {newLogo ? (
+          <span class="f-logo"><img src="/img/logo-crm-hotellerie.png" alt="Mineo · CRM Hotellerie" width="1000" height="271" loading="lazy" /></span>
+        ) : (
+          <img src="/img/logo-mineo-light.webp" alt="Mineo" width="128" height="48" loading="lazy" />
+        )}
+        <p class="f-claim">CRM Hotellerie: un unico software per marketing, prenotazioni, gestione del personale e fatturazione. I dati restano tuoi.</p>
+        <ul class="f-contacts">
+          <li><a href={`mailto:${site.email}`}><Icon name="mail" size={18} /> {site.email}</a></li>
+          <li><a href={whatsappUrl} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> {site.whatsapp}</a></li>
+          <li><span><Icon name="pin" size={18} /> {site.address}</span></li>
+        </ul>
+        <img class="f-partner" src="/img/partner-autorizzato-zoho.webp" alt="Zoho Authorized Partner" width="180" height="50" loading="lazy" />
+      </div>
+      <nav class="f-cols" aria-label="Menu del piè di pagina">
+        <div>
+          <p class="f-title">Funzionalità</p>
+          <ul>{sistema.map((f) => <li><a href={featureHref(f.slug)}>{f.name}</a></li>)}</ul>
+        </div>
+        <div>
+          <p class="f-title">App per i reparti</p>
+          <ul>{reparti.map((f) => <li><a href={featureHref(f.slug)}>{f.name}</a></li>)}</ul>
+          <p class="f-title mt">La tua soluzione</p>
+          <ul><li><a href="/trova-la-soluzione/">Componi la tua soluzione</a></li><li><a href="/il-software/">Tutto il software</a></li></ul>
+        </div>
+        <div>
+          <p class="f-title">Risorse</p>
+          <ul>
+            <li><a href="/guida/">Guida gratuita</a></li>
+            <li><a href="/calcolatore/">Calcolatore commissioni</a></li>
+            <li><a href={site.demoUrl} target="_blank" rel="noopener">Hotel dimostrativo</a></li>
+            <li><a href="/faq/">Domande frequenti</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="f-title">Azienda</p>
+          <ul>
+            <li><a href="/chi-siamo/">Chi siamo</a></li>
+            <li><a href="/chi-siamo/#dati">I tuoi dati</a></li>
+            <li><a href="/demo/">Prenota una demo</a></li>
+            <li><a href="/contatti/">Contatti</a></li>
+            <li><a href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="f-bottom">
+      <p>© {year} {site.legal} · {site.address} · {site.vat}</p>
+      <p class="f-legal-links"><a href="/privacy-policy/">Privacy</a><a href="/cookie-policy/">Cookie</a></p>
+    </div>
+    <p class="f-disclaimer">Mineo Srl è partner autorizzato indipendente e non è affiliata a Zoho Corporation. Zoho e i nomi delle relative applicazioni sono marchi di Zoho Corporation. Le schermate e la scheda ospite mostrano dati dimostrativi.</p>
   </div>
 </footer>
 
 <style>
-  .ftr { background: #000; color: #fff; padding-block: 38px 34px; }
-  .ftr-in { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
-  .ftr-mineo { display: inline-flex; }
-  .ftr-logo { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: .1em; text-transform: uppercase; color: #fff; padding-left: 12px; border-left: 3px solid var(--accent); }
-  .ftr-line { font-size: .92rem; color: var(--muted-dark); }
-  .ftr-line a { color: #fff; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
-  .ftr-line a:hover { color: var(--accent); }
-  .ftr-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 12px; font-size: .8rem; color: rgba(255,255,255,.5); }
-  .ftr-legal a, .ftr-btn { color: rgba(255,255,255,.62); background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
-  .ftr-legal a:hover, .ftr-btn:hover { color: #fff; }
+  .footer { background: #111; padding: clamp(56px, 7vw, 88px) 0 32px; }
+  .f-top { display: grid; grid-template-columns: 1fr 2.2fr; gap: clamp(32px, 5vw, 64px); padding-bottom: 40px; border-bottom: 1px solid var(--line-dark); }
+  .f-logo { display: inline-block; background: #fff; padding: 10px 16px; border-radius: 14px 0 14px 0; }
+  .f-logo img { width: 220px; height: auto; }
+  .f-claim { margin: 18px 0 20px; color: #fff; max-width: 34ch; }
+  .f-contacts { display: grid; gap: 10px; font-size: .95rem; }
+  .f-contacts a, .f-contacts span { display: inline-flex; align-items: center; gap: 10px; color: #fff; }
+  .f-contacts a:hover { color: #fff; }
+  .f-contacts .icon { color: #fff; }
+  .f-partner { margin-top: 24px; width: 170px; border-radius: 8px; background: #fff; }
+  .f-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .f-title { font-size: .78rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #fff !important; margin-bottom: 14px; }
+  .f-title.mt { margin-top: 26px; }
+  .f-cols ul { display: grid; gap: 9px; font-size: .94rem; }
+  .f-cols a { color: #fff; transition: color .15s; }
+  .f-cols a:hover { color: #fff; }
+  .f-bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 24px; font-size: .86rem; color: #fff; }
+  .f-legal-links { display: flex; gap: 18px; }
+  .f-legal-links a:hover { color: #fff; }
+  .f-disclaimer { margin-top: 14px; font-size: .78rem; color: #fff !important; max-width: 110ch; }
+  @media (max-width: 980px) { .f-top { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) { .f-cols { grid-template-columns: 1fr 1fr; } }
 </style>

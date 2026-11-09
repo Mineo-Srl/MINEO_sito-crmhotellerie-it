@@ -1,0 +1,18 @@
+---
+const rows = [
+  ['Quante richieste rifiutate perché pieno', 'Ricerche senza risultati, con motivo: tutto esaurito', 'Alzare le tariffe su quelle date l’anno prossimo'],
+  ['Quante se ne perdono per il minimo notti', 'Ricerche senza risultati, con motivo: minimo notti', 'Rivedere le restrizioni nei periodi che costano più di quanto rendono'],
+  ['Con quanto anticipo prenotano davvero', 'Giorni di anticipo su ogni ricerca', 'Quando aprire le tariffe e far partire le campagne'],
+  ['Chi cerca: coppie, famiglie, gruppi', 'Composizione, adulti, bambini, età', 'Mix di camere, culle, camere comunicanti, servizi'],
+];
+---
+<div>
+  <h3 class="h3 mb">La domanda che non hai mai visto</h3>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Cosa vuoi sapere</th><th>Come lo misuriamo</th><th class="hi">Decisione che abilita</th></tr></thead>
+      <tbody>{rows.map(([a, b, c]) => <tr><td>{a}</td><td>{b}</td><td class="hi">{c}</td></tr>)}</tbody>
+    </table>
+  </div>
+</div>
+<style>.mb { margin-bottom: 18px; }</style>

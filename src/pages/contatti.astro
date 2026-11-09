@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { site, whatsappUrl, contactFormUrl } from '../data/site.js';
+---
+<Base title="Contatti" description={`Contatta ${site.legal} per CRM Hotellerie: email, WhatsApp o modulo di richiesta.`}>
+  <PageHero illo="contatti" eyebrow="Contatti" title="Parliamo del " hl="tuo hotel" lead="Scrivici per una domanda veloce o compila il modulo: ti ricontattiamo noi." crumbs={[{ label: 'Contatti' }]} ctas={false} />
+
+  <section class="section-sm section-paper">
+    <div class="container cgrid">
+      <div class="ways">
+        <a class="way" href="/demo/"><Icon name="calendar" size={24} /><span><strong>Prenota una demo</strong><span>Scegli giorno e ora nell’agenda</span></span></a>
+        <a class="way" href={whatsappUrl} target="_blank" rel="noopener"><Icon name="whatsapp" size={24} /><span><strong>WhatsApp</strong><span>{site.whatsapp}</span></span></a>
+        <a class="way" href={`mailto:${site.email}`}><Icon name="mail" size={24} /><span><strong>Email</strong><span>{site.email}</span></span></a>
+        <div class="way"><Icon name="pin" size={24} /><span><strong>{site.legal}</strong><span>{site.address}</span></span></div>
+      </div>
+      <div class="formbox">
+        <p class="label">Modulo di richiesta</p>
+        {/* SEGNAPOSTO: per ora è il form della guida; sostituire contactFormUrl in data/site.js */}
+        <iframe src={contactFormUrl} title="Modulo di richiesta informazioni" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cgrid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 28px; align-items: start; }
+  .ways { display: grid; gap: 12px; }
+  .way { display: grid; grid-template-columns: 26px 1fr; gap: 16px; align-items: center; padding: 20px; background: #fff; border-radius: var(--radius); border: 1px solid var(--line); transition: border-color .2s; }
+  a.way:hover { border-color: var(--black); }
+  .way > :global(.icon) { color: var(--olive); }
+  .way strong { display: block; }
+  .way span span { color: var(--muted); font-size: .94rem; }
+  .formbox { background: #fff; border-radius: var(--radius); padding: 24px; border: 1px solid var(--line); }
+  .formbox iframe { width: 100%; height: 720px; border: 0; }
+  @media (max-width: 900px) { .cgrid { grid-template-columns: 1fr; } }
+</style>

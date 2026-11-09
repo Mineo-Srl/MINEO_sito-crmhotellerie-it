@@ -1,96 +1,112 @@
 ---
 import '../styles/global.css';
-import bodyFont from '../fonts2/roboto-400.woff2?url';
-import dispFont from '../fonts2/roboto-condensed-300.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import CookieBanner from '../components/CookieBanner.astro';
-import ConsentInit from '../components/ConsentInit.astro';
-import { site, u } from '../data/site.js';
+import MobileBar from '../components/MobileBar.astro';
+import { site } from '../data/site.js';
 
-interface Props {
-  title: string;
-  description: string;
-  path?: string;
-  home?: boolean;
-  noindex?: boolean;
-  schema?: unknown[];
-  preloadImage?: string;
-  /* header ridotto (solo logo e telefono) per le pagine del funnel */
-  minimal?: boolean;
+import { seo } from '../data/seo.js';
+
+interface Props { title: string; description: string; noindex?: boolean; image?: string; }
+const { title, description, noindex = false, image = '/img/og-default.png' } = Astro.props;
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : Astro.url.pathname + '/';
+const s: any = (seo as any)[path];
+const fullTitle = s?.title || (title === site.name ? `${site.name} · ${site.tagline}` : `${title} · ${site.name}`);
+const metaDesc = s?.description || description;
+const canonical = new URL(path, site.url).href;
+const ogImage = new URL(image, site.url).href;
+
+/* Dati strutturati (SEO e GEO): chi è l'azienda, cos'è il prodotto, dove sei. */
+const org = {
+  '@type': 'Organization', '@id': `${site.url}/#org`,
+  name: site.legal, url: site.mainSite, email: site.email,
+  logo: new URL('/img/logo-crm-hotellerie.png', site.url).href,
+  address: { '@type': 'PostalAddress', streetAddress: site.street, postalCode: site.zip, addressLocality: site.city, addressRegion: site.province, addressCountry: 'IT' },
+  sameAs: [site.linkedin, site.mainSite],
+  description: `${site.legal} è Zoho Authorized Partner da ${site.partnerYears} anni e sviluppa CRM Hotellerie, il software per hotel su Zoho.`,
+};
+const graph: any[] = [
+  org,
+  { '@type': 'WebSite', '@id': `${site.url}/#web`, url: site.url, name: site.name, inLanguage: 'it-IT', publisher: { '@id': `${site.url}/#org` } },
+  { '@type': 'WebPage', '@id': `${canonical}#page`, url: canonical, name: fullTitle, description: metaDesc, inLanguage: 'it-IT', isPartOf: { '@id': `${site.url}/#web` } },
+];
+if (path === '/' || path === '/il-software/') {
+  graph.push({
+    '@type': 'SoftwareApplication', '@id': `${site.url}/#software`,
+    name: site.product, applicationCategory: 'BusinessApplication', applicationSubCategory: 'Software gestionale per hotel',
+    operatingSystem: 'Web, cloud (Zoho)', inLanguage: 'it-IT', url: site.url, publisher: { '@id': `${site.url}/#org` },
+    description: 'Software per hotel su Zoho: marketing e conversione, booking engine e channel manager, CRM ospiti, PMS e reparti, analytics e revenue. Ogni area si attiva anche da sola; i dati restano della struttura.',
+    featureList: ['Booking engine senza commissioni', 'Channel manager (Channex, opzionale)', 'CRM e scheda ospite', 'Marketing automation, survey e loyalty', 'PMS: planning, check-in, conto ospite', 'Fattura elettronica, Alloggiati Web, ISTAT', 'App per pulizie, manutenzione, ristorante', 'Analytics e revenue con Zoho Analytics'],
+  });
 }
-const { title, description, path = '/', home = false, noindex = false, schema = [], preloadImage, minimal = false } = Astro.props;
-
-const pageUrl = site.url + (path === '/' ? '' : path);
-const ogImage = site.url + u('/img/og-crm-hotellerie.png');
+if (s?.crumb) {
+  graph.push({ '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+    { '@type': 'ListItem', position: 2, name: s.crumb, item: canonical },
+  ] });
+}
+const ld = { '@context': 'https://schema.org', '@graph': graph };
 ---
-
 <!doctype html>
 <html lang="it">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={pageUrl} />
-    <meta name="theme-color" content="#000000" />
-    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
-    <meta name="author" content={site.legal} />
-    <link rel="alternate" hreflang="it" href={pageUrl} />
-
-    <link rel="icon" type="image/png" sizes="32x32" href={u('/img/favicon-32.png')} />
-    <link rel="icon" type="image/png" sizes="192x192" href={u('/img/favicon-192.png')} />
-    <link rel="apple-touch-icon" href={u('/img/apple-touch-icon.png')} />
-
-    <link rel="preload" as="font" type="font/woff2" href={bodyFont} crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href={dispFont} crossorigin />
-    {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
-
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="it_IT" />
-    <meta property="og:site_name" content={site.brand} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={pageUrl} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
-
-    {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
-    <!-- Zoho PageSense (analisi del sito): codice fornito da Zoho, invariato -->
-    <script is:inline id="pagesenseCode">!function(){var e="1.0",t=document,a=window,n="zps-page-screen",r=t.head||t.getElementsByTagName("head")[0],i=t.getElementById("pagesenseCode");if(!t.getElementById(n)){var o=t.createElement("style");o.type="text/css",o.id=n;var s="body { background: transparent !important; opacity: 0 !important; visibility: hidden !important; } html { opacity: 0 !important; visibility: hidden !important; }";o.styleSheet?o.styleSheet.cssText=s:o.appendChild(t.createTextNode(s)),r.firstChild?r.insertBefore(o,r.firstChild):r.appendChild(o),a._ps_conf={};var c={addScript:function(e){try{var n=t.createElement("script");if(n.type="text/javascript",n.async=!0,e.src?n.src=e.src:e.text&&(void 0!==n.text?n.text=e.text:n.appendChild(t.createTextNode(e.text))),i&&i.getAttribute){var o=i.getAttribute("nonce");o&&n.setAttribute("nonce",o)}n.onload=n.onreadystatechange=function(){this.readyState&&"loaded"!==this.readyState&&"complete"!==this.readyState||(n.onload=n.onreadystatechange=null,a._ps_conf&&a._ps_conf.pauseRenderForManualActivation?clearTimeout(d):c.revealPage())},n.onerror=function(){c.revealPage()},r.appendChild(n)}catch(e){throw c.revealPage(),e}},revealPage:function(){var e=t.getElementById(n);e&&e.parentNode&&e.parentNode.removeChild(e)}},d=setTimeout((function(){c.revealPage()}),1e4),p=c.revealPage;c.revealPage=function(){clearTimeout(d),p()};try{a._ps_conf&&a._ps_conf.pauseRenderForManualActivation&&(a.pagesense=a.pagesense||[],a.pagesense.push=function(e){e&&"activate"==e[0]&&c&&c.revealPage()}),a._ps_conf?a._ps_conf.version=e:a._ps_conf={version:e},c.addScript({src:"https://cdn-eu.pagesense.io/js/portaleswm/a01f018e8ebe4d4cadf1aa8128000557.js"})}catch(e){c.revealPage()}}}();
-    </script>
-    <ConsentInit />
-  </head>
-
-  <body>
-    <a href="#main" class="skip-link">Vai al contenuto</a>
-    <span id="top"></span>
-    <Header home={home} minimal={minimal} />
-    <main id="main"><slot /></main>
-    <Footer home={home} />
-    <CookieBanner />
-
-    <script is:inline>
-      (function () {
-        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var nodes = document.querySelectorAll('[data-reveal]');
-        if (reduce || !('IntersectionObserver' in window)) { nodes.forEach(function (n) { n.classList.add('is-visible', 'is-done'); }); return; }
-        document.querySelectorAll('[data-stagger]').forEach(function (group) {
-          var step = parseInt(group.getAttribute('data-stagger') || '90', 10);
-          Array.prototype.forEach.call(group.children, function (child, i) {
-            if (child.hasAttribute('data-reveal')) child.style.setProperty('--reveal-delay', i * step + 'ms');
-          });
-        });
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) { if (e.isIntersecting) { var t = e.target; t.classList.add('is-visible'); io.unobserve(t); var d = parseInt((t.style.getPropertyValue('--reveal-delay') || '0'), 10) || 0; setTimeout(function () { t.classList.add('is-done'); }, 950 + d); } });
-        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
-        nodes.forEach(function (n) { io.observe(n); });
-      })();
-    </script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={metaDesc} />
+  {s?.keywords && <meta name="keywords" content={s.keywords.join(', ')} />}
+  <link rel="canonical" href={canonical} />
+  <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1'} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={site.name} />
+  <meta property="og:locale" content="it_IT" />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={metaDesc} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={metaDesc} />
+  <meta name="twitter:image" content={ogImage} />
+  {!noindex && <script type="application/ld+json" set:html={JSON.stringify(ld)} />}
+  <meta name="theme-color" content="#111111" />
+  <link rel="preload" href="/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
+</head>
+<body>
+  <a class="skip" href="#main">Vai al contenuto</a>
+  <Header />
+  <main id="main"><slot /></main>
+  <script is:inline>
+    /* Fondini: se due sezioni consecutive hanno lo stesso fondo, la seconda
+       prende un retino leggero (bianco -> verde acqua 6%, grigio -> bianco). */
+    (function () {
+      var prev = null;
+      document.querySelectorAll("main > section").forEach(function (s) {
+        var bg = getComputedStyle(s).backgroundColor;
+        var white = bg === "rgba(0, 0, 0, 0)" || bg === "rgb(255, 255, 255)";
+        var key = white ? "white" : bg;
+        if (prev === key) {
+          s.classList.add(white ? "bg-tint" : "bg-white");
+          key = white ? "tint" : "white";
+        }
+        prev = key;
+      });
+    })();
+  </script>
+  <Footer />
+  <MobileBar />
+  <script>
+    // Ingresso morbido delle sezioni
+    const els = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -8% 0px' });
+      els.forEach((el) => io.observe(el));
+    } else els.forEach((el) => el.classList.add('in'));
+  </script>
+</body>
 </html>

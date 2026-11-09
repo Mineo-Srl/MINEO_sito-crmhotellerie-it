@@ -1,0 +1,168 @@
+---
+/* "Componi la tua soluzione": configuratore in due passi (tipo di struttura →
+   esigenze) con riepilogo che si aggiorna. Diverso dalla home, che mostra
+   un'esigenza alla volta: qui il visitatore costruisce il proprio set e lo
+   porta in demo o su WhatsApp. */
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { problems, problemCats, segments, whatsappUrl } from '../data/site.js';
+import { featureHref } from '../data/features.js';
+const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, links: s.links }));
+---
+<Base title="Componi la tua soluzione" description="Scegli il tipo di struttura e le esigenze del tuo hotel: componi la tua soluzione CRM Hotellerie, area per area, e portala in demo.">
+  <PageHero illo="componi"
+    eyebrow="Componi la tua soluzione"
+    title="Scegli cosa ti serve: "
+    hl="il resto lo aggiungi quando vuoi."
+    lead="Due passi e hai la tua soluzione su misura: indica che struttura hai e cosa vuoi migliorare. Ogni area si attiva anche da sola."
+    crumbs={[{ label: 'Componi la tua soluzione' }]}
+    ctas={false}
+  />
+
+  <section class="section-sm section-paper">
+    <div class="container cfg" data-cfg data-wa={whatsappUrl}>
+      <div class="steps">
+        <fieldset class="step">
+          <legend><h2 class="lg"><span class="n">1</span> Che struttura hai?</h2></legend>
+          <p class="hint">Ti proponiamo le esigenze più frequenti per il tuo tipo di struttura. Puoi cambiarle.</p>
+          <div class="segs">
+            {segData.map((s) => (
+              <label class="seg">
+                <input type="radio" name="seg" value={s.id} data-links={s.links.join(',')} />
+                <span><Icon name={s.icon} size={18} /> {s.title}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset class="step">
+          <legend><h2 class="lg"><span class="n">2</span> Cosa vuoi migliorare?</h2></legend>
+          <p class="hint">Seleziona una o più voci.</p>
+          {problemCats.map((c) => (
+            <div class="grp">
+              <p class="label">{c.label}</p>
+              <div class="needs">
+                {problems.filter((p) => p.cat === c.id).map((p) => (
+                  <label class="need">
+                    <input type="checkbox" value={p.id} data-slug={p.slug} data-sol={p.sol} data-href={featureHref(p.slug)} />
+                    <span class="nd-ic"><Icon name={p.icon} size={18} /></span>
+                    <span class="nd-t">{p.pain}</span>
+                    <span class="nd-ck"><Icon name="check" size={14} /></span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+        </fieldset>
+      </div>
+
+      <aside class="res" aria-live="polite">
+        <p class="label">La tua soluzione</p>
+        <p class="res-empty" data-empty>Seleziona almeno un’esigenza: qui compare la soluzione su misura.</p>
+        <ul class="res-list" data-list></ul>
+        <p class="res-sum" data-sum hidden></p>
+        <div class="res-cta" data-cta hidden>
+          <a class="btn btn-primary" data-demo href="/demo/">Prenota la demo su misura</a>
+          <a class="res-wa" data-wa-link href={whatsappUrl} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> Inviala su WhatsApp</a>
+        </div>
+        <p class="res-note"><Icon name="spark" size={16} /> Un solo account, gli stessi dati: le altre aree si aggiungono quando servono, senza cambiare piattaforma.</p>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<script>
+  document.querySelectorAll('[data-cfg]').forEach((root) => {
+    const el = root as HTMLElement;
+    const needs = [...root.querySelectorAll('.need input')] as HTMLInputElement[];
+    const segs = [...root.querySelectorAll('.seg input')] as HTMLInputElement[];
+    const list = root.querySelector('[data-list]') as HTMLElement;
+    const empty = root.querySelector('[data-empty]') as HTMLElement;
+    const sum = root.querySelector('[data-sum]') as HTMLElement;
+    const cta = root.querySelector('[data-cta]') as HTMLElement;
+    const demo = root.querySelector('[data-demo]') as HTMLAnchorElement;
+    const wa = root.querySelector('[data-wa-link]') as HTMLAnchorElement;
+
+    const render = () => {
+      const on = needs.filter((n) => n.checked);
+      const seen = new Map<string, HTMLInputElement>();
+      on.forEach((n) => { if (!seen.has(n.dataset.sol!)) seen.set(n.dataset.sol!, n); });
+      list.innerHTML = '';
+      seen.forEach((n, sol) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = n.dataset.href!; a.textContent = sol;
+        li.append(a); list.append(li);
+      });
+      const k = seen.size;
+      empty.hidden = k > 0; sum.hidden = k === 0; cta.hidden = k === 0;
+      sum.textContent = k === 1 ? 'Si attiva anche da sola.' : `${k} soluzioni, un solo software.`;
+      const seg = segs.find((s) => s.checked);
+      const segTxt = seg ? (seg.parentElement!.textContent || '').trim() : '';
+      const names = [...seen.keys()];
+      demo.href = '/demo/?soluzioni=' + encodeURIComponent(names.join(' · ')) + (seg ? '&struttura=' + encodeURIComponent(segTxt) : '');
+      const msg = `Ciao, vorrei una demo di CRM Hotellerie${segTxt ? ' per ' + segTxt.toLowerCase() : ''}. Mi interessa: ${names.join(', ')}.`;
+      wa.href = el.dataset.wa + '?text=' + encodeURIComponent(msg);
+    };
+
+    needs.forEach((n) => n.addEventListener('change', render));
+    segs.forEach((s) => s.addEventListener('change', () => {
+      const links = (s.dataset.links || '').split(',');
+      needs.forEach((n) => (n.checked = links.includes(n.dataset.slug!)));
+      render();
+    }));
+    // Arrivo dalla home: ?struttura=resort-e-villaggi preseleziona la struttura
+    const st = new URLSearchParams(location.search).get('struttura');
+    const sg = st && segs.find((s) => s.value === st);
+    if (sg) { sg.checked = true; sg.dispatchEvent(new Event('change')); }
+    // Vecchi link del tipo #problema-commissioni: preseleziona quell'esigenza
+    const m = location.hash.match(/^#problema-(.+)$/);
+    if (m) needs.forEach((n) => { if (n.value === m[1]) n.checked = true; });
+    render();
+  });
+</script>
+
+<style>
+  .cfg { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); gap: clamp(24px, 3vw, 44px); align-items: start; }
+  .steps { display: grid; gap: 22px; }
+  .step { border: 0; padding: clamp(22px, 2.6vw, 32px); margin: 0; background: #fff; border-radius: 28px 0 28px 0; }
+  .step legend { float: left; width: 100%; display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.3rem; color: #000; }
+  .step legend + * { clear: both; }
+  .lg { display: flex; align-items: center; gap: 12px; font: inherit; margin: 0; }
+  .n { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px 0 10px 0; background: #000; color: #fff; font-size: 1rem; }
+  .hint { margin: 6px 0 16px 46px; font-size: .92rem; color: #000; }
+  .segs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .seg input, .need input { position: absolute; opacity: 0; pointer-events: none; }
+  .seg span { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border: 1.5px solid #000; border-radius: 999px; font-weight: 600; font-size: .9rem; cursor: pointer; transition: background .2s, color .2s; }
+  .seg input:checked + span { background: #000; color: #fff; }
+  .seg input:focus-visible + span, .need:has(input:focus-visible) { outline: 2px solid var(--teal); outline-offset: 2px; }
+  .grp + .grp { margin-top: 18px; }
+  .needs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  @media (max-width: 1200px) { .needs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .need { position: relative; display: grid; grid-template-columns: 34px 1fr 22px; gap: 12px; align-items: center; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 14px 0 14px 0; cursor: pointer; transition: border-color .2s, background .2s; }
+  .need:hover { border-color: #000; }
+  .nd-ic { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px 0 10px 0; background: var(--yellow-soft); color: #000; }
+  .nd-t { font-weight: 600; font-size: .92rem; line-height: 1.3; color: #000; }
+  .nd-ck { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid #000; color: transparent; }
+  .need:has(input:checked) { border-color: var(--teal); background: var(--yellow-tint); }
+  .need:has(input:checked) .nd-ck { background: var(--teal); border-color: var(--teal); color: #fff; }
+  .need:has(input:checked) .nd-ic { background: var(--teal); color: #fff; }
+
+  .res { position: sticky; top: calc(var(--header-h) + 20px); padding: clamp(22px, 2.6vw, 32px); background: #111; color: #fff; border-radius: 28px 0 28px 0; }
+  .res .label { color: #fff; }
+  .res-empty { color: #fff; font-size: .95rem; }
+  .res-list { display: grid; gap: 8px; margin-top: 6px; }
+  .res-list li { display: flex; }
+  .res-list :global(a) { flex: 1; display: flex; justify-content: space-between; gap: 10px; padding: 11px 14px; border-radius: 12px 0 12px 0; background: var(--teal); color: #fff; font-weight: 600; }
+  .res-list :global(a)::after { content: '→'; }
+  .res-sum { margin-top: 14px; font-weight: 700; color: #fff; }
+  .res-cta { display: grid; gap: 12px; margin-top: 16px; }
+  .res-cta .btn { justify-content: center; text-align: center; white-space: normal; }
+  .res-wa { display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .res-note { display: flex; gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid #333; font-size: .86rem; color: #fff; }
+  .res-note :global(.icon) { flex: none; margin-top: 2px; }
+
+  @media (max-width: 960px) { .cfg { grid-template-columns: 1fr; } .res { position: static; } }
+  @media (max-width: 600px) { .needs { grid-template-columns: 1fr; } .hint { margin-left: 0; } }
+</style>

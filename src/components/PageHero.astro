@@ -1,0 +1,68 @@
+---
+/* Testata delle pagine interne: eyebrow con trattino, titolo con evidenziatore. */
+import Icon from './Icon.astro';
+import Illo from './Illo.astro';
+interface Props { eyebrow: string; title: string; hl?: string; after?: string; lead?: string; crumbs?: { label: string; href?: string }[]; ctas?: boolean; dark?: boolean; illo?: string }
+const { eyebrow, title, hl, after = '', lead, crumbs = [], ctas = true, dark = false, illo } = Astro.props;
+/* Piccole icone dello stesso argomento intorno al disegno */
+const bits: Record<string, string[]> = {
+  software: ['calendar', 'users', 'file'],
+  marketing: ['chat', 'target', 'mail'],
+  componi: ['check', 'layers', 'spark'],
+  chisiamo: ['shield', 'users', 'chat'],
+  guida: ['download', 'file', 'check'],
+  calcolatore: ['euro', 'chart', 'check'],
+  demo: ['play', 'calendar', 'users'],
+  faq: ['chat', 'lock', 'database'],
+  contatti: ['mail', 'whatsapp', 'pin'],
+};
+---
+<section class:list={['phero', { 'section-dark': dark }]}>
+  {illo && (
+    <div class="phero-illo" aria-hidden="true">
+      <Illo name={illo} />
+      {(bits[illo] || []).map((b, i) => <span class:list={['bit', 'b' + (i + 1)]}><Icon name={b} size={20} /></span>)}
+    </div>
+  )}
+  <div class="container">
+    {crumbs.length > 0 && (
+      <nav class="crumbs" aria-label="Percorso">
+        <a href="/">Home</a>
+        {crumbs.map((c) => <><span aria-hidden="true">/</span>{c.href ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}</>)}
+      </nav>
+    )}
+    <div class="phero-grid">
+      <div>
+        <p class="eyebrow">{eyebrow}</p>
+        <h1 class="h1">{title}{hl && <span class="hl">{hl}</span>}{after}</h1>
+        {lead && <p class="lead">{lead}</p>}
+        {ctas && (
+          <div class="btn-row">
+            <a class="btn btn-primary" href="/demo/">Prenota una demo gratuita <Icon name="arrow" size={18} class="icon-arrow" /></a>
+            <a class="btn btn-ghost" href="/guida/"><Icon name="download" size={18} /> Scarica la guida</a>
+          </div>
+        )}
+        <slot name="below" />
+      </div>
+      <slot name="aside" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .phero { position: relative; overflow: hidden; padding: clamp(26px, 3.5vw, 40px) 0 clamp(56px, 7vw, 96px); }
+
+  .crumbs { display: flex; flex-wrap: wrap; gap: 8px; font-size: .78rem; text-transform: uppercase; font-weight: 500; color: var(--muted); margin-bottom: clamp(24px, 3.5vw, 44px); }
+  .crumbs a:hover { color: var(--gold); }
+  .phero .h1 { max-width: 18ch; }
+  .phero .lead { margin-top: 22px; text-transform: uppercase; font-size: .92rem; line-height: 1.65; color: var(--ink); max-width: 56ch; }
+  /* Illustrazione a tema sopra l’arco verde acqua */
+  .phero-illo { position: absolute; right: calc(max(0px, (100% - var(--container)) / 2) + var(--gutter) + 56px); top: 50%; transform: translateY(-40%); width: min(24%, 320px); color: #000; --illo-accent: var(--teal); --illo-accent-op: .9; pointer-events: none; }
+  .bit { position: absolute; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 14px 0 14px 0; background: var(--teal); color: #fff; box-shadow: 0 12px 24px -12px rgba(0,0,0,.4); }
+  /* Icone simmetriche: stessa distanza dai due lati del disegno */
+  .b1 { left: -56px; top: 50%; transform: translateY(-50%); }
+  .b2 { right: -56px; top: 50%; transform: translateY(-50%); background: #000; }
+  .b3 { left: 50%; top: -62px; transform: translateX(-50%); }
+  .phero-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; align-items: center; }
+  @media (max-width: 980px) { .phero-illo { display: none; } .phero-grid { grid-template-columns: 1fr; } }
+</style>

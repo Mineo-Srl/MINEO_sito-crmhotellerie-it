@@ -1,0 +1,31 @@
+# CRM Hotellerie
+
+> CRM Hotellerie è un software gestionale per hotel costruito su Zoho da Mineo S.r.l., Zoho Authorized Partner da 9 anni. Riunisce in un unico software marketing, prenotazioni dirette (booking engine e channel manager), CRM degli ospiti, gestione della struttura (PMS, fatturazione, reparti) e analytics. Ogni area si attiva anche da sola e si collega alle altre quando serve, sugli stessi dati. L'account Zoho è intestato alla struttura: i dati degli ospiti restano dell'hotel.
+
+## Le cinque aree
+- Marketing e conversione: Social, Google Ads, Zoho PageSense (analisi del funnel di prenotazione e test A/B), Zoho SalesIQ (chat con trigger contestuali), Zoho Forms, Marketing Automation, Survey, Thrive.
+- Booking engine e channel manager: widget di prenotazione con il brand dell'hotel, disponibilità in tempo reale, tariffe e stagioni, caparra e stati della prenotazione; sincronizzazione con Booking.com, Airbnb e altri portali tramite Channex (servizio opzionale).
+- CRM: scheda ospite con storico soggiorni, spesa in hotel, preferenze, segmenti e consensi; preventivi e automazioni dalla richiesta al ritorno.
+- PMS e reparti: planning camere anti-overbooking, check-in e check-out, conto dell'ospite, fattura elettronica con Zoho Books e Sistema di Interscambio, Alloggiati Web, ISTAT e tassa di soggiorno; app per pulizie, manutenzione, ristorante e bar, ruoli per reparto.
+- Analytics e revenue: Zoho Analytics, domanda respinta, quattro dashboard (giornaliera, settimanale, mensile, annuale); i dati si collegano al sistema di revenue management (RMS) della struttura.
+
+## Costi e licenze
+- Si pagano solo le aree attivate.
+- Licenze Zoho in abbonamento, a parte. Edizione minima: Zoho CRM Enterprise, inclusa in Zoho One.
+- Configurazione e personalizzazione di Mineo preventivate sulla struttura; formazione e assistenza in italiano incluse.
+
+## Per chi è
+Hotel indipendenti e boutique hotel, resort e villaggi, agriturismi, B&B e dimore storiche, piccoli gruppi alberghieri e residence, wellness e spa, nuove aperture.
+
+## Pagine principali
+- [Il software](https://www.crmhotellerie.it/il-software/): le cinque aree in una pagina.
+- [Marketing](https://www.crmhotellerie.it/marketing/): le principali app Zoho per il marketing dell'hotel.
+- [Componi la tua soluzione](https://www.crmhotellerie.it/trova-la-soluzione/): configuratore per tipo di struttura ed esigenze.
+- [Chi siamo e come lavoriamo](https://www.crmhotellerie.it/chi-siamo/): Mineo, metodo, Zoho, costi, proprietà dei dati.
+- [Calcolatore commissioni](https://www.crmhotellerie.it/calcolatore/): quanto costano le commissioni delle OTA.
+- [Guida gratuita](https://www.crmhotellerie.it/guida/): "Zoho per il tuo hotel", PDF di 9 pagine.
+- [Domande frequenti](https://www.crmhotellerie.it/faq/)
+- [Prenota una demo](https://www.crmhotellerie.it/demo/): demo gratuita e senza impegno con il team Mineo.
+
+## Contatti
+Mineo S.r.l., Viale Villoresi 3, 20045 Lainate (MI), Italia · info@mineoepartners.it · https://www.mineoepartners.it

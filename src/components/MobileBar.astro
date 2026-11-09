@@ -1,0 +1,34 @@
+---
+/* Barra fissa in basso solo su telefono: il pulsante demo dell'header lì è
+   nascosto, così l'azione resta sempre a portata di pollice. Compare dopo
+   il primo scorrimento; nascosta sulle pagine demo e grazie. */
+import Icon from './Icon.astro';
+import { whatsappUrl } from '../data/site.js';
+const path = Astro.url.pathname;
+const hide = path.startsWith('/demo') || path.startsWith('/grazie');
+---
+{!hide && (
+  <div class="mbar" data-mbar>
+    <a class="btn btn-primary mbar-demo" href="/demo/">Prenota una demo gratuita</a>
+    <a class="mbar-wa" href={whatsappUrl} target="_blank" rel="noopener" aria-label="Scrivici su WhatsApp"><Icon name="whatsapp" size={22} /></a>
+  </div>
+)}
+
+<script>
+  const bar = document.querySelector('[data-mbar]');
+  if (bar) {
+    const onScroll = () => bar.classList.toggle('on', window.scrollY > 300);
+    onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>
+
+<style>
+  .mbar { display: none; }
+  @media (max-width: 560px) {
+    .mbar { display: flex; gap: 10px; align-items: center; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: #111; transform: translateY(110%); transition: transform .3s var(--ease); }
+    .mbar.on { transform: none; }
+    .mbar-demo { flex: 1; justify-content: center; }
+    .mbar-wa { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 50%; border: 1.5px solid #fff; color: #fff; }
+    :global(body) { padding-bottom: 72px; }
+  }
+</style>

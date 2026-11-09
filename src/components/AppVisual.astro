@@ -1,0 +1,395 @@
+---
+/* Mockup animato di ciascuna app (hero delle pagine app e anteprime in home).
+   Le animazioni partono quando il riquadro entra in viewport: Base.astro
+   aggiunge la classe .playing agli elementi [data-play].
+   Tutti i dati mostrati sono dimostrativi. */
+import Icon from './Icon.astro';
+
+interface Props {
+  type: 'funnel' | 'chat' | 'form' | 'journey' | 'inbox' | 'nps' | 'loyalty';
+  compact?: boolean;
+}
+const { type, compact = false } = Astro.props;
+
+const titles = {
+  funnel: 'PageSense · Funnel di prenotazione',
+  chat: 'SalesIQ · Visitatori in tempo reale',
+  form: 'Forms · Richiesta di preventivo',
+  journey: 'Marketing Automation · Percorso ospite',
+  inbox: 'Social · Coda messaggi',
+  nps: 'Survey · NPS ultimi 90 giorni',
+  loyalty: 'Thrive · Programma fedeltà',
+};
+
+const funnel = [
+  { label: 'Pagina camere', v: 100 },
+  { label: 'Ricerca date', v: 41 },
+  { label: 'Riepilogo', v: 18 },
+  { label: 'Pagamento', v: 9 },
+];
+const inbox = [
+  { ch: 'IG', name: 'giulia.travels', text: 'Avete posto a Pasqua per 2?', tag: 'Reception' },
+  { ch: 'FB', name: 'Marco Bianchi', text: 'La spa è aperta anche agli esterni?', tag: 'Spa' },
+  { ch: 'G', name: 'Recensione 5★', text: 'Colazione fantastica, torneremo!', tag: 'Direzione' },
+  { ch: 'IG', name: 'Commento al reel', text: 'Che vista 😍 prezzi per agosto?', tag: 'Reception' },
+];
+const rooms = [
+  { label: 'Deluxe vista mare', v: 78 },
+  { label: 'Superior', v: 64 },
+  { label: 'Family', v: 58 },
+  { label: 'Comfort', v: 31 },
+];
+const journey = [
+  { icon: 'document', t: 'Preventivo inviato', s: 'Fonte: modulo sito' },
+  { icon: 'clock', t: 'Attesa 2 giorni', s: 'Nessuna risposta' },
+  { icon: 'mail', t: 'Email “Family room”', s: 'Aperta · 2 clic' },
+  { icon: 'target', t: 'Punteggio +25', s: 'Avviso alla reception' },
+  { icon: 'check', t: 'Prenotazione diretta', s: '€ 1.240 · attribuita' },
+];
+---
+
+<div class:list={['mock', `mock-${type}`, { compact }]} data-play aria-hidden="true">
+  <div class="mock-bar">
+    <span></span><span></span><span></span>
+    <em>{titles[type]}</em>
+  </div>
+
+  <div class="mock-body">
+    {type === 'funnel' && (
+      <>
+        <ul class="fn">
+          {funnel.map((f, i) => (
+            <li style={`--v:${f.v}%;--i:${i}`}>
+              <span class="fn-l">{f.label}</span>
+              <span class="fn-track"><span class="fn-bar"></span></span>
+              <b class="fn-v">{f.v}%</b>
+              {i === 2 && <span class="fn-drop">−56% qui</span>}
+            </li>
+          ))}
+        </ul>
+        <div class="ab a-in" style="--d:1.9s">
+          <div class="ab-c"><small>Versione A</small><b>2,1%</b></div>
+          <div class="ab-c win"><small>Versione B</small><b>3,4%</b><span class="ab-w"><Icon name="check" size={13} stroke={3} /> vincente</span></div>
+        </div>
+      </>
+    )}
+
+    {type === 'chat' && (
+      <>
+        <div class="vis a-in" style="--d:.1s">
+          <span class="vis-dot"></span>
+          <div><b>Visitatore da Google</b><small>3ª visita · cerca 12–14 agosto · Deluxe</small></div>
+          <span class="vis-tag">Trigger</span>
+        </div>
+        <div class="chat">
+          <p class="bub op a-in" style="--d:.7s">Ciao! Per quelle date la Deluxe vista mare è ancora libera. Posso aiutarti?</p>
+          <p class="bub me a-in" style="--d:1.6s">Accettate cani di piccola taglia?</p>
+          <p class="typing a-in a-out" style="--d:2.3s"><i></i><i></i><i></i></p>
+          <p class="bub op a-in" style="--d:3.2s">Sì, con un piccolo supplemento. Ti mando il preventivo via email?</p>
+        </div>
+        <div class="toast a-in" style="--d:4s"><Icon name="check" size={15} stroke={3} /> Contatto salvato nel CRM</div>
+      </>
+    )}
+
+    {type === 'form' && (
+      <>
+        <div class="fm">
+          <label>Nome<span class="fm-in"><span class="type" style="--d:.3s;--ch:13">Laura Ferrari</span></span></label>
+          <div class="fm-row">
+            <label>Arrivo<span class="fm-in"><span class="type" style="--d:1s;--ch:6">12/08</span></span></label>
+            <label>Partenza<span class="fm-in"><span class="type" style="--d:1.4s;--ch:6">19/08</span></span></label>
+          </div>
+          <div class="fm-row">
+            <label>Adulti<span class="fm-in"><span class="type" style="--d:1.8s;--ch:2">2</span></span></label>
+            <label>Bambini<span class="fm-in"><span class="type" style="--d:2s;--ch:2">2</span></span></label>
+          </div>
+          <label class="fm-cond a-in" style="--d:2.3s">Età dei bambini<span class="fm-in"><span class="type" style="--d:2.6s;--ch:8">4 e 9 anni</span></span></label>
+          <span class="fm-check a-in" style="--d:3s"><i><Icon name="check" size={11} stroke={3.4} /></i> Acconsento al trattamento dei dati</span>
+          <span class="fm-btn">Invia la richiesta</span>
+        </div>
+        <div class="toast a-in" style="--d:3.8s"><Icon name="check" size={15} stroke={3} /> Richiesta creata nel CRM · Reception</div>
+      </>
+    )}
+
+    {type === 'journey' && (
+      <ol class="jr">
+        <span class="jr-line"><span class="jr-dot"></span></span>
+        {journey.map((j, i) => (
+          <li style={`--i:${i}`}>
+            <span class="jr-ic"><Icon name={j.icon} size={16} stroke={2} /></span>
+            <div><b>{j.t}</b><small>{j.s}</small></div>
+          </li>
+        ))}
+      </ol>
+    )}
+
+    {type === 'inbox' && (
+      <>
+        <div class="chs">
+          {['Instagram', 'Facebook', 'Google', 'TikTok'].map((c) => <span>{c}</span>)}
+        </div>
+        <ul class="ib">
+          {inbox.map((m, i) => (
+            <li class="a-drop" style={`--d:${0.3 + i * 0.7}s`}>
+              <span class:list={['ib-ch', `ch-${m.ch}`]}>{m.ch}</span>
+              <div><b>{m.name}</b><small>{m.text}</small></div>
+              <em>{m.tag}</em>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    {type === 'nps' && (
+      <div class="np">
+        <div class="gauge">
+          <svg viewBox="0 0 200 110">
+            <path d="M15 100 A85 85 0 0 1 185 100" class="g-bg" pathLength="100" />
+            <path d="M15 100 A85 85 0 0 1 185 100" class="g-fg" pathLength="100" />
+          </svg>
+          <div class="g-num"><b>+<span data-count="62">62</span></b><small>NPS</small></div>
+        </div>
+        <ul class="rm">
+          {rooms.map((r, i) => (
+            <li style={`--v:${r.v}%;--i:${i}`} class:list={{ low: r.v < 40 }}>
+              <span>{r.label}</span>
+              <span class="rm-t"><span class="rm-b"></span></span>
+              <b>+{r.v}</b>
+            </li>
+          ))}
+        </ul>
+        <div class="toast warn a-in" style="--d:2.4s"><Icon name="bell" size={15} stroke={2.4} /> Voto 4/10 · camera 214 · richiamare</div>
+      </div>
+    )}
+
+    {type === 'loyalty' && (
+      <div class="ly">
+        <div class="ly-card">
+          <div class="ly-top"><span>Hotel Soleluna · Club</span><Icon name="star" size={18} stroke={2} /></div>
+          <small>Marco R. · livello</small>
+          <b class="ly-tier">Habitué</b>
+          <div class="ly-pts"><span data-count="1480">1480</span> punti</div>
+          <div class="ly-prog"><span></span></div>
+          <div class="ly-steps"><i class="on">Benvenuto</i><i class="on">Habitué</i><i>Di casa</i></div>
+          <span class="ly-plus" style="--d:1.2s">+120</span>
+        </div>
+        <div class="ly-ref a-in" style="--d:2.2s">
+          <Icon name="users" size={16} stroke={2} />
+          <div><b>Luca ha prenotato con il tuo link</b><small>+300 punti per Marco · −10% per Luca</small></div>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .mock {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, #161616, #0d0d0d);
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow: 0 40px 80px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(13,127,137,.06), 0 0 60px -20px rgba(13,127,137,.25);
+    color: #fff;
+    font-size: .86rem;
+    overflow: hidden;
+  }
+  .mock-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.03);
+  }
+  .mock-bar span { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.18); }
+  .mock-bar span:first-child { background: var(--teal); }
+  .mock-bar em { margin-left: 10px; font-style: normal; font-size: .74rem; letter-spacing: .02em; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mock-body { position: relative; padding: 20px; min-height: 300px; }
+  .compact .mock-body { min-height: 0; padding: 16px; }
+  .mock small { display: block; color: #fff; font-size: .74rem; line-height: 1.4; }
+  .mock b { font-weight: 650; }
+
+  /* entrate generiche */
+  :global(html.js) .mock:not(.playing) .a-in,
+  :global(html.js) .mock:not(.playing) .a-drop,
+  :global(html.js) .mock:not(.playing) .ly-plus { opacity: 0; }
+  .mock.playing .a-in { animation: m-in .6s var(--ease) var(--d, 0s) both; }
+  .mock.playing .a-out { animation: m-in .4s var(--ease) var(--d) both, m-out .3s ease calc(var(--d) + .8s) forwards; }
+  .mock.playing .a-drop { animation: m-drop .7s var(--ease) var(--d, 0s) both; }
+  @keyframes m-in { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+  @keyframes m-out { to { opacity: 0; height: 0; margin: 0; padding: 0; } }
+  @keyframes m-drop { from { opacity: 0; transform: translateY(-18px); max-height: 0; } to { opacity: 1; transform: none; max-height: 80px; } }
+
+  .toast {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 16px;
+    padding: 9px 14px;
+    border-radius: 100px;
+    background: var(--teal);
+    color: #fff;
+    font-weight: 650;
+    font-size: .8rem;
+    box-shadow: 0 10px 30px -8px rgba(13,127,137,.6);
+  }
+  .toast.warn { background: #fff; color: #000; box-shadow: 0 10px 30px -8px rgba(255,255,255,.35); }
+
+  /* ---------- funnel ---------- */
+  .fn { display: grid; gap: 14px; }
+  .fn li { position: relative; display: grid; grid-template-columns: 110px 1fr 42px; align-items: center; gap: 12px; }
+  .fn-l { color: #fff; font-size: .8rem; }
+  .fn-track { height: 26px; border-radius: 8px; background: rgba(255,255,255,.06); overflow: hidden; }
+  .fn-bar { display: block; height: 100%; width: var(--v); border-radius: 8px; background: linear-gradient(90deg, var(--teal), #3fa9b2); transform-origin: left; }
+  .playing .fn-bar { animation: grow-x 1.1s var(--ease) calc(var(--i) * .25s) both; }
+  .fn-v { text-align: right; font-variant-numeric: tabular-nums; }
+  .fn-drop {
+    position: absolute; right: 50px; top: -12px;
+    padding: 2px 8px; border-radius: 6px;
+    background: #fff; color: #000; font-size: .68rem; font-weight: 700;
+  }
+  .playing .fn-drop { animation: m-in .5s var(--ease) 1.3s both, pulse-soft 2s ease-in-out 2s infinite; }
+  @keyframes grow-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes pulse-soft { 50% { transform: scale(1.08); } }
+  .ab { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
+  .ab-c { padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); }
+  .ab-c b { font-family: var(--font-head); font-size: 1.35rem; font-weight: 800; }
+  .ab-c.win { border-color: var(--teal); background: rgba(13,127,137,.1); }
+  .ab-w { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; padding: 2px 8px; border-radius: 100px; background: var(--teal); color: #fff; font-size: .68rem; font-weight: 700; vertical-align: middle; }
+
+  /* ---------- chat ---------- */
+  .vis { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.05); }
+  .vis div { flex: 1; min-width: 0; }
+  .vis-dot { width: 9px; height: 9px; border-radius: 50%; background: #3ddc84; box-shadow: 0 0 0 0 rgba(61,220,132,.6); animation: pulse-dot 2s infinite; flex: none; }
+  .vis-tag { padding: 3px 9px; border-radius: 100px; background: var(--teal); color: #fff; font-size: .68rem; font-weight: 700; }
+  .chat { display: grid; gap: 10px; margin-top: 16px; }
+  .bub { max-width: 82%; padding: 10px 14px; border-radius: 16px; line-height: 1.45; font-size: .82rem; }
+  .bub.op { background: rgba(255,255,255,.08); border-bottom-left-radius: 4px; }
+  .bub.me { justify-self: end; background: var(--teal); color: #fff; border-bottom-right-radius: 4px; }
+  .typing { display: inline-flex; gap: 4px; width: max-content; padding: 12px 14px; border-radius: 16px; background: rgba(255,255,255,.08); }
+  .typing i { width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: blink 1s infinite; }
+  .typing i:nth-child(2) { animation-delay: .15s; }
+  .typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes blink { 50% { opacity: .25; transform: translateY(-2px); } }
+  :global(html.js) .mock:not(.playing) .typing { display: none; }
+
+  /* ---------- form ---------- */
+  .fm { display: grid; gap: 10px; padding: 16px; border-radius: 14px; background: #fff; color: #000; }
+  .fm label { display: grid; gap: 4px; font-size: .72rem; font-weight: 600; color: #000; }
+  .fm-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .fm-in { display: block; height: 32px; padding: 7px 10px; border-radius: 8px; border: 1px solid #ddd; font-size: .82rem; font-weight: 500; color: #000; overflow: hidden; }
+  .type { display: inline-block; white-space: nowrap; overflow: hidden; vertical-align: top; border-right: 2px solid transparent; }
+  .playing .type { animation: typing .5s steps(var(--ch)) var(--d) both, caret .5s step-end var(--d) 2; }
+  @keyframes typing { from { width: 0; } to { width: calc(var(--ch) * 1ch); } }
+  @keyframes caret { 50% { border-color: #000; } }
+  .fm-cond .fm-in { border-color: var(--teal); background: #e7f3f4; }
+  .fm-check { display: flex; align-items: center; gap: 8px; font-size: .74rem; color: #000; }
+  .fm-check i { display: grid; place-items: center; width: 16px; height: 16px; border-radius: 4px; background: var(--teal); color: #fff; }
+  .fm-btn { display: block; margin-top: 4px; padding: 10px; border-radius: 100px; text-align: center; background: #000; color: #fff; font-weight: 650; font-size: .82rem; }
+  .playing .fm-btn { animation: press .35s ease 3.5s both; }
+  @keyframes press { 50% { transform: scale(.95); background: var(--teal); color: #fff; } }
+
+  /* ---------- journey ---------- */
+  .jr { position: relative; display: grid; gap: 14px; padding-left: 4px; }
+  .jr-line { position: absolute; left: 21px; top: 18px; bottom: 18px; width: 2px; background: repeating-linear-gradient(180deg, rgba(255,255,255,.25) 0 6px, transparent 6px 12px); }
+  .jr-dot { position: absolute; left: -4px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 14px 4px rgba(13,127,137,.6); }
+  .playing .jr-dot { animation: travel 4s var(--ease) .2s infinite; }
+  @keyframes travel { 0% { top: 0; opacity: 0; } 8% { opacity: 1; } 85% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+  .jr li { position: relative; display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 4px; border-radius: 12px; }
+  .jr-ic { position: relative; z-index: 1; display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 11px; background: #222; border: 1px solid rgba(255,255,255,.14); color: #fff; }
+  .playing .jr li { animation: jr-on .5s var(--ease) calc(.3s + var(--i) * .75s) both; }
+  .playing .jr-ic { animation: jr-ic .5s var(--ease) calc(.3s + var(--i) * .75s) both; }
+  @keyframes jr-on { from { opacity: .35; } to { opacity: 1; background: rgba(255,255,255,.04); } }
+  @keyframes jr-ic { to { background: var(--teal); border-color: var(--teal); color: #fff; } }
+  .jr li:last-child b { color: #fff; }
+
+  /* ---------- inbox ---------- */
+  .chs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .chs span { padding: 4px 10px; border-radius: 100px; background: rgba(255,255,255,.07); font-size: .72rem; color: #fff; }
+  .chs span:first-child { background: var(--teal); color: #fff; font-weight: 650; }
+  .ib { display: grid; gap: 8px; }
+  .ib li { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.06); overflow: hidden; }
+  .ib li:first-child { border-color: rgba(13,127,137,.5); }
+  .ib div { flex: 1; min-width: 0; }
+  .ib small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ib-ch { display: grid; place-items: center; width: 32px; height: 32px; flex: none; border-radius: 10px; font-weight: 800; font-size: .72rem; }
+  .ch-IG { background: linear-gradient(135deg, #f9ce34, #ee2a7b, #6228d7); }
+  .ch-FB { background: #1877f2; }
+  .ch-G { background: #fff; color: #000; }
+  .ib em { font-style: normal; font-size: .68rem; padding: 3px 8px; border-radius: 100px; border: 1px solid rgba(255,255,255,.18); color: #fff; white-space: nowrap; }
+
+  /* ---------- nps ---------- */
+  .np { display: grid; gap: 16px; }
+  .gauge { position: relative; width: 210px; margin-inline: auto; }
+  .gauge svg { width: 100%; overflow: visible; }
+  .g-bg, .g-fg { fill: none; stroke-width: 16; stroke-linecap: round; }
+  .g-bg { stroke: rgba(255,255,255,.08); }
+  .g-fg { stroke: var(--teal); stroke-dasharray: 100; stroke-dashoffset: 19; filter: drop-shadow(0 0 8px rgba(13,127,137,.5)); }
+  .playing .g-fg { animation: gauge 1.6s var(--ease) .2s both; }
+  @keyframes gauge { from { stroke-dashoffset: 100; } }
+  .g-num { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; }
+  .g-num b { font-family: var(--font-head); font-size: 2.2rem; font-weight: 800; line-height: 1; }
+  .rm { display: grid; gap: 8px; }
+  .rm li { display: grid; grid-template-columns: 120px 1fr 36px; align-items: center; gap: 10px; font-size: .78rem; color: #fff; }
+  .rm b { color: #fff; text-align: right; }
+  .rm-t { height: 8px; border-radius: 8px; background: rgba(255,255,255,.07); overflow: hidden; }
+  .rm-b { display: block; height: 100%; width: var(--v); border-radius: 8px; background: var(--teal); transform-origin: left; }
+  .rm li.low .rm-b { background: #fff; }
+  .rm li.low b { color: #fff; }
+  .playing .rm-b { animation: grow-x 1s var(--ease) calc(.8s + var(--i) * .15s) both; }
+  .np .toast { justify-self: start; margin-top: 0; }
+
+  /* ---------- loyalty ---------- */
+  .ly { display: grid; gap: 14px; }
+  .ly-card {
+    position: relative;
+    padding: 20px;
+    border-radius: 18px;
+    background:
+      radial-gradient(280px 160px at 100% 0%, rgba(255,255,255,.35), transparent 60%),
+      linear-gradient(135deg, var(--teal), #0a6670);
+    color: #fff;
+    overflow: hidden;
+  }
+  .ly-card::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.45) 50%, transparent 70%);
+    background-size: 250% 100%;
+    animation: shimmer 3.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .ly-top { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
+  .ly-card small { color: #fff; margin-top: 18px; }
+  .ly-tier { display: block; font-family: var(--font-head); font-size: 1.7rem; font-weight: 800; line-height: 1.1; }
+  .ly-pts { margin-top: 6px; font-weight: 600; }
+  .ly-pts span { font-family: var(--font-head); font-weight: 800; font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+  .ly-prog { margin-top: 14px; height: 8px; border-radius: 8px; background: rgba(0,0,0,.15); overflow: hidden; }
+  .ly-prog span { display: block; width: 62%; height: 100%; border-radius: 8px; background: #fff; transform-origin: left; }
+  .playing .ly-prog span { animation: grow-x 1.6s var(--ease) .3s both; }
+  .ly-steps { display: flex; justify-content: space-between; margin-top: 8px; font-size: .68rem; font-style: normal; }
+  .ly-steps i { font-style: normal; opacity: .5; }
+  .ly-steps i.on { opacity: 1; font-weight: 700; }
+  .ly-plus { position: absolute; right: 18px; top: 52px; padding: 4px 10px; border-radius: 100px; background: #000; color: #fff; font-weight: 800; font-size: .8rem; }
+  .mock.playing .ly-plus { animation: float-up 2.2s var(--ease) var(--d) both; }
+  @keyframes float-up { 0% { opacity: 0; transform: translateY(14px); } 25% { opacity: 1; transform: none; } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(-16px); } }
+  .ly-ref { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); }
+  .ly-ref > :global(svg) { color: var(--teal); flex: none; }
+
+  @media (max-width: 480px) {
+    .fn li { grid-template-columns: 82px 1fr 36px; gap: 8px; }
+    .rm li { grid-template-columns: 96px 1fr 30px; }
+    .mock-body { padding: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .jr-dot { display: none; }
+  }
+</style>
+
+<script>
+  document.documentElement.classList.add('js');
+  const els = document.querySelectorAll('[data-play]');
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    els.forEach((el) => el.classList.add('playing'));
+  } else {
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => e.target.classList.toggle('playing', e.isIntersecting)), { threshold: 0.35 });
+    els.forEach((el) => io.observe(el));
+  }
+</script>

@@ -1,0 +1,51 @@
+---
+/* Il diagramma della copertina della guida: Zoho al centro, le funzioni attorno. */
+import Icon from './Icon.astro';
+const nodes = [
+  { icon: 'idcard', label: 'Check-in' },
+  { icon: 'bell', label: 'Servizi' },
+  { icon: 'gear', label: 'Back office' },
+  { icon: 'presentation', label: 'Report' },
+  { icon: 'users', label: 'CRM' },
+  { icon: 'chart', label: 'Marketing' },
+  { icon: 'chat', label: 'Chat' },
+  { icon: 'calendar', label: 'Prenotazioni' },
+];
+interface Props { small?: boolean }
+const { small = false } = Astro.props;
+---
+<div class:list={['orbit', { small }]} aria-hidden="true">
+  <div class="ring r1"></div>
+  <div class="ring r2"></div>
+  <div class="core">
+    <img src="/img/zoho-logo.svg" alt="" width="70" height="24" />
+    <span class="core-t">Zoho</span>
+    <span class="core-s">per il tuo hotel</span>
+  </div>
+  {nodes.map((n, i) => (
+    <div class="node" style={`--a:${i * 45 - 90}deg; --i:${i}`}>
+      <span class="node-in"><Icon name={n.icon} size={small ? 22 : 28} /></span>
+      {!small && <span class="node-l">{n.label}</span>}
+    </div>
+  ))}
+</div>
+
+<style>
+  .orbit { --r: 205px; --s: 78px; position: relative; width: calc(var(--r) * 2 + var(--s) + 40px); aspect-ratio: 1; margin-inline: auto; }
+  .orbit.small { --r: 120px; --s: 52px; }
+  .ring { position: absolute; inset: calc(var(--s) / 2 + 20px); border-radius: 50%; border: 1px solid rgba(255,255,255,.25); }
+  .r2 { inset: calc(var(--s) / 2 + 20px + var(--r) * .32); border: 2px dashed rgba(13,127,137,.55); animation: spin 40s linear infinite; }
+  .core { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: calc(var(--r) * .95); aspect-ratio: 1; border-radius: 50%; display: grid; place-content: center; justify-items: center; text-align: center; background: radial-gradient(circle, rgba(13,127,137,.22), rgba(0,0,0,.2) 70%); box-shadow: 0 0 80px rgba(13,127,137,.25); }
+  .core img { background: #fff; border-radius: 8px; padding: 6px 10px; width: 78px; height: auto; margin-bottom: 8px; }
+  .core-t { font-family: var(--font-head); font-weight: 700; font-size: calc(var(--r) * .26); line-height: .9; color: #fff; text-transform: uppercase; text-shadow: 0 0 30px rgba(13,127,137,.6); }
+  .core-s { font-family: var(--font-head); font-weight: 700; font-size: calc(var(--r) * .085); color: #fff; text-transform: uppercase; letter-spacing: .04em; }
+  .small .core img { display: none; }
+  .node { position: absolute; left: 50%; top: 50%; width: var(--s); height: var(--s); margin: calc(var(--s) / -2); transform: rotate(var(--a)) translate(var(--r)) rotate(calc(-1 * var(--a))); }
+  .node-in { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; border: 2px solid rgba(255,255,255,.85); color: #fff; background: rgba(10,10,10,.55); backdrop-filter: blur(4px); box-shadow: 0 0 0 7px rgba(255,255,255,.07); animation: pulse 4s ease-in-out infinite; animation-delay: calc(var(--i) * .5s); }
+  .node-in::after { content: ''; position: absolute; inset: -9px; border-radius: 50%; border: 2px solid transparent; border-top-color: var(--yellow); border-left-color: var(--yellow); transform: rotate(calc(var(--i) * 40deg)); }
+  .node-l { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); font-family: var(--font-head); font-weight: 700; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; color: #fff; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 12px rgba(13,127,137,.12); } }
+  @media (max-width: 1180px) { .orbit:not(.small) { --r: 170px; --s: 66px; } }
+  @media (max-width: 520px) { .orbit:not(.small) { --r: 122px; --s: 50px; } .node-l { display: none; } }
+</style>

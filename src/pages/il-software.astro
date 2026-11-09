@@ -1,0 +1,139 @@
+---
+/* Il software (versione compatta): le cinque aree in una sola pagina, al posto
+   delle 12 pagine funzionalità. Ogni funzionalità è una scheda con
+   "Approfondisci" richiudibile, così chi legge non cambia pagina. */
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CTA from '../components/CTA.astro';
+import { areas } from '../data/site.js';
+import { features, AREA_ANCHOR } from '../data/features.js';
+
+/* Punti di approfondimento: points, oppure goals, oppure le colonne del PMS,
+   oppure le quattro dashboard (stessi testi della guida). */
+const boards = [
+  ['Giornaliero · operatività', 'occupazione di oggi, arrivi e partenze, pulizie e segnalazioni aperte, chat gestite.'],
+  ['Settimanale · revenue e conversione', 'ricerche sui prossimi 120 giorni, anticipo medio, richieste respinte, funnel e test A/B.'],
+  ['Mensile · direzione', 'quota diretta e tendenza, risparmio commissioni, prenotazioni per canale, NPS.'],
+  ['Annuale · strategia', 'confronto con l’anno prima, ADR e RevPAR per stagione, domanda respinta nei picchi.'],
+];
+const detail = (f: any) => f.points || f.goals || (f.columns ? f.columns.flatMap((c: any) => c.list) : null) || (f.slug === 'analytics-e-revenue' ? boards : null);
+
+const list = areas.map((a) => ({
+  ...a,
+  id: AREA_ANCHOR[a.n],
+  feats: features.filter((f) => f.area === a.n && f.slug !== 'marketing-e-conversione'),
+}));
+---
+<Base title="Il software" description="CRM Hotellerie in una pagina: marketing, prenotazioni dirette e channel manager, gestione clienti, gestione della struttura e fatturazione, report e revenue. Ogni area si attiva anche da sola.">
+  <PageHero illo="software"
+    eyebrow="Il software"
+    title="Cinque aree, un solo software. "
+    hl="Ognuna si attiva anche da sola."
+    lead="Dal primo clic sul sito al ritorno dell’ospite. Parti dall’area che ti serve oggi: le altre si collegano quando vuoi, sugli stessi dati."
+    crumbs={[{ label: 'Il software' }]}
+  />
+
+  <nav class="jump" aria-label="Aree del software">
+    <div class="container jump-in">
+      {list.map((a) => <a href={`#${a.id}`}><span>{a.n}</span> {a.title}</a>)}
+    </div>
+  </nav>
+
+  {list.map((a, i) => (
+    <section class:list={['section-sm', 'area', { 'section-paper': i % 2 === 0 }]} id={a.id}>
+      <div class="container">
+        <div class="a-head reveal">
+          <div>
+            <p class="a-k"><span>{a.n}</span> <Icon name={a.icon} size={18} /> Si attiva anche da sola</p>
+            <h2 class="h2">{a.title}</h2>
+            <p class="lead">{a.text}</p>
+            <p class="a-tags">{a.tags.map((t: string) => <span class="tag">{t}</span>)}</p>
+            {a.n === '01' && <a class="btn btn-primary" href="/marketing/">Scopri le app di marketing</a>}
+          </div>
+          <div class="shot"><img src={a.img} alt="" loading="lazy" /></div>
+        </div>
+
+        {a.feats.length > 0 && (
+          <div class="feats" style={`--cols:${Math.min(a.feats.length, 3)}`}>
+            {a.feats.map((f: any) => (
+              <article class="feat reveal" id={f.slug}>
+                <span class="f-ic"><Icon name={f.icon} size={20} /></span>
+                <h3 class="h4">{f.name}</h3>
+                <p>{f.lead}</p>
+                {detail(f) && (
+                  <details>
+                    <summary>Approfondisci <Icon name="chevron" size={16} /></summary>
+                    <ul class="sq-list">{detail(f).map(([b, t]: string[]) => <li><strong>{b}</strong> {t}</li>)}</ul>
+                    {f.callout && <p class="callout"><strong>{f.callout.label}.</strong> {f.callout.text}</p>}
+                  </details>
+                )}
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  ))}
+
+  <section class="mid">
+    <div class="container mid-in">
+      <p class="mid-t">Non ti servono tutte e cinque? <span>Componi la tua soluzione in due passi, o parlane con noi in demo.</span></p>
+      <div class="mid-btns">
+        <a class="btn btn-primary" href="/demo/">Prenota una demo gratuita</a>
+        <a class="btn btn-ghost mid-ghost" href="/trova-la-soluzione/">Componi la tua soluzione</a>
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+</Base>
+
+<script>
+  // Apertura diretta di una funzionalità (/il-software/#pulizie): apre l'approfondimento
+  const open = () => {
+    const el = location.hash && document.getElementById(location.hash.slice(1));
+    const d = el && el.querySelector('details');
+    if (d) d.open = true;
+  };
+  open(); window.addEventListener('hashchange', open);
+</script>
+
+<style>
+  .jump { position: sticky; top: var(--header-h); z-index: 20; background: #111; }
+  .jump-in { display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; scrollbar-width: none; }
+  .jump a { display: inline-flex; align-items: center; gap: 8px; flex: none; padding: 8px 14px; border-radius: 999px; color: #fff; font-weight: 600; font-size: .86rem; white-space: nowrap; transition: background .2s; }
+  .jump a:hover { background: var(--teal); }
+  .jump a span { font-size: .78rem; opacity: .9; }
+  .area { scroll-margin-top: calc(var(--header-h) + 56px); }
+  .a-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+  .a-k { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-weight: 700; font-size: .78rem; letter-spacing: .05em; text-transform: uppercase; color: var(--teal); }
+  .a-k span { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px 0 9px 0; background: #000; color: #fff; }
+  .a-head .lead { margin: 12px 0 16px; }
+  .a-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+  .feats { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 16px; margin-top: clamp(28px, 3.5vw, 44px); align-items: start; }
+  .feats[style*="--cols:1"] .feat { display: grid; grid-template-columns: 40px minmax(0, 1fr); column-gap: 18px; }
+  .feats[style*="--cols:1"] .feat > :not(.f-ic) { grid-column: 2; }
+  .feats[style*="--cols:1"] .f-ic { grid-row: span 3; margin: 0; }
+  @media (max-width: 1000px) { .feats { grid-template-columns: repeat(min(var(--cols, 3), 2), minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .feats { grid-template-columns: 1fr; } }
+  .feat { padding: 22px; background: #fff; border: 1px solid var(--line); border-radius: 22px 0 22px 0; scroll-margin-top: calc(var(--header-h) + 70px); }
+  .section-paper .feat { border-color: transparent; }
+  .feat:target { outline: 2px solid var(--teal); }
+  .f-ic { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px 0 12px 0; background: var(--teal); color: #fff; margin-bottom: 12px; }
+  .feat .h4 { margin-bottom: 6px; }
+  .feat > p { font-size: .94rem; }
+  details { margin-top: 12px; border-top: 1px dashed var(--line); padding-top: 10px; }
+  summary { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; list-style: none; font-weight: 700; font-size: .84rem; text-transform: uppercase; letter-spacing: .03em; color: var(--teal); }
+  summary::-webkit-details-marker { display: none; }
+  details[open] summary :global(.icon) { transform: rotate(180deg); }
+  details .sq-list { margin-top: 12px; font-size: .92rem; }
+  .callout { margin-top: 12px; padding: 12px 14px; background: var(--yellow-tint); border-radius: 12px 0 12px 0; font-size: .9rem; }
+  .mid { background: #111; padding-block: clamp(28px, 3.5vw, 44px); }
+  .mid-in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px; }
+  .mid-t { color: #fff; font-size: clamp(1.1rem, 1.6vw, 1.35rem); font-weight: 600; }
+  .mid-t span { display: block; font-size: .95rem; font-weight: 400; margin-top: 4px; color: #fff; }
+  .mid-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+  .mid-ghost { color: #fff !important; border-color: #fff !important; }
+  @media (max-width: 900px) { .a-head { grid-template-columns: 1fr; } }
+</style>

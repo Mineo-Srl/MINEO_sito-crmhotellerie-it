@@ -1,0 +1,117 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CTA from '../components/CTA.astro';
+const fields = [
+  { id: 'rooms', label: 'Camere', min: 5, max: 200, step: 1, value: 40, unit: '' },
+  { id: 'occ', label: 'Occupazione media', min: 20, max: 100, step: 1, value: 70, unit: '%' },
+  { id: 'adr', label: 'Prezzo medio camera', min: 40, max: 600, step: 5, value: 110, unit: '€' },
+  { id: 'ota', label: 'Quota venduta dalle OTA', min: 0, max: 100, step: 1, value: 60, unit: '%' },
+  { id: 'comm', label: 'Commissione media OTA', min: 10, max: 30, step: 1, value: 17, unit: '%' },
+  { id: 'shift', label: 'Punti spostati sul diretto', min: 1, max: 30, step: 1, value: 10, unit: 'punti' },
+];
+---
+<Base title="Calcolatore commissioni" description="Quanto ti costano le commissioni delle OTA e quanto resta in cassa spostando prenotazioni sul canale diretto. Calcolo illustrativo.">
+  <PageHero illo="calcolatore" eyebrow="Risorse · Calcolatore" title="Quanto ti costano " hl="i portali?" lead="Inserisci i numeri della tua struttura: vedi quanto valgono le commissioni in un anno e quanto resta in cassa spostando una parte del venduto sul canale diretto, a parità di camere vendute." crumbs={[{ label: 'Risorse' }, { label: 'Calcolatore commissioni' }]} ctas={false} />
+
+  <section class="section-sm section-paper">
+    <div class="container calc" data-calc>
+      <form class="inputs" onsubmit="return false">
+        {fields.map((f) => (
+          <div class="field">
+            <label for={f.id}>{f.label}</label>
+            <div class="row">
+              <input type="range" id={f.id} min={f.min} max={f.max} step={f.step} value={f.value} />
+              <output for={f.id} data-out={f.id}>{f.value}</output><span class="unit">{f.unit}</span>
+            </div>
+          </div>
+        ))}
+      </form>
+      <div class="results" aria-live="polite">
+        <div class="res-main">
+          <p class="label">Restano in cassa ogni anno</p>
+          <p class="big" data-r="saving">19.000 €</p>
+          <p>spostando <strong data-r="shiftTxt">10 punti</strong> sul canale diretto, a parità di camere vendute.</p>
+        </div>
+        <dl class="res-list">
+          <div><dt>Notti vendute in un anno</dt><dd data-r="nights">—</dd></div>
+          <div><dt>Fatturato camere</dt><dd data-r="revenue">—</dd></div>
+          <div><dt>Venduto dalle OTA</dt><dd data-r="otaRev">—</dd></div>
+          <div class="hi"><dt>Commissioni pagate</dt><dd data-r="commissions">—</dd></div>
+        </dl>
+        <p class="note">Calcolo illustrativo: lo rifacciamo in demo con i numeri reali della tua struttura.</p>
+        <a class="btn btn-primary" href="/demo/">Rifallo con noi in demo <Icon name="arrow" size={18} class="icon-arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Come si sposta un punto</p>
+        <h2 class="h2">Dal portale <span class="hl">al tuo sito</span></h2>
+      </div>
+      <ul class="sq-list">
+        <li><a href="/marketing/"><strong>PageSense e SalesIQ</strong></a>: vedi dove i visitatori si fermano e li intercetti in chat.</li>
+        <li><a href="/il-software/#booking-engine"><strong>Booking engine</strong></a>: prenotazione diretta con il tuo brand, senza commissioni.</li>
+        <li><a href="/il-software/#automazioni-e-loyalty"><strong>Automazioni e loyalty</strong></a>: chi arriva da un portale torna dal tuo sito.</li>
+      </ul>
+    </div>
+  </section>
+
+  <CTA />
+</Base>
+
+<script>
+  const root = document.querySelector('[data-calc]') as HTMLElement;
+  const eur = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  const num = new Intl.NumberFormat('it-IT', { maximumFractionDigits: 0 });
+  const v = (id: string) => Number((root.querySelector('#' + id) as HTMLInputElement).value);
+  const set = (k: string, t: string) => { const el = root.querySelector(`[data-r="${k}"]`); if (el) el.textContent = t; };
+  function update() {
+    root.querySelectorAll('input[type=range]').forEach((i) => {
+      const inp = i as HTMLInputElement;
+      (root.querySelector(`[data-out="${inp.id}"]`) as HTMLElement).textContent = inp.value;
+      const p = ((+inp.value - +inp.min) / (+inp.max - +inp.min)) * 100;
+      inp.style.setProperty('--p', p + '%');
+    });
+    const nights = v('rooms') * 365 * (v('occ') / 100);
+    const revenue = nights * v('adr');
+    const otaShare = v('ota') / 100;
+    const comm = v('comm') / 100;
+    const shift = Math.min(v('shift'), v('ota')) / 100;
+    set('nights', num.format(nights));
+    set('revenue', eur.format(revenue));
+    set('otaRev', eur.format(revenue * otaShare));
+    set('commissions', eur.format(revenue * otaShare * comm));
+    // arrotondato alle migliaia, come nella guida
+    set('saving', eur.format(Math.round((revenue * shift * comm) / 1000) * 1000));
+    set('shiftTxt', `${Math.round(shift * 100)} punti`);
+  }
+  root.addEventListener('input', update);
+  update();
+</script>
+
+<style>
+  .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .inputs { background: #fff; border-radius: var(--radius); padding: clamp(22px, 3vw, 34px); display: grid; gap: 22px; border: 1px solid var(--line); }
+  .field label { display: block; font-weight: 700; margin-bottom: 8px; }
+  .row { display: grid; grid-template-columns: 1fr 56px auto; gap: 12px; align-items: center; }
+  output { font-family: var(--font-head); font-weight: 700; font-size: 1.4rem; text-align: right; }
+  .unit { color: var(--muted); font-size: .9rem; min-width: 36px; }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 6px; background: linear-gradient(90deg, var(--black) var(--p, 50%), #ddd var(--p, 50%)); }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--yellow); border: 3px solid var(--black); cursor: pointer; }
+  input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--yellow); border: 3px solid var(--black); cursor: pointer; }
+  .results { background: var(--black); color: #fff; border-radius: var(--radius); padding: clamp(22px, 3vw, 34px); position: sticky; top: calc(var(--header-h) + 20px); }
+  .big { font-family: var(--font-head); font-weight: 700; color: #fff; font-size: clamp(3rem, 7vw, 5rem); line-height: 1; margin: 6px 0 10px; }
+  .res-main p:last-child { color: #fff; }
+  .res-list { margin: 26px 0 16px; border-top: 1px solid #333; }
+  .res-list div { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid #333; }
+  .res-list dt { color: #fff; }
+  .res-list dd { font-weight: 700; }
+  .res-list .hi dd { color: #fff; }
+  .note { font-size: .88rem; color: #fff; margin-bottom: 20px; }
+  .sq-list a { text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  @media (max-width: 900px) { .calc { grid-template-columns: 1fr; } .results { position: static; } }
+</style>

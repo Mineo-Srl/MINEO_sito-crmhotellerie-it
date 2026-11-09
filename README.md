@@ -1,23 +1,31 @@
-# CRM Hotel — landing page (Mineo)
+# CRM Hotellerie — ultima versione (compatta)
 
-Sito statico fatto con [Astro](https://astro.build). Contenuti e testi in `src/data/site.js`, pagine in `src/pages/`.
+Sito Astro di CRM Hotellerie, il software per hotel su Zoho di Mineo S.r.l.
+Messaggio: un unico software, modulare — ogni area si attiva anche da sola.
 
-## Sviluppo locale
+## Struttura (13 pagine)
+- `/` home: hero in 3 varianti (`?hero=a|b|c`, selettore visibile solo in locale), prove, demo come azione principale
+- `/il-software/` le cinque aree in una pagina (sostituisce le vecchie pagine `/funzionalita/*`)
+- `/marketing/` le principali app Zoho per il marketing
+- `/trova-la-soluzione/` configuratore "Componi la tua soluzione"
+- `/chi-siamo/` chi siamo, come lavoriamo, Zoho, costi, dati
+- `/demo/`, `/guida/`, `/calcolatore/`, `/faq/`, `/contatti/`, `/grazie/`, privacy e cookie
 
-```bash
-npm install
-npm run dev        # sviluppo, http://localhost:4321
-npm run build      # genera dist/
-npm run serve      # anteprima di dist/ su http://localhost:4330
-```
+Le vecchie URL rimandano alla nuova posizione (`redirects` in `astro.config.mjs`).
 
-## Pubblicazione con GitHub
+## Comandi
+- Anteprima locale: doppio clic su `Anteprima sito.command` (porta 4346)
+- Build: `npm run build` → `dist/`
+- ZIP per il deploy: `npm run package` → `deploy/crmhotellerie-unico-software-compatto-latest.zip`
 
-Il workflow `.github/workflows/deploy.yml` costruisce il sito e lo pubblica su GitHub Pages a ogni push su `main`.
+## Dove si modificano i testi
+- `src/data/site.js` — aree, menu, esigenze, strutture, FAQ
+- `src/data/features.js` — funzionalità (schede di /il-software/)
+- `src/data/seo.js` — title, meta description e parole chiave di ogni pagina
+- `public/llms.txt` — riepilogo del sito per i motori AI (GEO)
 
-1. Crea il repository su GitHub e fai il push del ramo `main`.
-2. In **Settings → Pages** imposta **Source: GitHub Actions**.
-3. Dominio: `site` in `astro.config.mjs` è `https://crmhotel.mineoepartners.it`. Per usare questo dominio aggiungi un file `public/CNAME` con il dominio e il record DNS CNAME verso `<organizzazione>.github.io`.
-   Se invece il sito resta sull'indirizzo `https://<organizzazione>.github.io/<repo>/`, imposta in `astro.config.mjs` `site: 'https://<organizzazione>.github.io'` e `base: '/<repo>'` (i link interni usano l'helper `u()` e si adeguano da soli).
-
-Le intestazioni di `public/_headers` valgono solo su Netlify/Cloudflare Pages: GitHub Pages le ignora.
+## Da completare prima della pubblicazione
+- Link "Scopri" della pagina Marketing: `APP_SITE` in `src/data/features.js` punta ancora a `http://localhost:4338`
+- Prezzo indicativo nel blocco "Quanto costa" della home
+- Immagine di condivisione `public/img/og-default.png` (ancora nella vecchia versione gialla)
+- ID Google Analytics e redirect del form Zoho della guida verso `/grazie/`

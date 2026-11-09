@@ -1,0 +1,99 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { site, demoSteps, whatsappUrl } from '../data/site.js';
+---
+<Base title="Prenota una demo" description="Prenota una demo gratuita e senza impegno di CRM Hotellerie con il team Mineo, Zoho Authorized Partner.">
+  <PageHero illo="demo"
+    eyebrow="Demo gratuita"
+    title="Vedilo sul "
+    hl="tuo hotel."
+    lead="Prenota una demo gratuita e senza impegno con il team di Mineo, Zoho Authorized Partner. Ti mostriamo CRM Hotellerie dal vivo e ragioniamo sui numeri della tua struttura."
+    crumbs={[{ label: 'Prenota una demo' }]}
+    ctas={false}
+  >
+    <div slot="below" class="btn-row">
+      <a class="btn btn-primary" href={site.bookings} target="_blank" rel="noopener"><Icon name="calendar" size={18} /> Scegli giorno e ora</a>
+      <a class="btn btn-ghost" href={whatsappUrl} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> Scrivici su WhatsApp</a>
+    </div>
+  </PageHero>
+
+  <section class="section-sm section-paper">
+    <div class="container">
+      <h2 class="h3 mb">Cosa succede in demo</h2>
+      <ol class="grid-4">
+        {demoSteps.map((s, i) => (
+          <li class:list={['card', 'reveal', { dark: i === 1 }]} style={`--d:${i * 70}ms`}>
+            <span class="n">{i + 1}</span>
+            <p class="h4">{s.title}</p>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="container">
+      <div class="book reveal">
+        <div class="book-head">
+          <p class="label">Agenda del team Mineo</p>
+          <p class="h3">Scegli lo slot che preferisci</p>
+          <p class="sel" data-sel hidden><strong>La tua selezione:</strong> <span data-sel-t></span><br /><span class="sel-n">Scrivila nelle note della prenotazione: prepariamo la demo su queste aree.</span></p>
+          <p class="muted">Videochiamata, gratuita e senza impegno. Se la finestra qui sotto non si carica, <a href={site.bookings} target="_blank" rel="noopener">apri l’agenda in una nuova scheda</a>.</p>
+        </div>
+        <iframe src={site.bookings} title="Prenota una demo con Zoho Bookings" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm section-dark">
+    <div class="container split">
+      <div>
+        <p class="label">Scopriamo insieme cosa ti serve</p>
+        <p class="h3">Non tutti gli hotel hanno bisogno di tutto.</p>
+      </div>
+      <p>In una consulenza gratuita e senza impegno individuiamo le funzioni che contano per la tua struttura. Grazie alla nostra esperienza sulla suite Zoho, ti suggeriamo solo le app davvero utili per rispondere alle tue esigenze.</p>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="container alt">
+      <a class="alt-c" href={site.demoUrl} target="_blank" rel="noopener"><Icon name="play" size={26} /><span><strong>Prima vuoi guardarti intorno?</strong><span>Esplora l’hotel dimostrativo Soleluna</span></span><Icon name="external" size={18} /></a>
+      <a class="alt-c" href="/guida/"><Icon name="download" size={26} /><span><strong>Preferisci leggere?</strong><span>Scarica la guida gratuita</span></span><Icon name="arrow" size={18} /></a>
+      <a class="alt-c" href="/calcolatore/"><Icon name="euro" size={26} /><span><strong>Parti dai numeri</strong><span>Calcola quanto ti costano i portali</span></span><Icon name="arrow" size={18} /></a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .mb { margin-bottom: 20px; }
+  .sel { margin: 12px 0 4px; padding: 14px 16px; border-radius: 12px 0 12px 0; background: var(--yellow-tint); border-left: 4px solid var(--teal); color: #000; }
+  .sel-n { font-size: .88rem; }
+  .n { display: block; font-family: var(--font-head); font-weight: 700; font-size: 1.8rem; color: var(--olive); line-height: 1; margin-bottom: 10px; }
+  .card.dark .n { color: #fff; }
+  .book { border: 1.5px solid #c9c9c4; border-radius: var(--radius); overflow: hidden; }
+  .book-head { padding: 26px 28px; border-bottom: 1px solid var(--line); }
+  .book-head a { text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 2px; }
+  .book iframe { width: 100%; height: 760px; border: 0; display: block; background: var(--paper); }
+  .alt { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .alt-c { display: grid; grid-template-columns: 30px 1fr 18px; gap: 14px; align-items: center; padding: 22px; border: 1px solid var(--line); border-radius: var(--radius); transition: border-color .2s; }
+  .alt-c:hover { border-color: var(--black); }
+  .alt-c > :global(.icon:first-child) { color: var(--olive); }
+  .alt-c strong { display: block; }
+  .alt-c span span { color: var(--muted); font-size: .92rem; }
+  @media (max-width: 860px) { .alt { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  // Selezione arrivata da "Componi la tua soluzione" (?soluzioni=…&struttura=…)
+  const q = new URLSearchParams(location.search);
+  const sol = q.get('soluzioni');
+  if (sol) {
+    const box = document.querySelector('[data-sel]') as HTMLElement;
+    const st = q.get('struttura');
+    (box.querySelector('[data-sel-t]') as HTMLElement).textContent = (st ? st + ' — ' : '') + sol;
+    box.hidden = false;
+  }
+</script>

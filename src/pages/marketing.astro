@@ -1,0 +1,161 @@
+---
+/* Marketing (voce del menu principale): le sette app Zoho per il marketing.
+   Versione corta: un selettore unico (elenco a sinistra, app scelta a destra
+   con anteprima animata e CTA) al posto dei sette blocchi in fila.
+   Contenuti dalla pagina /app del sito crmhotellerie_azzurro. */
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import AppVisual from '../components/AppVisual.astro';
+import CTA from '../components/CTA.astro';
+import { APP_SITE } from '../data/features.js';
+
+const phases = [
+  ['prima', 'Prima della prenotazione'],
+  ['contatto', 'Primo contatto'],
+  ['dopo', 'Dopo il soggiorno'],
+] as const;
+
+const apps = [
+  { slug: 'pagesense', name: 'PageSense', icon: 'chart', visual: 'funnel', phase: 'prima', menu: 'Dove si ferma chi non prenota', site: 'Mappa il funnel di prenotazione (camera, ricerca, riepilogo, pagamento), individua dove si interrompe e lo corregge con test A/B mirati.' },
+  { slug: 'salesiq', name: 'SalesIQ', icon: 'chat', visual: 'chat', phase: 'prima', menu: 'La chat che intercetta l’indeciso', site: 'Intercetta in chat l’ospite indeciso, con trigger contestuali: chi cerca una data senza prenotare, chi torna più volte, chi è già cliente riconosciuto dal CRM.' },
+  { slug: 'social', name: 'Social', icon: 'megaphone', visual: 'inbox', phase: 'prima', menu: 'Tutti i canali in un’unica coda', site: 'Presidio continuo su ogni canale, messaggi e lead in un’unica coda.' },
+  { slug: 'forms', name: 'Forms', icon: 'inbox', visual: 'form', phase: 'contatto', menu: 'Ogni richiesta in un solo posto', site: 'Raccoglie richieste e preventivi senza disperdere il lead tra mille canali.' },
+  { slug: 'marketing-automation', name: 'Marketing Automation', icon: 'send', visual: 'journey', phase: 'contatto', menu: 'Campagne prima e dopo il soggiorno', site: 'Trasforma i contatti raccolti in prenotazioni dirette attribuite, con campagne mirate prima e dopo il soggiorno.' },
+  { slug: 'survey', name: 'Survey', icon: 'star', visual: 'nps', phase: 'dopo', menu: 'L’NPS di ogni soggiorno', site: 'Misura l’NPS a fine soggiorno e lo correla alla tipologia di camera.' },
+  { slug: 'thrive', name: 'Thrive', icon: 'gift', visual: 'loyalty', phase: 'dopo', menu: 'Loyalty e passaparola', site: 'Trasforma l’ospite che riparte in un ospite che torna, con programmi di loyalty e referral.' },
+] as const;
+---
+<Base title="Marketing: le app principali per il tuo hotel" description="PageSense, SalesIQ, Social, Forms, Marketing Automation, Survey e Thrive: le principali app Zoho per il marketing di CRM Hotellerie, che lavorano anche insieme per far prenotare e tornare gli ospiti.">
+  <PageHero illo="marketing"
+    eyebrow="Marketing · le app principali"
+    title="Le principali app Zoho per il marketing, "
+    hl="un solo ospite al centro"
+    lead="Non sono le uniche: queste sette sono le principali per il marketing di un hotel. Ognuna si attiva anche da sola; se le usi insieme parlano tra loro e scrivono tutte nella stessa scheda dell’ospite."
+    crumbs={[{ label: 'Marketing' }]}
+  />
+
+  <section class="section-sm section-paper" id="app">
+    <div class="container">
+      <div class="sel" data-sel>
+        <div class="list" role="tablist" aria-label="Le app di marketing" aria-orientation="vertical">
+          {phases.map(([k, label], n) => (
+            <>
+              <p class="ph"><span>{n + 1}</span> {label}</p>
+              {apps.filter((a) => a.phase === k).map((a) => {
+                const first = a.slug === apps[0].slug;
+                return (
+                  <button type="button" role="tab" id={`t-${a.slug}`} aria-controls={`p-${a.slug}`} aria-selected={first ? 'true' : 'false'} tabindex={first ? 0 : -1} class="it">
+                    <span class="it-ic"><Icon name={a.icon} size={18} /></span>
+                    <span class="it-t"><strong>{a.name}</strong><span>{a.menu}</span></span>
+                    <Icon name="arrow" size={16} class="it-ar" />
+                  </button>
+                );
+              })}
+            </>
+          ))}
+        </div>
+
+        <div class="panels" data-panels>
+          {apps.map((a, i) => (
+            <div role="tabpanel" id={`p-${a.slug}`} aria-labelledby={`t-${a.slug}`} class="pn" hidden={i !== 0}>
+              <div class="pn-head">
+                <p class="pn-k">{a.menu}</p>
+                <h2 class="h3">{a.name}</h2>
+                <p class="pn-t">{a.site}</p>
+              </div>
+              <div class="pn-vis"><AppVisual type={a.visual} compact /></div>
+              <div class="pn-cta">
+                <a class="btn btn-primary" href="/demo/">Vedila nella demo</a>
+                <a class="pn-more" href={`${APP_SITE}/${a.slug}/`} target="_blank" rel="noopener">Scopri {a.name} <Icon name="arrow" size={16} /></a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="talk reveal">
+        <p class="talk-t"><Icon name="sync" size={22} /> Usate insieme, parlano tra loro</p>
+        <p>Un esempio: la richiesta raccolta con <strong>Forms</strong> entra nella scheda dell’ospite, <strong>Marketing Automation</strong> la segue con le email giuste e <strong>Survey</strong> misura la soddisfazione a fine soggiorno. E non sono le sole: sullo stesso account Zoho ci sono oltre 45 app, da aggiungere quando servono.</p>
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Quali app servono" hl="al tuo hotel?" />
+</Base>
+
+<script>
+  document.querySelectorAll('[data-sel]').forEach((root) => {
+    const tabs = [...root.querySelectorAll('[role="tab"]')] as HTMLElement[];
+    const panels = root.querySelector('[data-panels]') as HTMLElement;
+    const select = (t: HTMLElement, scroll = false) => {
+      tabs.forEach((x) => {
+        const on = x === t;
+        x.setAttribute('aria-selected', String(on));
+        x.tabIndex = on ? 0 : -1;
+        (root.querySelector('#' + x.getAttribute('aria-controls')) as HTMLElement).hidden = !on;
+      });
+      if (scroll && matchMedia('(max-width: 900px)').matches) panels.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t, true));
+      t.addEventListener('keydown', (e) => {
+        const k = (e as KeyboardEvent).key;
+        let n = -1;
+        if (k === 'ArrowDown') n = (i + 1) % tabs.length;
+        if (k === 'ArrowUp') n = (i - 1 + tabs.length) % tabs.length;
+        if (n >= 0) { e.preventDefault(); tabs[n].focus(); select(tabs[n]); }
+      });
+    });
+    // Apertura diretta, es. /marketing/#salesiq
+    const h = location.hash.slice(1);
+    const t = h && (root.querySelector(`#t-${h}`) as HTMLElement | null);
+    if (t) select(t);
+  });
+</script>
+
+<style>
+  .sel { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); align-items: start; }
+
+  /* Elenco */
+  .list { display: grid; gap: 6px; }
+  .ph { display: flex; align-items: center; gap: 10px; margin: 14px 0 4px; font-weight: 700; font-size: .78rem; letter-spacing: .05em; text-transform: uppercase; color: #000; }
+  .ph:first-child { margin-top: 0; }
+  .ph span { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 8px 0 8px 0; background: #000; color: #fff; font-size: .78rem; }
+  .it { display: grid; grid-template-columns: 36px 1fr 16px; gap: 12px; align-items: center; text-align: left; padding: 11px 14px; background: #fff; border: 1.5px solid transparent; border-radius: 14px 0 14px 0; color: #000; transition: border-color .2s, background .2s; }
+  .it:hover { border-color: #000; }
+  .it-ic { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px 0 10px 0; background: var(--yellow-soft); color: #000; }
+  .it-t strong { display: block; font-size: .98rem; }
+  .it-t span { display: block; font-size: .84rem; line-height: 1.35; }
+  .it :global(.it-ar) { opacity: 0; transition: opacity .2s; }
+  .it[aria-selected='true'] { background: #000; color: #fff; }
+  .it[aria-selected='true'] .it-ic { background: var(--teal); color: #fff; }
+  .it[aria-selected='true'] :global(.it-ar), .it:hover :global(.it-ar) { opacity: 1; }
+
+  /* Pannello */
+  .panels { position: sticky; top: calc(var(--header-h) + 20px); scroll-margin-top: calc(var(--header-h) + 16px); }
+  .pn { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); grid-template-areas: 'head vis' 'cta vis'; gap: 18px 28px; align-items: start; background: #fff; border: 1.5px solid var(--teal); border-radius: 32px 0 32px 0; padding: clamp(22px, 3vw, 36px); animation: pin .35s var(--ease); }
+  .pn[hidden] { display: none; }
+  @keyframes pin { from { opacity: 0; transform: translateY(6px); } }
+  .pn-head { grid-area: head; }
+  .pn-k { font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; color: var(--teal); }
+  .pn .h3 { margin: 6px 0 10px; color: #000; }
+  .pn-t { color: #000; }
+  .pn-vis { grid-area: vis; display: flex; justify-content: center; }
+  .pn-cta { grid-area: cta; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; align-self: end; }
+  .pn-more { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .9rem; color: #000; border-bottom: 2px solid var(--teal); padding-bottom: 2px; }
+  .pn-more:hover { color: var(--teal); }
+
+  .talk { display: grid; grid-template-columns: minmax(0, 300px) 1fr; gap: 12px 32px; align-items: center; margin-top: 28px; padding: clamp(20px, 2.6vw, 30px); background: #111; border-radius: 24px 0 24px 0; }
+  .talk-t { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.15rem; color: #fff; }
+  .talk-t :global(.icon) { color: #fff; flex: none; }
+  .talk p:not(.talk-t) { color: #fff; }
+  .talk strong { color: #fff; }
+  @media (max-width: 800px) { .talk { grid-template-columns: 1fr; } }
+  @media (max-width: 1100px) {
+    .pn { grid-template-columns: 1fr; grid-template-areas: 'head' 'vis' 'cta'; }
+  }
+  @media (max-width: 900px) {
+    .sel { grid-template-columns: 1fr; }
+    .panels { position: static; }
+  }
+</style>

@@ -1,15 +1,12 @@
 {
-  "name": "crm-hotellerie-landing-mineo",
+  "name": "crmhotellerie-unico-software-compatto",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "serve": "node scripts/serve.mjs",
-    "og": "node scripts/og.mjs",
+    "serve": "node scripts/serve.mjs dist 4346",
     "package": "bash scripts/package.sh",
     "astro": "astro"
   },

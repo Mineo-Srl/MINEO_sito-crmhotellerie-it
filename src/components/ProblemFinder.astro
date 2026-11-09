@@ -1,0 +1,123 @@
+---
+/* "Qual è il tuo problema oggi?": il visitatore sceglie il problema (filtrabile
+   per categoria) e vede la soluzione, attivabile anche da sola. */
+import Icon from './Icon.astro';
+import { problems, problemCats } from '../data/site.js';
+import { featureHref } from '../data/features.js';
+---
+<div class="finder" data-finder>
+  <div class="cats" role="group" aria-label="Filtra per tipo di esigenza">
+    <button type="button" class="cat on" data-cat="all" aria-pressed="true">Tutti</button>
+    {problemCats.map((c) => <button type="button" class="cat" data-cat={c.id} aria-pressed="false">{c.label}</button>)}
+  </div>
+
+  <div class="f-grid">
+    <div class="f-list" role="tablist" aria-label="Esigenze" aria-orientation="vertical">
+      {problems.map((p, i) => (
+        <button role="tab" id={`pt-${p.id}`} aria-controls={`pp-${p.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-pcat={p.cat} class="f-item">
+          <span class="f-ic"><Icon name={p.icon} size={18} /></span>
+          <span class="f-pain">{p.pain}</span>
+          <Icon name="arrow" size={16} class="f-ar" />
+        </button>
+      ))}
+    </div>
+
+    <div class="f-panels" data-panels>
+      {problems.map((p, i) => (
+        <div role="tabpanel" id={`pp-${p.id}`} aria-labelledby={`pt-${p.id}`} class="f-panel" hidden={i !== 0}>
+          <p class="f-q">“{p.pain}”</p>
+          <p class="f-k"><Icon name="check" size={16} /> La soluzione</p>
+          <p class="h3 f-sol">{p.sol}</p>
+          <p class="f-text">{p.text}</p>
+          <ul class="sq-list">{p.points.map((pt) => <li>{pt}</li>)}</ul>
+          <p class="f-solo"><Icon name="spark" size={16} /> Attivabile anche da sola. Quando vuoi si collega alle altre soluzioni, sugli stessi dati.</p>
+          <div class="f-cta">
+            <a class="btn btn-primary" href="/demo/">Parliamone in demo</a>
+            <a class="link-arrow" href={featureHref(p.slug)}>Come funziona</a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-finder]').forEach((root) => {
+    const tabs = [...root.querySelectorAll('[role="tab"]')] as HTMLElement[];
+    const cats = [...root.querySelectorAll('[data-cat]')] as HTMLElement[];
+    const panels = root.querySelector('[data-panels]') as HTMLElement;
+    const visible = () => tabs.filter((t) => !t.hidden);
+    const select = (t: HTMLElement, scroll = false) => {
+      tabs.forEach((x) => {
+        const on = x === t;
+        x.setAttribute('aria-selected', String(on));
+        x.tabIndex = on ? 0 : -1;
+        (root.querySelector('#' + x.getAttribute('aria-controls')) as HTMLElement).hidden = !on;
+      });
+      if (scroll && matchMedia('(max-width: 860px)').matches && panels.getBoundingClientRect().top > innerHeight * .6) panels.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    tabs.forEach((t) => {
+      t.addEventListener('click', () => select(t, true));
+      t.addEventListener('keydown', (e) => {
+        const k = (e as KeyboardEvent).key;
+        const v = visible(); const i = v.indexOf(t);
+        let n = -1;
+        if (k === 'ArrowDown') n = (i + 1) % v.length;
+        if (k === 'ArrowUp') n = (i - 1 + v.length) % v.length;
+        if (n >= 0) { e.preventDefault(); v[n].focus(); select(v[n]); }
+      });
+    });
+    cats.forEach((c) => c.addEventListener('click', () => {
+      cats.forEach((x) => { const on = x === c; x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on)); });
+      const id = c.dataset.cat;
+      tabs.forEach((t) => (t.hidden = id !== 'all' && t.dataset.pcat !== id));
+      const first = visible()[0];
+      if (first) select(first);
+    }));
+    // Apertura diretta da link, es. /trova-la-soluzione/#problema-fatture
+    const m = location.hash.match(/^#problema-(.+)$/);
+    if (m) { const t = root.querySelector(`#pt-${m[1]}`) as HTMLElement | null; if (t) select(t); }
+  });
+</script>
+
+<style>
+  .cats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+  .cat { padding: 9px 18px; border-radius: 999px; border: 1.5px solid #111; font-weight: 600; font-size: .84rem; text-transform: uppercase; transition: background .2s, color .2s; }
+  .cat:hover { background: #fff; }
+  .cat.on { background: #111; color: #fff; }
+
+  .f-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 24px; align-items: start; }
+  .f-list { display: grid; gap: 6px; }
+  .f-item { display: grid; grid-template-columns: 38px 1fr 18px; gap: 14px; align-items: center; text-align: left; padding: 9px 14px; background: #fff; border: 1.5px solid transparent; border-radius: 16px 0 16px 0; font-weight: 600; color: #000; transition: border-color .2s, background .2s; }
+  .f-item[hidden] { display: none; }
+  .f-item:hover { border-color: #111; }
+  .f-item[aria-selected='true'] { background: #111; color: #fff; }
+  .f-ic { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px 0 10px 0; background: var(--yellow-soft); color: #000; }
+  .f-item[aria-selected='true'] .f-ic { background: var(--yellow); color: #fff; }
+  .f-item :global(.f-ar) { opacity: 0; transition: opacity .2s, transform .2s; }
+  .f-item[aria-selected='true'] :global(.f-ar), .f-item:hover :global(.f-ar) { opacity: 1; }
+  .f-item[aria-selected='true'] :global(.f-ar) { color: #fff; }
+
+  .f-panels { position: sticky; top: calc(var(--header-h) + 20px); scroll-margin-top: calc(var(--header-h) + 16px); }
+  .f-panel { background: #fff; border-radius: 32px 0 32px 0; padding: clamp(26px, 3.4vw, 44px); border: 1.5px solid var(--yellow); animation: fin .35s var(--ease); }
+  .f-panel[hidden] { display: none; }
+  @keyframes fin { from { opacity: 0; transform: translateY(6px); } }
+  .f-q { font-size: 1.05rem; color: var(--muted); font-style: italic; padding-bottom: 18px; margin-bottom: 18px; border-bottom: 1px dashed #d4d4d4; }
+  .f-k { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; color: var(--gold); }
+  .f-sol { margin: 6px 0 12px; font-size: clamp(1.5rem, 2.4vw, 2rem); }
+  .f-text { color: #000; margin-bottom: 18px; }
+  .f-solo { display: flex; gap: 10px; align-items: flex-start; margin-top: 22px; padding: 14px 16px; background: var(--yellow-tint); border-radius: 12px 0 12px 0; font-size: .92rem; font-weight: 600; color: #000; }
+  .f-solo :global(.icon) { flex: none; margin-top: 2px; color: var(--gold); }
+  .f-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 24px; }
+
+  @media (max-width: 860px) {
+    .f-grid { grid-template-columns: 1fr; }
+    .f-panels { position: static; }
+    /* Su telefono i problemi scorrono in orizzontale: la pagina resta corta */
+    .cats { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scrollbar-width: none; }
+    .cat { white-space: nowrap; flex: none; }
+    .f-list { grid-auto-flow: column; grid-auto-columns: 78%; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); margin-inline: calc(-1 * var(--gutter)); padding: 0 var(--gutter) 6px; scrollbar-width: none; }
+    .f-item { scroll-snap-align: start; min-height: 64px; }
+    .f-item :global(.f-ar) { display: none; }
+  }
+</style>

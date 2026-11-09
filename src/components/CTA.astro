@@ -1,0 +1,36 @@
+---
+/* Chiusura: titolo sfumato con un hotel e la demo stilizzati ai lati. */
+import Illo from './Illo.astro';
+import { site, whatsappUrl } from '../data/site.js';
+interface Props { title?: string; hl?: string; text?: string; consult?: boolean }
+const { title = 'Vedilo sul', hl = 'tuo hotel.', consult = true } = Astro.props;
+---
+<section class="grow">
+  <div class="g-art g-l" aria-hidden="true"><Illo name="hotel" /></div>
+  <div class="g-art g-r" aria-hidden="true"><Illo name="demo" /></div>
+  <div class="container grow-in">
+    <h2 class="grow-t">{title} {hl}</h2>
+    <p class="grow-s">Demo gratuita e senza impegno con il team Mineo, Zoho Authorized Partner</p>
+    <div class="row">
+      <a class="btn btn-primary" href="/demo/">Prenota una demo</a>
+      <a class="btn btn-ghost" href={site.demoUrl} target="_blank" rel="noopener">Esplora l’hotel demo</a>
+    </div>
+    {consult && <p class="consult">Non tutti gli hotel hanno bisogno di tutto: in una <strong>consulenza gratuita</strong> ti suggeriamo solo le app Zoho davvero utili per la tua struttura.</p>}
+    <p class="contacts"><a href={`mailto:${site.email}`}>{site.email}</a> · <a href={whatsappUrl} target="_blank" rel="noopener">WhatsApp {site.whatsapp}</a></p>
+  </div>
+</section>
+<style>
+  .grow { position: relative; overflow: hidden; padding: clamp(88px, 11vw, 150px) 0; text-align: center; }
+  .g-art { position: absolute; bottom: 0; width: min(22%, 300px); color: var(--teal); opacity: .55; --illo-accent: var(--teal); --illo-accent-op: .3; pointer-events: none; }
+  .g-l { left: 3%; }
+  .g-r { right: 3%; bottom: 14%; }
+  @media (max-width: 900px) { .g-art { display: none; } }
+  .grow-in { position: relative; }
+  .grow-t { font-family: var(--font-head); font-weight: 700; font-size: clamp(2.5rem, 6vw, 4.4rem); letter-spacing: -.045em; line-height: 1.05; background: linear-gradient(90deg, #111 0%, #0d7f89 70%, #0d7f89 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .grow-s { margin-top: 18px; text-transform: uppercase; font-weight: 600; font-size: .88rem; color: var(--ink); }
+  .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 28px; }
+  .consult { max-width: 64ch; margin: 34px auto 0; color: var(--muted); font-size: .94rem; }
+  .contacts { margin-top: 12px; font-size: .88rem; color: var(--muted); }
+  .contacts a { color: #000; font-weight: 600; }
+  .contacts a:hover { color: var(--gold); }
+</style>

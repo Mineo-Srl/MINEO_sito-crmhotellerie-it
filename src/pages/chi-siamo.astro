@@ -1,0 +1,139 @@
+---
+/* Chi siamo e come lavoriamo: unisce le vecchie pagine Chi siamo,
+   Come funziona e I tuoi dati (versione compatta del sito). */
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CTA from '../components/CTA.astro';
+import Roles from '../components/blocks/Roles.astro';
+import Ownership from '../components/blocks/Ownership.astro';
+import { site } from '../data/site.js';
+
+const facts = [
+  { v: `${site.partnerYears} anni`, l: 'da Zoho Authorized Partner' },
+  { v: '45+', l: 'app Zoho su un unico account' },
+  { v: '5', l: 'aree, dal primo clic al ritorno' },
+  { v: '1', l: 'account Zoho, intestato alla struttura' },
+];
+const steps = [
+  { t: 'Consulenza gratuita', d: 'Ci racconti come lavora oggi il tuo hotel e cosa ti fa perdere più tempo.' },
+  { t: 'Demo sul tuo caso', d: 'Ti mostriamo CRM Hotellerie dal vivo e rifacciamo il calcolo delle commissioni con i tuoi numeri.' },
+  { t: 'Configurazione su misura', d: 'Camere, tariffe, reparti, automazioni, widget sul sito: solo le funzioni che servono.' },
+  { t: 'Formazione e assistenza', d: 'Il personale impara a usarlo con noi, in italiano. Dopo l’avvio restiamo a disposizione.' },
+];
+const included = [
+  ['Configurazione sulla tua struttura', true], ['Formazione e assistenza in italiano', true], ['Booking engine, planning, reparti e automazioni per hotel', true],
+  ['Aggiornamenti della piattaforma (con la licenza Zoho)', true], ['Integrazione con il tuo RMS, se ne usi uno', true],
+  ['Licenze Zoho: in abbonamento, a parte', false], ['Channel manager Channex: servizio opzionale', false],
+];
+---
+<Base title="Chi siamo e come lavoriamo" description={`CRM Hotellerie è sviluppato da ${site.legal}, Zoho Authorized Partner da ${site.partnerYears} anni: configurazione su misura, formazione e assistenza in italiano. I dati restano della struttura.`}>
+  <PageHero illo="chisiamo"
+    eyebrow="Chi siamo e come lavoriamo"
+    title="Zoho è la piattaforma. "
+    hl="Noi la cuciamo sul tuo hotel."
+    lead={`${site.legal} è Zoho Authorized Partner da ${site.partnerYears} anni. Configuriamo CRM Hotellerie sulla tua struttura, formiamo il tuo staff e restiamo al tuo fianco dopo l’avvio, in italiano.`}
+    crumbs={[{ label: 'Chi siamo' }]}
+  />
+
+  <section class="section-sm section-dark">
+    <div class="container grid-4">
+      {facts.map((f) => <div class="fact reveal"><p class="fv">{f.v}</p><p>{f.l}</p></div>)}
+    </div>
+  </section>
+
+  <!-- COME LAVORIAMO -->
+  <section class="section" id="come-lavoriamo">
+    <div class="container">
+      <div class="head reveal"><p class="eyebrow">Come lavoriamo</p><h2 class="h2">Lo configuriamo sul tuo hotel. <span class="hl">E restiamo al tuo fianco.</span></h2></div>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="reveal" style={`--d:${i * 70}ms`}><span class="s-n">{i + 1}</span><p class="h4">{s.t}</p><p>{s.d}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ZOHO SÌ / NO -->
+  <section class="section" id="zoho">
+    <div class="container">
+      <div class="head center reveal">
+        <p class="eyebrow">Zoho</p>
+        <h2 class="h2">Conosci Zoho <span class="hl">oppure no?</span></h2>
+        <p class="lead">CRM Hotellerie funziona in entrambi i casi. Cambia solo il punto di partenza.</p>
+      </div>
+      <div class="zoho">
+        <div class="z-card reveal">
+          <p class="label">Non conosci Zoho</p>
+          <p class="h3">Usi un software per hotel, già pronto.</p>
+          <ul class="sq-list">
+            <li>Zoho è la piattaforma cloud su cui è costruito: oltre 45 app su un unico account, data center certificati ISO 27001.</li>
+            <li>Noi la configuriamo per il tuo hotel: tu vedi prenotazioni, clienti, marketing, fatture e reparti.</li>
+          </ul>
+        </div>
+        <div class="z-card dark reveal" style="--d:100ms">
+          <p class="label">Usi già Zoho</p>
+          <p class="h3">Lo trasformiamo nel gestionale del tuo hotel.</p>
+          <ul class="sq-list">
+            <li>Booking engine, planning, reparti, fatturazione e automazioni si aggiungono al tuo account: stessi utenti, stessi dati.</li>
+            <li>Edizione minima: Zoho CRM Enterprise, inclusa in Zoho One.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHI FA COSA -->
+  <section class="section">
+    <div class="container">
+      <div class="head reveal"><p class="eyebrow">Chi fa cosa</p><h2 class="h2">Zoho, Mineo <span class="hl">e la tua struttura</span></h2></div>
+      <div class="reveal"><Roles /></div>
+    </div>
+  </section>
+
+  <!-- COSA È INCLUSO / COSTI -->
+  <section class="section-sm" id="costi">
+    <div class="container split">
+      <div class="reveal">
+        <p class="eyebrow">Cosa è incluso</p>
+        <h2 class="h2">Chiaro <span class="hl">fin dall’inizio</span></h2>
+        <p class="lead">Paghi solo le aree che attivi. In consulenza ricevi una proposta su misura, con tempi e passaggi chiari. Nessun impegno.</p>
+      </div>
+      <ul class="inc reveal" style="--d:100ms">
+        {included.map(([t, ok]) => <li class:list={{ off: !ok }}><span class="ic"><Icon name={ok ? 'check' : 'euro'} size={16} /></span>{t}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- I TUOI DATI -->
+  <section class="section" id="dati">
+    <div class="container reveal">
+      <div class="head"><p class="eyebrow">I tuoi dati</p><h2 class="h2">L’account è <span class="hl">della tua struttura</span></h2></div>
+      <Ownership title="" />
+    </div>
+  </section>
+
+  <CTA />
+</Base>
+
+<style>
+  .fact { border-left: 3px solid var(--yellow); padding-left: 18px; }
+  .fv { font-family: var(--font-head); font-weight: 700; font-size: clamp(2.2rem, 4vw, 3.2rem); line-height: 1; color: #fff !important; margin-bottom: 8px; }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .steps li { padding: 26px; border: 1px solid var(--line); border-radius: 24px 0 24px 0; background: #fff; }
+  .s-n { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px 0 12px 0; background: #111; color: #fff; font-weight: 700; margin-bottom: 16px; }
+  .steps .h4 { margin-bottom: 8px; }
+  .zoho { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .z-card { padding: clamp(26px, 3vw, 40px); background: var(--paper); border-radius: 32px 0 32px 0; }
+  .z-card.dark { background: #111; color: #fff; }
+  .z-card.dark .label, .z-card.dark .h3 { color: #fff; }
+  .z-card .h3 { margin-bottom: 18px; }
+  .z-card.dark .sq-list li { color: #fff; }
+  .inc { display: grid; gap: 10px; }
+  .inc li { display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: var(--paper); border-radius: 16px 0 16px 0; font-weight: 600; color: #000; }
+  .inc .ic { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #111; color: #fff; flex: none; }
+  .inc li.off { font-weight: 500; }
+  .inc li.off .ic { background: var(--teal); }
+  @media (max-width: 980px) { .steps { grid-template-columns: 1fr 1fr; } .zoho { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { .steps { grid-template-columns: 1fr; } }
+</style>

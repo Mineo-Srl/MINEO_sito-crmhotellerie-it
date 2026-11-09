@@ -1,31 +1,8 @@
-import type { APIRoute } from 'astro';
+/* Sitemap per Google e motori AI: solo le pagine indicizzabili. */
 import { site } from '../data/site.js';
-
-/** Solo le pagine indicizzabili: privacy e cookie policy sono in noindex. */
-const pages = [{ path: '/', priority: '1.0', changefreq: 'monthly' }];
-
-export const GET: APIRoute = ({ site: astroSite }) => {
-  const origin = (astroSite?.origin ?? site.url).replace(/\/$/, '');
-  const lastmod = new Date().toISOString().split('T')[0];
-
-  const urls = pages
-    .map(
-      (p) => `  <url>
-    <loc>${origin}${p.path === '/' ? '/' : p.path}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>${p.changefreq}</changefreq>
-    <priority>${p.priority}</priority>
-  </url>`
-    )
-    .join('\n');
-
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
-</urlset>
-`;
-
-  return new Response(xml, {
-    headers: { 'Content-Type': 'application/xml; charset=utf-8' },
-  });
+const pages = ['/', '/il-software/', '/marketing/', '/trova-la-soluzione/', '/chi-siamo/', '/demo/', '/guida/', '/calcolatore/', '/faq/', '/contatti/', '/privacy-policy/', '/cookie-policy/'];
+export const GET = () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const urls = pages.map((p) => `  <url><loc>${site.url}${p}</loc><lastmod>${today}</lastmod><priority>${p === '/' ? '1.0' : p.includes('policy') ? '0.2' : '0.8'}</priority></url>`).join('\n');
+  return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`, { headers: { 'Content-Type': 'application/xml' } });
 };

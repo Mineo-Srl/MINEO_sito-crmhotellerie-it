@@ -1,0 +1,22 @@
+---
+import { roles, propertyTypes } from '../../data/site.js';
+interface Props { showTypes?: boolean }
+const { showTypes = true } = Astro.props;
+---
+<div class="grid-3">
+  {roles.map((r) => (
+    <div class:list={['card', { dark: r.dark }]}>
+      <p class="label">{r.label}</p>
+      <p class="h3">{r.title}</p>
+      <p>{r.text}</p>
+      <ul class="card-list">{r.points.map((p) => <li>{p}</li>)}</ul>
+    </div>
+  ))}
+</div>
+{showTypes && <p class="types"><strong>Per chi è pensato.</strong> {propertyTypes.join(', ')}.</p>}
+<style>
+  .types { margin-top: 22px; color: var(--muted); }
+  .types strong { color: var(--ink); }
+  .card-list li { color: var(--muted); font-size: .95rem; }
+  .card.dark .card-list li { color: #fff; }
+</style>

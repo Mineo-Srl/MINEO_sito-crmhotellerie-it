@@ -1,0 +1,25 @@
+---
+const boards = [
+  ['Giornaliero', 'Operatività', 'Occupazione di oggi, arrivi e partenze, pulizie e segnalazioni aperte, chat gestite.'],
+  ['Settimanale', 'Revenue e conversione', 'Ricerche sui prossimi 120 giorni, anticipo medio, richieste respinte, funnel e test A/B.'],
+  ['Mensile', 'Direzione', 'Quota diretta e tendenza, risparmio commissioni, prenotazioni per canale, NPS.'],
+  ['Annuale', 'Strategia', 'Confronto con l’anno prima, ADR e RevPAR per stagione, domanda respinta nei picchi per fissare le tariffe dell’anno dopo.'],
+];
+---
+<div>
+  <h3 class="h3 mb">Quattro dashboard, quattro ritmi di decisione</h3>
+  <div class="grid-4">
+    {boards.map(([l, t, d], i) => (
+      <div class:list={['card', { dark: i === 1 }]}>
+        <p class="label">{l}</p>
+        <p class="h4">{t}</p>
+        <p class="small">{d}</p>
+      </div>
+    ))}
+  </div>
+  <div class="kpi"><strong>Indicatori alberghieri:</strong><span class="tags"><span class="tag">Occupazione</span><span class="tag">ADR</span><span class="tag">RevPAR</span><span class="tag">Performance per canale</span></span></div>
+</div>
+<style>
+  .mb { margin-bottom: 18px; }
+  .kpi { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 18px; font-size: .95rem; }
+</style>

@@ -1,0 +1,27 @@
+---
+/* "Esempio sui numeri" della guida, con rimando al calcolatore. */
+import Icon from '../Icon.astro';
+---
+<div class="ex">
+  <div>
+    <p class="label">Esempio sui numeri</p>
+    <p class="ex-text">Hotel da 40 camere, 70% di occupazione, camera media 110 €, 60% del venduto dalle OTA con commissioni al 17%: le commissioni valgono circa <strong>115.000 € l’anno</strong>.</p>
+    <p class="ex-note">Calcolo illustrativo: lo rifacciamo con i numeri della tua struttura.</p>
+    <a class="link-arrow" href="/calcolatore/">Prova con i tuoi numeri <Icon name="arrow" size={16} /></a>
+  </div>
+  <div class="ex-big">
+    <p class="ex-num">19.000 €</p>
+    <p>restano in cassa spostando 10 punti sul canale diretto, a parità di camere vendute</p>
+  </div>
+</div>
+<style>
+  .ex { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; background: var(--black); color: #fff; border-radius: var(--radius); padding: clamp(28px, 4vw, 44px); }
+  .ex-text { font-size: 1.15rem; color: #fff; }
+  .ex-text strong { color: #fff; }
+  .ex-note { font-size: .9rem; color: #fff; margin: 10px 0 22px; }
+  .ex .link-arrow { color: #fff; }
+  .ex-big { border-left: 1px solid #333; padding-left: 40px; display: flex; flex-direction: column; justify-content: center; }
+  .ex-num { font-family: var(--font-head); font-weight: 700; color: #fff; font-size: clamp(3rem, 6vw, 4.6rem); line-height: 1; margin-bottom: 10px; }
+  .ex-big p:last-child { color: #fff; }
+  @media (max-width: 760px) { .ex { grid-template-columns: 1fr; } .ex-big { border-left: 0; padding-left: 0; border-top: 1px solid #333; padding-top: 24px; } }
+</style>

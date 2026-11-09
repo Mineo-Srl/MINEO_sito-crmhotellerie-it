@@ -1,0 +1,32 @@
+---
+/* "Come vuoi partire?": una soluzione, più soluzioni o tutto il software. */
+import { startOptions } from '../data/site.js';
+---
+<div class="opts">
+  {startOptions.map((o, i) => (
+    <div class:list={['opt', 'reveal', { dark: o.dark }]} style={`--d:${i * 80}ms`}>
+      <span class="o-n">{i + 1}</span>
+      <p class="label">{o.k}</p>
+      <p class="h3">{o.title}</p>
+      <p class="o-t">{o.text}</p>
+      <ul class="card-list">{o.points.map((p) => <li>{p}</li>)}</ul>
+    </div>
+  ))}
+</div>
+<p class="opts-note">In ogni caso: <strong>un solo account, gli stessi dati</strong>. Le altre soluzioni si aggiungono quando servono, senza cambiare piattaforma e senza reinserire nulla.</p>
+
+<style>
+  .opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .opt { position: relative; padding: clamp(26px, 3vw, 38px); border: 1.5px solid #111; border-radius: 32px 0 32px 0; background: #fff; }
+  .opt.dark { background: #111; color: #fff; }
+  .opt.dark .h3 { color: #fff; }
+  .opt.dark .label { color: #fff; }
+  .o-n { position: absolute; top: -16px; right: 26px; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px 0 12px 0; background: var(--yellow); color: #fff; font-weight: 700; }
+  .opt .h3 { margin-bottom: 10px; }
+  .o-t { color: var(--muted); }
+  .opt.dark .o-t { color: #fff; }
+  .opt.dark .card-list li { color: #fff; }
+  .opts-note { text-align: center; margin-top: 28px; color: var(--muted); max-width: 70ch; margin-inline: auto; }
+  .opts-note strong { color: #000; }
+  @media (max-width: 900px) { .opts { grid-template-columns: 1fr; gap: 28px; } }
+</style>

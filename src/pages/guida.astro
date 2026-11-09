@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { guide, areas } from '../data/site.js';
+const inside = [
+  [2, 'Il sistema in una pagina', 'Le cinque aree e le app Zoho di ciascuna.'],
+  [3, '01 · Marketing e conversione', 'PageSense, SalesIQ, Forms, Social e l’esempio dei 19.000 €.'],
+  [4, '02 · Booking engine e channel manager', 'Prenotazioni dirette, Channex e chi possiede i dati.'],
+  [5, '03 · CRM', 'La scheda ospite e le automazioni dalla richiesta al ritorno.'],
+  [6, '04 · PMS e gestione della struttura', 'Planning, conto dell’ospite, fatturazione e adempimenti.'],
+  [7, '05 · App e reparti', 'Pulizie, manutenzione, ristorante e ruoli per reparto.'],
+  [8, '06 · Analytics e revenue', 'La domanda respinta, quattro dashboard, il tuo RMS.'],
+  [9, 'Chi fa cosa', 'Zoho, Mineo e la struttura; il prossimo passo.'],
+];
+---
+<Base title="Guida gratuita" description={`Scarica la guida gratuita “${guide.title}”: ${guide.pages} pagine su marketing, booking engine, CRM, PMS e analytics per hotel su Zoho.`}>
+  <PageHero illo="guida" eyebrow={`Guida gratuita · ${guide.pages} pagine · PDF`} title="Zoho " hl="per il tuo hotel" lead="Dal primo clic sul sito al ritorno dell’ospite: le cinque aree di CRM Hotellerie con le schermate dell’hotel dimostrativo, l’esempio sui numeri e il confronto su chi possiede i dati." crumbs={[{ label: 'Risorse' }, { label: 'Guida gratuita' }]} ctas={false} />
+
+  <section class="section-sm section-paper">
+    <div class="container ggrid">
+      <div>
+        <img class="cover-big" src="/img/guida/pag-1.jpg" alt="Copertina della guida CRM Hotellerie: Zoho per il tuo hotel" width="778" height="1100" />
+        <h2 class="h3 mb">Cosa trovi nella guida</h2>
+        <ol class="toc">
+          {inside.map(([n, t, d], i) => <li class="reveal" style={`--d:${i * 40}ms`}><img class="mini" src={`/img/guida/pag-${n}.jpg`} alt="" loading="lazy" width="778" height="1100" /><span><span class="pg">Pagina {String(n).padStart(2, '0')}</span><strong>{t}</strong><span>{d}</span></span></li>)}
+        </ol>
+      </div>
+      <div class="formbox">
+        <p class="label">Ricevi la guida</p>
+        <p class="h4">Lasciaci i tuoi dati e scaricala subito</p>
+        {/* Il form Zoho deve reindirizzare a /grazie/ dopo l'invio */}
+        <iframe src={guide.formUrl} title="Modulo per scaricare la guida" loading="lazy"></iframe>
+        <p class="small muted"><Icon name="lock" size={14} /> Usiamo i tuoi dati solo per inviarti la guida e, se lo chiedi, ricontattarti. <a href="/privacy-policy/">Privacy</a></p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ggrid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
+  .mb { margin-bottom: 20px; }
+  .toc { border-top: 1px solid var(--line); }
+  .toc li { display: grid; grid-template-columns: 64px 1fr; gap: 18px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .mini { width: 64px; aspect-ratio: 210 / 297; object-fit: cover; border-radius: 4px; box-shadow: 0 6px 14px -8px rgba(0,0,0,.45); background: #fff; }
+  .pg { display: block; font-weight: 700; font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; color: var(--olive); }
+  .toc strong { display: block; }
+  .toc span span:not(.pg) { color: var(--muted); font-size: .94rem; }
+  .cover-big { width: 100%; max-width: 360px; border-radius: 8px; box-shadow: 0 30px 60px -26px rgba(0,0,0,.5); margin-bottom: 28px; }
+  .formbox { background: #fff; border-radius: var(--radius); padding: 26px; border: 1px solid var(--line); position: sticky; top: calc(var(--header-h) + 20px); }
+  .formbox iframe { width: 100%; height: 560px; border: 0; margin: 12px 0; }
+  .formbox a { text-decoration: underline; }
+  @media (max-width: 900px) { .ggrid { grid-template-columns: 1fr; } .formbox { position: static; } }
+</style>

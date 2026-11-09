@@ -1,0 +1,137 @@
+---
+/* Banda "Scarica la guida" con l'anteprima delle pagine reali della guida v3_4
+   (immagini in public/img/guida/pag-1…9.jpg, estratte dal PDF). */
+import Icon from './Icon.astro';
+import { guide } from '../data/site.js';
+interface Props { compact?: boolean; strip?: boolean }
+const { compact = false, strip = true } = Astro.props;
+const pages = [
+  { n: 1, t: 'Copertina' },
+  { n: 2, t: 'Il sistema in una pagina' },
+  { n: 3, t: 'Marketing e conversione' },
+  { n: 4, t: 'Booking engine e channel manager' },
+  { n: 5, t: 'CRM' },
+  { n: 6, t: 'PMS e gestione struttura' },
+  { n: 7, t: 'App e reparti' },
+  { n: 8, t: 'Analytics e revenue' },
+  { n: 9, t: 'Chi fa cosa' },
+];
+---
+<section class:list={['gband', { compact }]} data-guide>
+  <div class="container gband-in">
+    <div class="stack" aria-hidden="true">
+      <img class="pg p3" src="/img/guida/pag-5.jpg" alt="" loading="lazy" width="778" height="1100" />
+      <img class="pg p2" src="/img/guida/pag-3.jpg" alt="" loading="lazy" width="778" height="1100" />
+      <img class="pg p1" src="/img/guida/pag-1.jpg" alt="" loading="lazy" width="778" height="1100" />
+    </div>
+    <div>
+      <p class="eyebrow">Guida gratuita · {guide.pages} pagine</p>
+      <h2 class="h2">Tutto il sistema, <span class="hl">in una guida</span></h2>
+      <p class="lead">Le cinque aree di CRM Hotellerie, dal primo clic al ritorno dell’ospite, con le schermate dell’hotel dimostrativo e l’esempio sui numeri delle commissioni.</p>
+      <ul class="gb-list">
+        <li><Icon name="check" size={18} /> Marketing, booking engine, CRM, PMS e analytics</li>
+        <li><Icon name="check" size={18} /> Chi possiede i dati: il confronto</li>
+        <li><Icon name="check" size={18} /> Chi fa cosa tra Zoho, Mineo e la struttura</li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="/guida/">Scarica la guida gratuita</a>
+        <a class="btn btn-ghost" href="/demo/">Oppure prenota la demo</a>
+      </div>
+    </div>
+  </div>
+
+  {strip && <div class="container">
+    <p class="strip-t">Sfoglia l’anteprima</p>
+    <ul class="strip">
+      {pages.map((p) => (
+        <li>
+          <button type="button" class="thumb" data-open={p.n} aria-label={`Ingrandisci pagina ${p.n}: ${p.t}`}>
+            <img src={`/img/guida/pag-${p.n}.jpg`} alt={`Pagina ${p.n} della guida: ${p.t}`} loading="lazy" width="778" height="1100" />
+          </button>
+          <span class="cap"><b>{String(p.n).padStart(2, '0')}</b> {p.t}</span>
+        </li>
+      ))}
+    </ul>
+  </div>}
+
+  <dialog class="viewer" data-viewer aria-label="Anteprima della guida">
+    <button type="button" class="v-close" data-close aria-label="Chiudi"><Icon name="close" size={22} /></button>
+    <button type="button" class="v-nav prev" data-prev aria-label="Pagina precedente"><Icon name="chevron" size={26} /></button>
+    <img data-img src="/img/guida/pag-1.jpg" alt="" />
+    <button type="button" class="v-nav next" data-next aria-label="Pagina successiva"><Icon name="chevron" size={26} /></button>
+    <p class="v-count" data-count>1 / {pages.length}</p>
+  </dialog>
+</section>
+
+<script>
+  document.querySelectorAll('[data-guide]').forEach((root) => {
+    const dlg = root.querySelector('[data-viewer]') as HTMLDialogElement;
+    const img = dlg.querySelector('[data-img]') as HTMLImageElement;
+    const count = dlg.querySelector('[data-count]') as HTMLElement;
+    const thumbs = [...root.querySelectorAll('[data-open]')] as HTMLElement[];
+    const total = thumbs.length;
+    let cur = 1;
+    const show = (n: number) => {
+      cur = ((n - 1 + total) % total) + 1;
+      img.src = `/img/guida/pag-${cur}.jpg`;
+      img.alt = (thumbs[cur - 1].querySelector('img') as HTMLImageElement).alt;
+      count.textContent = `${cur} / ${total}`;
+    };
+    thumbs.forEach((t) => t.addEventListener('click', () => { show(Number(t.dataset.open)); dlg.showModal(); }));
+    dlg.querySelector('[data-close]')!.addEventListener('click', () => dlg.close());
+    dlg.querySelector('[data-prev]')!.addEventListener('click', () => show(cur - 1));
+    dlg.querySelector('[data-next]')!.addEventListener('click', () => show(cur + 1));
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') show(cur + 1);
+      if (e.key === 'ArrowLeft') show(cur - 1);
+    });
+  });
+</script>
+
+<style>
+  .gband { background: var(--paper); padding-block: clamp(56px, 7vw, 96px); overflow: hidden; }
+  .gband-in { display: grid; grid-template-columns: 420px 1fr; gap: clamp(32px, 6vw, 88px); align-items: center; }
+  .gband .eyebrow { color: var(--olive); }
+  .gband .lead { color: var(--muted); margin-top: 16px; }
+  .gb-list { display: grid; gap: 8px; margin-top: 20px; font-weight: 500; }
+  .gb-list li { display: flex; gap: 10px; align-items: center; }
+
+  /* Tre pagine reali a ventaglio */
+  .stack { position: relative; aspect-ratio: 1 / 1.08; }
+  .pg { position: absolute; width: 64%; border-radius: 6px; box-shadow: 0 30px 50px -22px rgba(0,0,0,.5); transition: transform .5s var(--ease); background: #fff; }
+  .p1 { left: 0; top: 4%; transform: rotate(-4deg); z-index: 3; }
+  .p2 { left: 20%; top: 2%; transform: rotate(3deg); z-index: 2; }
+  .p3 { left: 36%; top: 6%; transform: rotate(9deg); z-index: 1; }
+  .gband:hover .p1 { transform: rotate(-6deg) translateX(-8px); }
+  .gband:hover .p3 { transform: rotate(12deg) translateX(10px); }
+
+  /* Striscia con tutte le pagine */
+  .strip-t { margin: clamp(40px, 5vw, 64px) 0 16px; font-weight: 700; font-size: .82rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+  .strip { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(108px, 1fr); gap: 16px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory; }
+  .strip li { scroll-snap-align: start; display: grid; gap: 8px; }
+  .thumb { display: block; border-radius: 6px; overflow: hidden; background: #fff; box-shadow: 0 10px 24px -14px rgba(0,0,0,.45); transition: transform .2s var(--ease), box-shadow .2s; cursor: zoom-in; }
+  .thumb:hover { transform: translateY(-4px); box-shadow: 0 18px 30px -14px rgba(0,0,0,.5); }
+  .thumb img { width: 100%; aspect-ratio: 210 / 297; object-fit: cover; }
+  .cap { font-size: .8rem; color: var(--muted); line-height: 1.3; }
+  .cap b { color: var(--gold); margin-right: 4px; }
+
+  /* Visualizzatore */
+  .viewer { border: 0; padding: 0; background: transparent; max-width: none; max-height: none; width: 100vw; height: 100vh; margin: 0; display: none; }
+  .viewer[open] { display: grid; place-items: center; }
+  .viewer::backdrop { background: rgba(10,10,10,.86); }
+  .viewer img { max-height: 88vh; max-width: min(92vw, 640px); border-radius: 6px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+  .v-close, .v-nav { position: fixed; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: #fff; color: #000; }
+  .v-close { top: 20px; right: 20px; }
+  .v-nav { top: 50%; transform: translateY(-50%); }
+  .v-nav.prev { left: 20px; } .v-nav.prev :global(.icon) { transform: rotate(90deg); }
+  .v-nav.next { right: 20px; } .v-nav.next :global(.icon) { transform: rotate(-90deg); }
+  .v-count { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); color: #fff; font-weight: 600; font-size: .9rem; }
+
+  .compact .gband-in { grid-template-columns: 320px 1fr; }
+  @media (max-width: 860px) {
+    .gband-in, .compact .gband-in { grid-template-columns: 1fr; }
+    .stack { max-width: 340px; width: 100%; margin-inline: auto; }
+    .v-nav { top: auto; bottom: 10px; transform: none; }
+  }
+</style>

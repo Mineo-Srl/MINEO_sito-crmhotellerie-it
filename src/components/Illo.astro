@@ -1,0 +1,119 @@
+---
+/* Illustrazioni stilizzate a linea (SVG in linea, nessun file esterno).
+   Tratto = currentColor; accenti pieni = var(--illo-accent).
+   Strutture: hotel, resort, agriturismo, bnb, spa, gruppi.
+   Argomenti: software, marketing, componi, chisiamo, guida, calcolatore,
+   demo, faq, contatti. */
+interface Props { name: string; class?: string }
+const { name, class: cls = '' } = Astro.props;
+
+const A = 'class="ac"'; // accento pieno
+const art: Record<string, string> = {
+  /* ---------------- Strutture ---------------- */
+  hotel: `
+    <path d="M20 186h200"/>
+    <rect x="62" y="40" width="116" height="146" rx="4"/>
+    <rect x="92" y="24" width="56" height="16" rx="3" ${A}/>
+    <path d="M178 70h22v116M200 92h-22M200 120h-22M200 148h-22"/>
+    ${[0, 1, 2, 3].map((r) => [0, 1, 2].map((c) => `<rect x="${78 + c * 30}" y="${56 + r * 26}" width="16" height="14" rx="2" ${(r + c) % 3 === 0 ? A : ''}/>`).join('')).join('')}
+    <path d="M104 186v-26h32v26"/><path d="M120 160v26"/>
+    <path d="M40 186v-30a10 10 0 0 1 20 0v30M50 146v-8"/>`,
+  resort: `
+    <path d="M14 186h212"/>
+    <circle cx="190" cy="44" r="16" ${A}/>
+    <path d="M32 186v-56h92v56M24 132l54-34 54 34"/>
+    <rect x="46" y="146" width="18" height="16" rx="2" ${A}/><rect x="72" y="146" width="18" height="16" rx="2"/><rect x="98" y="146" width="18" height="16" rx="2" ${A}/>
+    <path d="M172 186c2-36 0-64-8-90"/>
+    <path d="M164 96c-14-10-32-10-42 0 12-2 24 0 34 8M164 96c4-16 18-24 34-22-12 4-22 12-26 26M164 96c14-6 30 0 38 12-12-6-26-6-36 0M164 96c-6-14-20-22-34-20 12 4 22 12 28 24"/>
+    <path d="M150 186l20-34M148 160c10-14 34-12 44 2z" ${A}/>`,
+  agriturismo: `
+    <path d="M10 186h220"/>
+    <path d="M10 150c40-24 80-24 120-6s70 10 100-8"/>
+    <path d="M62 186v-62h96v62M52 128l58-40 58 40"/>
+    <rect x="76" y="140" width="20" height="18" rx="2" ${A}/><rect x="124" y="140" width="20" height="18" rx="2" ${A}/>
+    <path d="M100 186v-24h20v24"/>
+    <path d="M130 104V84h12v29"/>
+    <path d="M190 186v-50M190 136c-10-6-12-44 0-76 12 32 10 70 0 76z" ${A}/>
+    <path d="M30 186v-30M30 156c-7-4-8-30 0-52 8 22 7 48 0 52z"/>`,
+  bnb: `
+    <path d="M20 186h200"/>
+    <path d="M60 186V92l60-44 60 44v94"/>
+    <path d="M150 70V42h16v40"/>
+    <rect x="80" y="104" width="26" height="24" rx="3" ${A}/><rect x="134" y="104" width="26" height="24" rx="3"/>
+    <path d="M74 140h92M80 140v8M98 140v8M116 140v8M134 140v8M152 140v8"/>
+    <path d="M106 186v-30h28v30"/><circle cx="128" cy="172" r="2" ${A}/>
+    <path d="M196 186v-20h18v20" ${A}/><path d="M205 166c-8-8-6-22 0-28 6 6 8 20 0 28z"/>`,
+  spa: `
+    <path d="M24 186h192"/>
+    <path d="M120 150c-30 0-50-20-54-44 22 2 42 14 54 34 12-20 32-32 54-34-4 24-24 44-54 44z" ${A}/>
+    <path d="M120 140c-12-20-12-44 0-64 12 20 12 44 0 64z"/>
+    <path d="M90 66c-8-10 8-18 0-28M120 52c-8-10 8-18 0-28M150 66c-8-10 8-18 0-28"/>
+    <ellipse cx="78" cy="174" rx="26" ry="10"/><ellipse cx="128" cy="176" rx="20" ry="8" ${A}/><ellipse cx="168" cy="176" rx="16" ry="7"/>`,
+  gruppi: `
+    <path d="M14 186h212"/>
+    <rect x="24" y="96" width="56" height="90" rx="3"/><rect x="92" y="40" width="64" height="146" rx="3" ${A}/><rect x="168" y="76" width="50" height="110" rx="3"/>
+    ${[0, 1, 2].map((r) => `<rect x="36" y="${110 + r * 22}" width="12" height="10" rx="2"/><rect x="56" y="${110 + r * 22}" width="12" height="10" rx="2"/>`).join('')}
+    ${[0, 1, 2, 3, 4].map((r) => `<rect x="106" y="${56 + r * 22}" width="14" height="10" rx="2" class="cut"/><rect x="128" y="${56 + r * 22}" width="14" height="10" rx="2" class="cut"/>`).join('')}
+    ${[0, 1, 2, 3].map((r) => `<rect x="180" y="${90 + r * 22}" width="10" height="10" rx="2"/><rect x="196" y="${90 + r * 22}" width="10" height="10" rx="2"/>`).join('')}
+    <path d="M80 140h12M156 120h12" stroke-dasharray="3 4"/>`,
+
+  /* ---------------- Argomenti ---------------- */
+  software: `
+    <rect x="40" y="128" width="160" height="40" rx="8"/>
+    <rect x="52" y="88" width="136" height="40" rx="8" ${A}/>
+    <rect x="64" y="48" width="112" height="40" rx="8"/>
+    <path d="M84 68h40M84 148h60M200 148h12M28 148h12"/>
+    <circle cx="156" cy="68" r="6" ${A}/><circle cx="176" cy="148" r="6"/>
+    <path d="M120 24v24M120 168v24" stroke-dasharray="4 5"/>`,
+  marketing: `
+    <path d="M40 104v32h18l46 30V74l-46 30z" ${A}/>
+    <path d="M58 136l8 34h16l-6-34"/>
+    <path d="M118 96c10 8 10 40 0 48M130 84c18 14 18 58 0 72"/>
+    <path d="M154 176V136M178 176V112M202 176V84"/>
+    <path d="M150 74l22-18 18 12 22-26" /><path d="M200 42h12v12"/>
+    <path d="M140 176h76"/>`,
+  componi: `
+    <path d="M40 60h44a12 12 0 1 1 24 0h44v44a12 12 0 1 0 0 24v44h-44a12 12 0 1 1-24 0H40v-44a12 12 0 1 0 0-24z"/>
+    <path d="M152 60h44v44h-44" ${A}/>
+    <path d="M168 148l14 14 26-30"/>`,
+  chisiamo: `
+    <path d="M20 186h200"/>
+    <rect x="128" y="60" width="72" height="126" rx="4"/>
+    ${[0, 1, 2, 3].map((r) => `<rect x="142" y="${74 + r * 24}" width="14" height="12" rx="2"/><rect x="172" y="${74 + r * 24}" width="14" height="12" rx="2" ${r % 2 ? A : ''}/>`).join('')}
+    <circle cx="62" cy="96" r="16" ${A}/><path d="M34 160c2-24 12-36 28-36s26 12 28 36"/>
+    <circle cx="102" cy="108" r="13"/><path d="M80 166c2-20 10-30 22-30s20 10 22 30"/>`,
+  guida: `
+    <path d="M120 64c-22-14-50-18-80-14v116c30-4 58 0 80 14 22-14 50-18 80-14V50c-30-4-58 0-80 14z"/>
+    <path d="M120 64v116"/>
+    <path d="M56 78c18-2 34 0 48 8M56 100c18-2 34 0 48 8M56 122c18-2 34 0 48 8" />
+    <path d="M136 86c14-8 30-10 48-8v40c-18-2-34 0-48 8z" ${A}/>`,
+  calcolatore: `
+    <rect x="66" y="30" width="96" height="150" rx="10"/>
+    <rect x="80" y="44" width="68" height="30" rx="4" ${A}/>
+    ${[0, 1, 2].map((r) => [0, 1, 2].map((c) => `<rect x="${80 + c * 24}" y="${88 + r * 26}" width="16" height="16" rx="3" ${r === 2 && c === 2 ? A : ''}/>`).join('')).join('')}
+    <ellipse cx="190" cy="168" rx="22" ry="7"/><path d="M168 168v-12c0 4 10 7 22 7s22-3 22-7v12"/><ellipse cx="190" cy="156" rx="22" ry="7" ${A}/>`,
+  demo: `
+    <rect x="44" y="50" width="152" height="100" rx="8"/>
+    <path d="M24 166h192l-12 12H36z"/>
+    <path d="M108 82v36l30-18z" ${A}/>
+    <rect x="160" y="22" width="50" height="46" rx="6" class="bg"/><path d="M160 36h50M172 16v12M198 16v12"/><path d="M174 50h8M188 50h8"/>`,
+  faq: `
+    <path d="M30 50h110a10 10 0 0 1 10 10v54a10 10 0 0 1-10 10H70l-26 22v-22H30a10 10 0 0 1-10-10V60a10 10 0 0 1 10-10z"/>
+    <path d="M72 76a14 14 0 1 1 18 14c-4 2-6 4-6 10M84 110v2"/>
+    <path d="M120 140h70a10 10 0 0 0 10-10V96a10 10 0 0 0-10-10h-28v28a10 10 0 0 1-10 10h-42v6a10 10 0 0 0 10 10z" ${A}/>
+    <path d="M186 140v22l-20-22"/>`,
+  contatti: `
+    <rect x="34" y="62" width="150" height="100" rx="8"/>
+    <path d="M34 72l75 52 75-52"/>
+    <circle cx="186" cy="64" r="22" ${A}/><path d="M178 64l6 6 12-12"/>`,
+};
+const body = art[name] || '';
+---
+<svg class={`illo ${cls}`} viewBox="0 0 240 200" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={body} />
+
+<style>
+  .illo { display: block; width: 100%; height: auto; overflow: visible; }
+  .illo :global(.ac) { fill: var(--illo-accent, var(--teal)); fill-opacity: var(--illo-accent-op, .9); }
+  .illo :global(.cut) { fill: #fff; }
+  .illo :global(.bg) { fill: var(--illo-bg, #fff); }
+</style>
