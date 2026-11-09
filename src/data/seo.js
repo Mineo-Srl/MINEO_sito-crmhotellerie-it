@@ -68,3 +68,19 @@ export const seo = {
     crumb: 'Contatti',
   },
 };
+
+/* Pagine delle singole app di marketing (/marketing/<app>/): title e description
+   da apps.js, con due titoli accorciati sotto i 60 caratteri. */
+import { apps } from './apps.js';
+const shortTitle = {
+  'marketing-automation': 'Zoho Marketing Automation per hotel: email automatiche',
+  social: 'Zoho Social per hotel: post, messaggi e lead in una coda',
+};
+for (const a of apps) {
+  seo[`/marketing/${a.slug}/`] = {
+    title: shortTitle[a.slug] || a.seo.title,
+    description: a.seo.description.length > 158 ? a.seo.description.replace(' e registrazioni', '') : a.seo.description,
+    keywords: a.seo.keywords,
+    crumb: a.name,
+  };
+}

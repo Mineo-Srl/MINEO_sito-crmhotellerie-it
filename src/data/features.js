@@ -4,10 +4,9 @@
    template (tabella dati, scheda ospite, automazioni, dashboard, ecc.).
    ========================================================================== */
 
-/* Pagine di approfondimento delle app (pulsanti "Scopri …" nella pagina Marketing).
-   Ora punta all’anteprima locale del sito crmhotellerie_azzurro: al momento
-   della pubblicazione sostituire con il dominio definitivo. */
-export const APP_SITE = 'http://localhost:4338';
+/* Pagine di approfondimento delle app di marketing: ora sono nel sito stesso,
+   in /marketing/<app>/ (src/pages/marketing/[slug].astro). */
+export const APP_SITE = '/marketing';
 
 export const groups = [
   { key: 'sistema', title: 'Un unico software' },

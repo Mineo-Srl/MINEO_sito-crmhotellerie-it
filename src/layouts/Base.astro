@@ -40,10 +40,10 @@ if (path === '/' || path === '/il-software/') {
   });
 }
 if (s?.crumb) {
-  graph.push({ '@type': 'BreadcrumbList', itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
-    { '@type': 'ListItem', position: 2, name: s.crumb, item: canonical },
-  ] });
+  const items = [{ name: 'Home', item: `${site.url}/` }];
+  if (path.startsWith('/marketing/') && path !== '/marketing/') items.push({ name: 'Marketing', item: `${site.url}/marketing/` });
+  items.push({ name: s.crumb, item: canonical });
+  graph.push({ '@type': 'BreadcrumbList', itemListElement: items.map((x, i) => ({ '@type': 'ListItem', position: i + 1, ...x })) });
 }
 const ld = { '@context': 'https://schema.org', '@graph': graph };
 ---

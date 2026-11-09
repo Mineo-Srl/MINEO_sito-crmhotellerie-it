@@ -1,0 +1,345 @@
+---
+/* Pagina di approfondimento di ogni app di marketing (/marketing/pagesense/, …).
+   Portata dal sito "azzurro" e uniformata al sito principale: palette nero,
+   bianco e #0d7f89, stessi componenti, sezioni con fondini automatici.
+   Contenuti in src/data/apps.js. */
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import AppVisual from '../../components/AppVisual.astro';
+import CTA from '../../components/CTA.astro';
+import { apps, phases } from '../../data/apps.js';
+
+export function getStaticPaths() {
+  return apps.map((app) => ({ params: { slug: app.slug }, props: { app } }));
+}
+const { app } = Astro.props as any;
+const idx = apps.findIndex((a) => a.slug === app.slug);
+const prev = apps[(idx - 1 + apps.length) % apps.length];
+const next = apps[(idx + 1) % apps.length];
+const faqLd = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: app.faq.map((f: any) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<Base title={app.seo.title.replace(/ · .*$/, '')} description={app.seo.description}>
+
+  <!-- HERO -->
+  <section class="ahero">
+    <div class="container ah-grid">
+      <div>
+        <nav class="crumbs" aria-label="Percorso"><a href="/">Home</a><span>/</span><a href="/marketing/">Marketing</a><span>/</span><span aria-current="page">{app.name}</span></nav>
+        <p class="eyebrow">{app.full} · {phases[app.phase]}</p>
+        <h1 class="h1">{app.title}<span class="hl">{app.highlight}</span></h1>
+        <p class="lead">{app.lead}</p>
+        <p class="solo"><Icon name="spark" size={16} /> Si attiva anche da sola · se la usi con le altre app, parlano tra loro</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="/demo/">Prenota una demo gratuita</a>
+          <a class="btn btn-ghost" href="/marketing/">Tutte le app di marketing</a>
+        </div>
+      </div>
+      <div class="ah-vis"><AppVisual type={app.visual} /></div>
+    </div>
+  </section>
+
+  <!-- PRIMA / DOPO -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="head center reveal">
+        <p class="eyebrow">Il punto di partenza</p>
+        <h2 class="h2">Come va oggi, <span class="hl">come va con {app.name}</span></h2>
+      </div>
+      <div class="vs reveal">
+        <div class="vs-col">
+          <h3 class="h4"><Icon name="close" size={18} /> Senza {app.name}</h3>
+          <ul>{app.problem.map((p: string) => <li><Icon name="close" size={16} /> {p}</li>)}</ul>
+        </div>
+        <div class="vs-mid" aria-hidden="true"><Icon name="arrow" size={28} /></div>
+        <div class="vs-col after">
+          <h3 class="h4"><Icon name="check" size={18} /> Con {app.name}</h3>
+          <ul>{app.solution.map((p: string) => <li><Icon name="check" size={16} /> {p}</li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COSA FA -->
+  <section class="section">
+    <div class="container">
+      <div class="head reveal">
+        <p class="eyebrow">Cosa fa per il tuo hotel</p>
+        <h2 class="h2">{app.full}, <span class="hl">configurato da noi</span></h2>
+      </div>
+      <div class="feats">
+        {app.features.map((f: any, i: number) => (
+          <article class="feat reveal" style={`--d:${(i % 3) * 70}ms`}>
+            <span class="f-ic"><Icon name={f.icon} size={20} /></span>
+            <h3 class="h4">{f.title}</h3>
+            <p>{f.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOCCO SPECIFICO DELL'APP -->
+  {app.triggers && (
+    <section class="section">
+      <div class="container">
+        <div class="head reveal"><p class="eyebrow">I tre trigger</p><h2 class="h2">Un messaggio diverso per <span class="hl">ogni momento</span></h2></div>
+        <div class="cols-3">
+          {app.triggers.map((t: any, i: number) => (
+            <article class="card-w reveal" style={`--d:${i * 80}ms`}>
+              <span class="num">0{i + 1}</span>
+              <h3 class="h4">{t.title}</h3>
+              <p class="bubble">{t.text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+  {app.forms && (
+    <section class="section">
+      <div class="container">
+        <div class="head reveal"><p class="eyebrow">I moduli per l’hotel</p><h2 class="h2">Un modulo per <span class="hl">ogni tipo di richiesta</span></h2></div>
+        <div class="cols-4">
+          {app.forms.map((f: any, i: number) => (
+            <article class="card-w reveal" style={`--d:${i * 70}ms`}>
+              <span class="f-ic"><Icon name={f.icon} size={20} /></span>
+              <h3 class="h4">{f.title}</h3>
+              <p>{f.text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+  {app.journey && (
+    <section class="section">
+      <div class="container">
+        <div class="head reveal"><p class="eyebrow">Un percorso tipo</p><h2 class="h2">Dal preventivo <span class="hl">al ritorno</span></h2></div>
+        <ol class="tl">
+          {app.journey.map((j: any, i: number) => (
+            <li class="reveal" style={`--d:${i * 70}ms`}><span class="tl-dot"></span><b>{j.when}</b><p>{j.what}</p></li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
+  {app.channels && (
+    <section class="section-sm">
+      <div class="container">
+        <div class="head reveal"><p class="eyebrow">I canali collegati</p><h2 class="h2">Tutti i social, <span class="hl">un’unica coda</span></h2></div>
+        <ul class="chs reveal">{app.channels.map((c: string) => <li>{c}</li>)}</ul>
+      </div>
+    </section>
+  )}
+  {app.tiers && (
+    <section class="section">
+      <div class="container">
+        <div class="head reveal"><p class="eyebrow">Un programma tipo</p><h2 class="h2">Tre livelli, <span class="hl">regole chiare</span></h2></div>
+        <div class="cols-3">
+          {app.tiers.map((t: any, i: number) => (
+            <article class:list={['card-w', 'reveal', { dark: i === 2 }]} style={`--d:${i * 80}ms`}>
+              <span class="num">Livello {i + 1}</span>
+              <h3 class="h3">{t.name}</h3>
+              <p>{t.text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- SCENARIO -->
+  <section class="section-sm">
+    <div class="container">
+      <figure class="scenario reveal">
+        <p class="eyebrow">{app.scenario.title}</p>
+        <blockquote>{app.scenario.text}</blockquote>
+        {app.scenario.note && <figcaption>{app.scenario.note}</figcaption>}
+      </figure>
+    </div>
+  </section>
+
+  <!-- COLLEGATA AL CRM -->
+  <section class="section section-dark">
+    <div class="container crm">
+      <div class="reveal">
+        <p class="eyebrow">Collegata al CRM</p>
+        <h2 class="h2">Un solo dato dell’ospite, <span class="hl">tutte le app che lo usano</span></h2>
+        <p class="lead">{app.crm}</p>
+        <h3 class="h4 m-t">Cosa misuri</h3>
+        <ul class="metrics">{app.metrics.map((m: string) => <li><Icon name="check" size={16} /> {m}</li>)}</ul>
+      </div>
+      <div class="reveal" style="--d:100ms">
+        {app.screens ? (
+          <div class="shots">
+            {app.screens.map((s: any) => <figure class="shot"><img src={s.src} alt={s.alt} loading="lazy" /></figure>)}
+            <p class="shot-note">Schermate reali dall’hotel dimostrativo</p>
+          </div>
+        ) : (
+          <figure class="photo"><img src={app.photo} alt="" loading="lazy" /></figure>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- COME LO ATTIVIAMO -->
+  <section class="section">
+    <div class="container">
+      <div class="head center reveal">
+        <p class="eyebrow">Come lo attiviamo</p>
+        <h2 class="h2">Quattro passi, <span class="hl">li facciamo noi</span></h2>
+        <p class="lead">Configurazione, collegamento al CRM e formazione del tuo team. E dopo l’avvio restiamo al tuo fianco.</p>
+      </div>
+      <ol class="steps">
+        {app.steps.map((s: any, i: number) => (
+          <li class="reveal" style={`--d:${i * 70}ms`}><span class="s-n">{i + 1}</span><h3 class="h4">{s.title}</h3><p>{s.text}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="container">
+      <div class="head reveal"><p class="eyebrow">Domande frequenti</p><h2 class="h2">{app.name}: <span class="hl">le domande che ci fanno</span></h2></div>
+      <div class="faq">
+        {app.faq.map((f: any, i: number) => (
+          <details class="reveal" open={i === 0}><summary><span>{f.q}</span><span class="pm" aria-hidden="true"></span></summary><p>{f.a}</p></details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- LE ALTRE APP -->
+  <section class="section-sm">
+    <div class="container">
+      <div class="oth-head reveal">
+        <p class="eyebrow">Le altre app di marketing</p>
+        <div class="pn">
+          <a href={`/marketing/${prev.slug}/`}><Icon name="arrow" size={16} class="flip" /> {prev.name}</a>
+          <a href={`/marketing/${next.slug}/`}>{next.name} <Icon name="arrow" size={16} /></a>
+        </div>
+      </div>
+      <div class="others">
+        {apps.map((a: any) => (
+          <a href={`/marketing/${a.slug}/`} class:list={['oth', { on: a.slug === app.slug }]} aria-current={a.slug === app.slug ? 'page' : undefined}>
+            <span class="oth-ic"><Icon name={a.icon} size={18} /></span>
+            <span><b>{a.name}</b><small>{a.menu}</small></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTA title={`Vuoi vedere ${app.name}`} hl="sul tuo hotel?" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+</Base>
+
+<style>
+  /* Hero */
+  .ahero { padding: clamp(26px, 3.5vw, 40px) 0 clamp(52px, 6vw, 88px); }
+  .ah-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .crumbs { display: flex; flex-wrap: wrap; gap: 8px; font-size: .78rem; text-transform: uppercase; font-weight: 500; color: #000; margin-bottom: clamp(24px, 3.5vw, 44px); }
+  .crumbs a:hover { color: var(--teal); }
+  .ahero .lead { margin-top: 20px; max-width: 58ch; color: #000; }
+  .solo { display: inline-flex; gap: 8px; align-items: center; margin-top: 18px; padding: 10px 14px; border-radius: 12px 0 12px 0; background: var(--yellow-tint); font-weight: 600; font-size: .9rem; color: #000; }
+  .solo :global(.icon) { color: var(--teal); flex: none; }
+  .ahero .btn-row { margin-top: 24px; }
+  .ah-vis { display: flex; justify-content: center; }
+
+  /* Prima / dopo */
+  .vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: stretch; }
+  .vs-col { padding: clamp(24px, 3vw, 34px); border-radius: 28px 0 28px 0; background: #1d1d1d; }
+  .vs-col.after { background: var(--teal); }
+  .vs-col .h4 { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; color: #fff; }
+  .vs-col ul { display: grid; gap: 10px; }
+  .vs-col li { display: flex; gap: 10px; align-items: flex-start; color: #fff; }
+  .vs-col li :global(.icon) { flex: none; margin-top: 4px; color: #fff; }
+  .vs-mid { display: grid; place-items: center; color: #fff; }
+
+  /* Schede */
+  .feats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .feat, .card-w { padding: 24px; background: var(--paper); border-radius: 22px 0 22px 0; }
+  :global(.bg-tint) .feat, :global(.bg-tint) .card-w { background: #fff; }
+  .f-ic { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px 0 12px 0; background: var(--teal); color: #fff; margin-bottom: 14px; }
+  .feat .h4, .card-w .h4 { margin-bottom: 6px; }
+  .feat p, .card-w p { color: #000; font-size: .95rem; }
+  .cols-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .cols-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .num { display: inline-block; margin-bottom: 12px; font-weight: 700; font-size: .8rem; letter-spacing: .05em; text-transform: uppercase; color: var(--teal); }
+  .bubble { margin-top: 10px; padding: 12px 14px; border-radius: 14px 14px 14px 4px; background: #fff; font-style: italic; }
+  .card-w.dark { background: #111; }
+  .card-w.dark .num, .card-w.dark .h3, .card-w.dark p { color: #fff; }
+  .tl { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; position: relative; }
+  .tl li { position: relative; padding: 22px 18px 18px; background: var(--paper); border-radius: 18px 0 18px 0; }
+  :global(.bg-tint) .tl li { background: #fff; }
+  .tl-dot { display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--teal); margin-bottom: 10px; }
+  .tl b { display: block; margin-bottom: 4px; }
+  .chs { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chs li { padding: 10px 18px; border-radius: 999px; background: #000; color: #fff; font-weight: 600; }
+
+  /* Scenario */
+  .scenario { margin: 0; padding: clamp(26px, 4vw, 48px); border-left: 6px solid var(--teal); background: var(--yellow-tint); border-radius: 0 28px 0 28px; }
+  .scenario blockquote { margin: 8px 0 0; font-size: clamp(1.1rem, 1.6vw, 1.35rem); line-height: 1.5; color: #000; }
+  .scenario figcaption { margin-top: 12px; font-size: .9rem; color: #000; }
+
+  /* CRM */
+  .crm { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 64px); align-items: center; }
+  .crm .lead { margin-top: 16px; }
+  .m-t { margin-top: 24px; color: #fff; }
+  .metrics { display: grid; gap: 8px; margin-top: 12px; }
+  .metrics li { display: flex; gap: 10px; align-items: flex-start; color: #fff; }
+  .metrics :global(.icon) { flex: none; margin-top: 4px; color: #fff; }
+  .shots { display: grid; gap: 14px; }
+  .shot, .photo { margin: 0; border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(0,0,0,.8); }
+  .shot img, .photo img { width: 100%; display: block; }
+  .photo img { aspect-ratio: 4 / 3; object-fit: cover; }
+  .shot-note { font-size: .85rem; color: #fff; }
+
+  /* Passi */
+  .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .steps li { padding: 24px; background: var(--paper); border-radius: 22px 0 22px 0; }
+  :global(.bg-tint) .steps li { background: #fff; }
+  .s-n { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px 0 12px 0; background: #000; color: #fff; font-weight: 700; margin-bottom: 14px; }
+  .steps .h4 { margin-bottom: 6px; }
+  .steps p { color: #000; font-size: .95rem; }
+
+  /* FAQ */
+  .faq { display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(28px, 4vw, 56px); align-items: start; border-top: 1px solid var(--line); }
+  details { border-bottom: 1px solid var(--line); }
+  summary { display: flex; justify-content: space-between; gap: 20px; align-items: center; padding: 18px 0; cursor: pointer; list-style: none; font-weight: 700; font-size: 1.05rem; color: #000; }
+  summary::-webkit-details-marker { display: none; }
+  .pm { position: relative; width: 30px; height: 30px; border-radius: 10px 0 10px 0; background: var(--paper); flex: none; }
+  .pm::before, .pm::after { content: ''; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; background: #000; transform: translate(-50%, -50%); }
+  .pm::after { transform: translate(-50%, -50%) rotate(90deg); }
+  details[open] .pm { background: var(--teal); }
+  details[open] .pm::before, details[open] .pm::after { background: #fff; }
+  details[open] .pm::after { transform: translate(-50%, -50%); }
+  details p { padding: 0 44px 18px 0; color: #000; }
+
+  /* Altre app */
+  .oth-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .oth-head .eyebrow { margin: 0; }
+  .pn { display: flex; gap: 18px; }
+  .pn a { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: #000; }
+  .pn a:hover { color: var(--teal); }
+  .pn :global(.flip) { transform: rotate(180deg); }
+  .others { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; }
+  .oth { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 16px 0 16px 0; background: var(--paper); color: #000; border: 1.5px solid transparent; transition: border-color .2s; }
+  .oth:hover { border-color: var(--teal); }
+  .oth.on { background: #000; color: #fff; }
+  .oth-ic { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px 0 10px 0; background: var(--teal); color: #fff; }
+  .oth b { display: block; }
+  .oth small { display: block; font-size: .8rem; line-height: 1.3; margin-top: 2px; }
+
+  @media (max-width: 1100px) { .others { grid-template-columns: repeat(4, minmax(0, 1fr)); } .cols-4, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 900px) {
+    .ah-grid, .crm { grid-template-columns: 1fr; }
+    .vs { grid-template-columns: 1fr; } .vs-mid { transform: rotate(90deg); }
+    .feats, .cols-3 { grid-template-columns: 1fr 1fr; } .faq { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) { .feats, .cols-3, .cols-4, .steps { grid-template-columns: 1fr; } .others { grid-template-columns: 1fr 1fr; } }
+</style>

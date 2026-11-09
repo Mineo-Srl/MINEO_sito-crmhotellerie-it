@@ -20,6 +20,7 @@ Hotel indipendenti e boutique hotel, resort e villaggi, agriturismi, B&B e dimor
 ## Pagine principali
 - [Il software](https://www.crmhotellerie.it/il-software/): le cinque aree in una pagina.
 - [Marketing](https://www.crmhotellerie.it/marketing/): le principali app Zoho per il marketing dell'hotel.
+  - Approfondimenti: [PageSense](https://www.crmhotellerie.it/marketing/pagesense/), [SalesIQ](https://www.crmhotellerie.it/marketing/salesiq/), [Social](https://www.crmhotellerie.it/marketing/social/), [Forms](https://www.crmhotellerie.it/marketing/forms/), [Marketing Automation](https://www.crmhotellerie.it/marketing/marketing-automation/), [Survey](https://www.crmhotellerie.it/marketing/survey/), [Thrive](https://www.crmhotellerie.it/marketing/thrive/).
 - [Componi la tua soluzione](https://www.crmhotellerie.it/trova-la-soluzione/): configuratore per tipo di struttura ed esigenze.
 - [Chi siamo e come lavoriamo](https://www.crmhotellerie.it/chi-siamo/): Mineo, metodo, Zoho, costi, proprietà dei dati.
 - [Calcolatore commissioni](https://www.crmhotellerie.it/calcolatore/): quanto costano le commissioni delle OTA.
