@@ -90,6 +90,25 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
     </div>
   </section>
 
+  <!-- ZOHO: la piattaforma sotto il software, subito dopo la promessa -->
+  <section class="zband" aria-labelledby="zb-t">
+    <div class="container zb-in">
+      <img class="zb-logo" src="/img/zoho-logo.svg" alt="Zoho" width="150" height="66" loading="lazy" />
+      <div class="zb-txt">
+        <h2 class="zb-t" id="zb-t">Costruito su Zoho, <span class="hl">la piattaforma cloud nata nel 1996</span></h2>
+        <ul class="zb-pts">
+          <li><Icon name="layers" size={16} /> Oltre 50 app integrate</li>
+          <li><Icon name="shield" size={16} /> Data center ISO 27001 e GDPR</li>
+          <li><Icon name="lock" size={16} /> Account intestato alla struttura</li>
+        </ul>
+      </div>
+      <div class="zb-side">
+        <img class="zb-badge" src="/img/partner-autorizzato-zoho.webp" alt="Zoho Authorized Partner" width="160" height="44" loading="lazy" />
+        <a class="zb-link" href="/chi-siamo/#chi-e-zoho">Chi è Zoho <Icon name="arrow" size={15} /></a>
+      </div>
+    </div>
+  </section>
+
   <!-- PER OGNI STRUTTURA: illustrazioni stilizzate, aprono il configuratore già impostato -->
   <section class="section-sm" id="strutture">
     <div class="container">
@@ -358,4 +377,18 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
   .price-todo { padding: 12px 14px; border-radius: 12px; font-weight: 600; color: var(--teal); background: #fff; }
   .price .link-arrow { align-self: flex-start; }
   @media (max-width: 900px) { .quotes { grid-template-columns: 1fr; } }
+  /* Fascia Zoho */
+  .zband { padding: clamp(28px, 3.5vw, 44px) 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .zb-in { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: clamp(20px, 3.5vw, 56px); align-items: center; }
+  .zb-logo { width: clamp(110px, 10vw, 150px); height: auto; }
+  .zb-t { font-size: clamp(1.25rem, 1.9vw, 1.6rem); line-height: 1.2; letter-spacing: -.02em; font-weight: 700; color: #000; }
+  .zb-pts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 12px; }
+  .zb-pts li { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: .92rem; color: #000; }
+  .zb-pts :global(.icon) { color: var(--teal); }
+  .zb-side { display: grid; justify-items: end; gap: 12px; }
+  .zb-badge { width: 160px; height: auto; }
+  .zb-link { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: .9rem; color: var(--teal); }
+  .zb-link:hover { text-decoration: underline; }
+  @media (max-width: 860px) { .zb-in { grid-template-columns: auto minmax(0, 1fr); } .zb-side { grid-column: 1 / -1; grid-template-columns: auto auto; justify-content: start; align-items: center; justify-items: start; } }
+  @media (max-width: 520px) { .zb-in { grid-template-columns: 1fr; } }
 </style>
