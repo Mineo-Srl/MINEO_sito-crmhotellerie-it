@@ -1,5 +1,5 @@
 ---
-/* Home (versione compatta). Ordine: promessa (3 varianti) + 3 prove + 1 azione
+/* Home (versione compatta). Ordine: promessa (hero A) + 3 prove + 1 azione
    principale → esigenza per esigenza → non un pacchetto chiuso → da sei programmi
    a uno + CTA → prezzo e numeri → guida → CTA. */
 import Base from '../layouts/Base.astro';
@@ -19,27 +19,12 @@ const pillars = [
   { icon: 'file', title: 'Fatturazione', text: 'Fattura elettronica e adempimenti dai dati che hai già.', href: '/il-software/#fatturazione-e-adempimenti' },
 ];
 
-/* Tre varianti della promessa da confrontare (A consigliata). */
-const heroes = [
-  {
-    id: 'a', name: 'A · Cosa è',
-    kicker: 'Il software per hotel su Zoho',
-    title: 'Prenotazioni dirette, clienti, marketing e fatture ', hl: 'in un unico software.',
-    text: 'Parti dall’area che ti serve oggi e aggiungi le altre quando vuoi: lavorano tutte sugli stessi dati.',
-  },
-  {
-    id: 'b', name: 'B · Cosa ci guadagni',
-    kicker: 'CRM Hotellerie · software per hotel',
-    title: 'Meno commissioni ai portali, ', hl: 'più ospiti che tornano.',
-    text: 'Un unico software per prenotazioni dirette, gestione clienti, marketing e fatturazione. Si attiva un’area alla volta.',
-  },
-  {
-    id: 'c', name: 'C · Modulare',
-    kicker: 'Non un pacchetto chiuso',
-    title: 'Il gestionale del tuo hotel, ', hl: 'un’area alla volta.',
-    text: 'Prenotazioni, clienti, marketing, fatture: scegli da dove partire. Tutto lavora sugli stessi dati, in un unico software.',
-  },
-];
+/* Promessa (hero A, scelta definitiva). */
+const hero = {
+  kicker: 'Il software per hotel su Zoho',
+  title: 'Prenotazioni dirette, clienti, marketing e fatture ', hl: 'in un unico software.',
+  text: 'Parti dall’area che ti serve oggi e aggiungi le altre quando vuoi: lavorano tutte sugli stessi dati.',
+};
 
 /* Tre prove a sostegno della promessa (fonti: guida v. definitiva). */
 const proofs = [
@@ -57,17 +42,11 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
   <section class="hero">
     <div class="container hero-in">
       <div class="hero-txt">
-        {/* PROMESSA: tre varianti da confrontare (?hero=a|b|c, selettore in basso
-            visibile solo in anteprima locale). Prove e pulsanti sono uguali per tutte. */}
-        {heroes.map((h) => (
-          <div class="promise" data-hero={h.id} hidden={h.id !== 'a'}>
-            <p class="kicker">{h.kicker}</p>
-            {h.id === 'a'
-              ? <h1 class="hero-h">{h.title}<span class="hl">{h.hl}</span></h1>
-              : <p class="hero-h">{h.title}<span class="hl">{h.hl}</span></p>}
-            <p class="hero-p">{h.text}</p>
-          </div>
-        ))}
+        <div class="promise">
+          <p class="kicker">{hero.kicker}</p>
+          <h1 class="hero-h">{hero.title}<span class="hl">{hero.hl}</span></h1>
+          <p class="hero-p">{hero.text}</p>
+        </div>
         {/* PROVE: tre motivi per crederci */}
         <ul class="proofs">
           {proofs.map((p) => <li><span class="pf-ic"><Icon name={p.icon} size={18} /></span><span><strong>{p.t}</strong> {p.d}</span></li>)}
@@ -211,29 +190,8 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
 
   <CTA title="Vedilo sul" hl="tuo hotel." />
 
-  {/* Selettore delle varianti hero: compare solo in anteprima locale o con ?hero= */}
-  <div class="hero-switch" data-switch hidden>
-    <span>Hero</span>
-    {heroes.map((h) => <button type="button" data-pick={h.id} title={h.name}>{h.id.toUpperCase()}</button>)}
-  </div>
 </Base>
 
-<script>
-  const q = new URLSearchParams(location.search).get('hero');
-  const sw = document.querySelector('[data-switch]') as HTMLElement;
-  const show = (id: string) => {
-    document.querySelectorAll<HTMLElement>('[data-hero]').forEach((p) => (p.hidden = p.dataset.hero !== id));
-    sw.querySelectorAll<HTMLElement>('[data-pick]').forEach((b) => b.classList.toggle('on', b.dataset.pick === id));
-  };
-  if (q && /^[abc]$/.test(q)) show(q); else show('a');
-  if (q || ['localhost', '127.0.0.1'].includes(location.hostname)) {
-    sw.hidden = false;
-    sw.querySelectorAll<HTMLElement>('[data-pick]').forEach((b) => b.addEventListener('click', () => {
-      show(b.dataset.pick!);
-      history.replaceState(null, '', '?hero=' + b.dataset.pick);
-    }));
-  }
-</script>
 
 <style>
   /* HERO */
@@ -399,12 +357,5 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
   .price-list :global(.icon) { flex: none; margin-top: 4px; color: var(--teal); }
   .price-todo { padding: 12px 14px; border-radius: 12px; font-weight: 600; color: var(--teal); background: #fff; }
   .price .link-arrow { align-self: flex-start; }
-  /* Selettore varianti (solo anteprima) */
-  .hero-switch { position: fixed; right: 16px; bottom: 16px; z-index: 95; display: flex; align-items: center; gap: 6px; padding: 8px 10px; background: #000; color: #fff; border-radius: 999px; box-shadow: 0 10px 30px -10px rgba(0,0,0,.5); font-size: .8rem; font-weight: 700; }
-  .hero-switch[hidden] { display: none; }
-  .hero-switch span { padding: 0 6px; }
-  .hero-switch button { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid #fff; color: #fff; font-weight: 700; }
-  .hero-switch button.on { background: var(--teal); border-color: var(--teal); }
   @media (max-width: 900px) { .quotes { grid-template-columns: 1fr; } }
-  @media (max-width: 560px) { .hero-switch { bottom: 84px; } }
 </style>

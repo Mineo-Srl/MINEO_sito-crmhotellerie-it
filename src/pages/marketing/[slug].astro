@@ -31,7 +31,7 @@ const faqLd = {
         <p class="eyebrow">{app.full} · {phases[app.phase]}</p>
         <h1 class="h1">{app.title}<span class="hl">{app.highlight}</span></h1>
         <p class="lead">{app.lead}</p>
-        <p class="solo"><Icon name="spark" size={16} /> Si attiva anche da sola · se la usi con le altre app, parlano tra loro</p>
+        <p class="solo"><Icon name="spark" size={16} /> {app.slug === 'sito-web' ? 'Si collega a tutte le app: booking, CRM, chat e moduli scrivono nella stessa scheda ospite' : 'Si attiva anche da sola · se la usi con le altre app, parlano tra loro'}</p>
         <div class="btn-row">
           <a class="btn btn-primary" href="/demo/">Prenota una demo gratuita</a>
           <a class="btn btn-ghost" href="/marketing/">Tutte le app di marketing</a>
@@ -46,16 +46,16 @@ const faqLd = {
     <div class="container">
       <div class="head center reveal">
         <p class="eyebrow">Il punto di partenza</p>
-        <h2 class="h2">Come va oggi, <span class="hl">come va con {app.name}</span></h2>
+        <h2 class="h2">Come va oggi, <span class="hl">come va con {app.alias || app.name}</span></h2>
       </div>
       <div class="vs reveal">
         <div class="vs-col">
-          <h3 class="h4"><Icon name="close" size={18} /> Senza {app.name}</h3>
+          <h3 class="h4"><Icon name="close" size={18} /> Senza {app.alias || app.name}</h3>
           <ul>{app.problem.map((p: string) => <li><Icon name="close" size={16} /> {p}</li>)}</ul>
         </div>
         <div class="vs-mid" aria-hidden="true"><Icon name="arrow" size={28} /></div>
         <div class="vs-col after">
-          <h3 class="h4"><Icon name="check" size={18} /> Con {app.name}</h3>
+          <h3 class="h4"><Icon name="check" size={18} /> Con {app.alias || app.name}</h3>
           <ul>{app.solution.map((p: string) => <li><Icon name="check" size={16} /> {p}</li>)}</ul>
         </div>
       </div>
@@ -67,7 +67,7 @@ const faqLd = {
     <div class="container">
       <div class="head reveal">
         <p class="eyebrow">Cosa fa per il tuo hotel</p>
-        <h2 class="h2">{app.full}, <span class="hl">configurato da noi</span></h2>
+        <h2 class="h2">{app.full}, <span class="hl">{app.slug === 'sito-web' ? 'progettato da noi' : 'configurato da noi'}</span></h2>
       </div>
       <div class="feats">
         {app.features.map((f: any, i: number) => (
@@ -234,7 +234,7 @@ const faqLd = {
     </div>
   </section>
 
-  <CTA title={`Vuoi vedere ${app.name}`} hl="sul tuo hotel?" />
+  <CTA title={app.slug === 'sito-web' ? 'Vuoi un sito che porta' : `Vuoi vedere ${app.name}`} hl={app.slug === 'sito-web' ? 'prenotazioni dirette?' : 'sul tuo hotel?'} />
   <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
 </Base>
 

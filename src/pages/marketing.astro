@@ -1,7 +1,7 @@
 ---
-/* Marketing (voce del menu principale): le sette app Zoho per il marketing.
+/* Marketing (voce del menu principale): il sito web e le app Zoho per il marketing.
    Versione corta: un selettore unico (elenco a sinistra, app scelta a destra
-   con anteprima animata e CTA) al posto dei sette blocchi in fila.
+   con anteprima animata e CTA) al posto dei blocchi in fila.
    Contenuti dalla pagina /app del sito crmhotellerie_azzurro. */
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
@@ -17,6 +17,7 @@ const phases = [
 ] as const;
 
 const apps = [
+  { slug: 'sito-web', name: 'Sito web', icon: 'globe', visual: 'site', phase: 'prima', menu: 'Il sito che porta prenotazioni dirette', site: 'Il sito dell’hotel, veloce e trovabile su Google, con il booking engine integrato: ogni visita, richiesta e prenotazione finisce nel CRM.' },
   { slug: 'pagesense', name: 'PageSense', icon: 'chart', visual: 'funnel', phase: 'prima', menu: 'Dove si ferma chi non prenota', site: 'Mappa il funnel di prenotazione (camera, ricerca, riepilogo, pagamento), individua dove si interrompe e lo corregge con test A/B mirati.' },
   { slug: 'salesiq', name: 'SalesIQ', icon: 'chat', visual: 'chat', phase: 'prima', menu: 'La chat che intercetta l’indeciso', site: 'Intercetta in chat l’ospite indeciso, con trigger contestuali: chi cerca una data senza prenotare, chi torna più volte, chi è già cliente riconosciuto dal CRM.' },
   { slug: 'social', name: 'Social', icon: 'megaphone', visual: 'inbox', phase: 'prima', menu: 'Tutti i canali in un’unica coda', site: 'Presidio continuo su ogni canale, messaggi e lead in un’unica coda.' },
@@ -26,12 +27,12 @@ const apps = [
   { slug: 'thrive', name: 'Thrive', icon: 'gift', visual: 'loyalty', phase: 'dopo', menu: 'Loyalty e passaparola', site: 'Trasforma l’ospite che riparte in un ospite che torna, con programmi di loyalty e referral.' },
 ] as const;
 ---
-<Base title="Marketing: le app principali per il tuo hotel" description="PageSense, SalesIQ, Social, Forms, Marketing Automation, Survey e Thrive: le principali app Zoho per il marketing di CRM Hotellerie, che lavorano anche insieme per far prenotare e tornare gli ospiti.">
+<Base title="Marketing: le app principali per il tuo hotel" description="Sito web, PageSense, SalesIQ, Social, Forms, Marketing Automation, Survey e Thrive: le principali app Zoho per il marketing di CRM Hotellerie, che lavorano anche insieme per far prenotare e tornare gli ospiti.">
   <PageHero illo="marketing"
-    eyebrow="Marketing · le app principali"
+    eyebrow="Marketing · web e app principali"
     title="Le principali app Zoho per il marketing, "
     hl="un solo ospite al centro"
-    lead="Non sono le uniche: queste sette sono le principali per il marketing di un hotel. Ognuna si attiva anche da sola; se le usi insieme parlano tra loro e scrivono tutte nella stessa scheda dell’ospite."
+    lead="Si parte dal sito web, il primo posto in cui l’ospite ti sceglie. Poi le principali app per il marketing di un hotel, non le uniche. Ognuna si attiva anche da sola; se le usi insieme parlano tra loro e scrivono tutte nella stessa scheda dell’ospite."
     crumbs={[{ label: 'Marketing' }]}
   />
 
@@ -66,7 +67,7 @@ const apps = [
               </div>
               <div class="pn-vis"><AppVisual type={a.visual} compact /></div>
               <div class="pn-cta">
-                <a class="btn btn-primary" href="/demo/">Vedila nella demo</a>
+                <a class="btn btn-primary" href={a.slug === 'sito-web' ? 'https://hotelsoleluna.crmhotellerie.it/' : '/demo/'} target={a.slug === 'sito-web' ? '_blank' : undefined} rel={a.slug === 'sito-web' ? 'noopener' : undefined}>{a.slug === 'sito-web' ? 'Guarda il sito demo' : 'Vedila nella demo'}</a>
                 <a class="pn-more" href={`${APP_SITE}/${a.slug}/`}>Scopri {a.name} <Icon name="arrow" size={16} /></a>
               </div>
             </div>

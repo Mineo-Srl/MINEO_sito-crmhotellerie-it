@@ -21,8 +21,13 @@ export const features = [
     title: 'Dal primo clic, ', hl: 'ogni visita diventa un dato tuo',
     lead: 'Prima ancora della prenotazione, il sito racconta quanta domanda stai perdendo. Il sistema la registra, la intercetta in chat e la riporta sul canale diretto.',
     img: { src: '/img/app/pagesense-canali.jpg', caption: 'PageSense: visite e canali di provenienza.' },
-    tags: ['Social', 'Google Ads', 'PageSense', 'SalesIQ', 'Forms'],
+    tags: ['Sito web', 'Social', 'Google Ads', 'PageSense', 'SalesIQ', 'Forms'],
     cards: [
+      {
+        label: 'Il punto di partenza', title: 'Sito web',
+        more: { app: 'Sito web', href: `${APP_SITE}/sito-web/` },
+        text: 'Il sito dell’hotel, veloce, multilingua e trovabile su Google, con il booking engine dentro le pagine. Servizi ed esperienze prenotabili, moduli e chat collegati al CRM.',
+      },
       {
         label: 'Visita al sito', title: 'PageSense',
         more: { app: 'PageSense', href: `${APP_SITE}/pagesense/` },

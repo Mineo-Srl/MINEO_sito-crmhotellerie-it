@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Le 7 app di marketing di CRM Hotellerie, una pagina ciascuna
+   Il sito web e le 7 app di marketing di CRM Hotellerie, una pagina ciascuna
    (src/pages/[slug].astro). L'ordine segue il percorso dell'ospite:
    prima della prenotazione → contatto → soggiorno → ritorno.
    `site` è la frase del box sulla home di crmhotellerie.it.
@@ -13,6 +13,67 @@ export const phases = {
 };
 
 export const apps = [
+  /* -------------------------------------------------------------- Sito web */
+  {
+    slug: 'sito-web',
+    name: 'Sito web',
+    full: 'Sito web',
+    alias: 'un sito collegato',
+    icon: 'globe',
+    visual: 'site',
+    phase: 'prima',
+    menu: 'Il sito che porta prenotazioni dirette',
+    site: 'Il sito dell’hotel, veloce e trovabile su Google, con il booking engine integrato: ogni visita, richiesta e prenotazione finisce nel CRM.',
+    title: 'Il sito del tuo hotel, ',
+    highlight: 'collegato a tutto il resto',
+    lead: 'Il sito è il primo posto in cui l’ospite ti sceglie. Lo realizziamo o rinnoviamo con il booking engine dentro, testi pensati per Google e moduli e chat collegati al CRM: le visite diventano prenotazioni dirette.',
+    seo: {
+      title: 'Sito web per hotel collegato a booking engine e CRM',
+      description: 'Sito web per hotel veloce, multilingua e ottimizzato per Google, con booking engine integrato, servizi ed esperienze prenotabili e contatti diretti nel CRM.',
+      keywords: ['sito web hotel', 'sito per albergo', 'sito hotel con booking engine', 'SEO hotel', 'prenotazioni dirette sito hotel'],
+    },
+    problem: [
+      'Il sito è una vetrina: per prenotare l’ospite finisce su un portale.',
+      'Richieste dal sito via email, da ricopiare a mano.',
+      'Su Google ti trovano solo cercando il nome dell’hotel.',
+    ],
+    solution: [
+      'Booking engine con il tuo brand, dentro le pagine del sito.',
+      'Moduli, chat e prenotazioni entrano da soli nella scheda ospite.',
+      'Pagine e testi pensati per le ricerche dei tuoi ospiti, anche in più lingue.',
+    ],
+    features: [
+      { icon: 'home', title: 'Pagine dell’hotel', text: 'Camere, servizi, esperienze, offerte e territorio, con foto e prezzi sempre aggiornati.' },
+      { icon: 'calendar', title: 'Booking engine integrato', text: 'Disponibilità e tariffe in tempo reale su ogni pagina camera, senza mandare l’ospite altrove.' },
+      { icon: 'gift', title: 'Servizi ed esperienze', text: 'Spa, degustazioni, transfer e pacchetti prenotabili con il soggiorno o dopo l’arrivo.' },
+      { icon: 'search', title: 'SEO e GEO', text: 'Struttura, titoli e dati strutturati per farti trovare su Google e citare dagli assistenti AI.' },
+      { icon: 'globe', title: 'Multilingua e mobile', text: 'Leggero e veloce dal telefono, nelle lingue dei tuoi mercati.' },
+      { icon: 'chart', title: 'Misurato dal primo giorno', text: 'PageSense, SalesIQ e Forms già collegati: sai da dove arriva chi prenota.' },
+    ],
+    steps: [
+      { title: 'Analizziamo il sito di oggi', text: 'Visite, ricerche su Google, punti in cui l’ospite esce verso i portali.' },
+      { title: 'Progettiamo pagine e testi', text: 'Camere, servizi ed esperienze raccontati per chi cerca, nelle lingue che servono.' },
+      { title: 'Integriamo booking e CRM', text: 'Widget di prenotazione, moduli e chat collegati alla scheda ospite.' },
+      { title: 'Pubblichiamo e misuriamo', text: 'Online con analisi e consensi in regola, poi miglioriamo con i dati.' },
+    ],
+    scenario: {
+      title: 'Un caso tipico',
+      text: 'Una coppia cerca su Google “hotel Rimini con spa”, trova la pagina della spa del tuo sito, sceglie la Deluxe vista mare e aggiunge un massaggio. La prenotazione arriva diretta, senza commissioni, e nella scheda ospite trovi già la fonte, le date e il servizio extra da preparare.',
+      note: 'Scenario di esempio.',
+    },
+    metrics: ['Visite e fonti di traffico', 'Prenotazioni dirette dal sito', 'Ricerche Google che portano visite', 'Richieste e contatti raccolti', 'Servizi extra prenotati online'],
+    crm: 'Il sito non è un mondo a parte: prenotazioni, richieste, chat e iscrizioni finiscono nella stessa scheda ospite usata da reception e marketing.',
+    screens: [
+      { src: '/img/app/sito-soleluna.jpg', alt: 'Home del sito dell’hotel dimostrativo Soleluna con il widget di prenotazione' },
+    ],
+    photo: '/img/photos/facciata.webp',
+    faq: [
+      { q: 'Dobbiamo rifare il sito da zero?', a: 'No. Se il sito attuale funziona possiamo integrare booking engine, moduli e chat; se va rinnovato lo progettiamo con voi.' },
+      { q: 'Possiamo aggiornare noi testi e foto?', a: 'Sì. Vi lasciamo il controllo dei contenuti e vi formiamo su come aggiornarli.' },
+      { q: 'Il sito è nostro?', a: 'Sì, come i dati: dominio, contenuti e contatti restano della struttura.' },
+    ],
+  },
+
   /* ------------------------------------------------------------- PageSense */
   {
     slug: 'pagesense',

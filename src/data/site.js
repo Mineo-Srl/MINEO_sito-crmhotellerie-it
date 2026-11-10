@@ -53,8 +53,8 @@ export const contactFormUrl = guide.formUrl;
 export const areas = [
   {
     n: '01', key: 'marketing', title: 'Marketing e conversione', slug: 'marketing-e-conversione', icon: 'chart',
-    text: 'Tutto ciò che accade prima della prenotazione: portare visitatori sul sito, capire cosa fanno e convincerli a prenotare in diretta.',
-    tags: ['Social', 'Google Ads', 'PageSense', 'SalesIQ', 'Forms'], img: '/img/app/pagesense-canali.jpg',
+    text: 'Tutto ciò che accade prima della prenotazione: il sito web dell’hotel, portare visitatori, capire cosa fanno e convincerli a prenotare in diretta.',
+    tags: ['Sito web', 'Social', 'Google Ads', 'PageSense', 'SalesIQ', 'Forms'], img: '/img/app/pagesense-canali.jpg',
   },
   {
     n: '02', key: 'booking', title: 'Booking engine e channel manager', slug: 'booking-engine', icon: 'calendar',

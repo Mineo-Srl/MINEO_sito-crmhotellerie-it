@@ -6,12 +6,13 @@
 import Icon from './Icon.astro';
 
 interface Props {
-  type: 'funnel' | 'chat' | 'form' | 'journey' | 'inbox' | 'nps' | 'loyalty';
+  type: 'site' | 'funnel' | 'chat' | 'form' | 'journey' | 'inbox' | 'nps' | 'loyalty';
   compact?: boolean;
 }
 const { type, compact = false } = Astro.props;
 
 const titles = {
+  site: 'Sito web · hotelsoleluna.it',
   funnel: 'PageSense · Funnel di prenotazione',
   chat: 'SalesIQ · Visitatori in tempo reale',
   form: 'Forms · Richiesta di preventivo',
@@ -55,6 +56,30 @@ const journey = [
   </div>
 
   <div class="mock-body">
+    {type === 'site' && (
+      <>
+        <div class="st">
+          <div class="st-hero a-in" style="--d:.1s">
+            <small>Hotel Soleluna · Rimini</small>
+            <b>Il mare a due passi, la colazione in terrazza</b>
+            <div class="st-nav"><i>Camere</i><i>Servizi</i><i>Esperienze</i><i>Offerte</i><i>IT · EN · DE</i></div>
+          </div>
+          <div class="st-bar a-in" style="--d:.8s">
+            <span><small>Arrivo</small>12/08</span>
+            <span><small>Partenza</small>19/08</span>
+            <span><small>Ospiti</small>2 + 1</span>
+            <span class="st-btn">Prenota</span>
+          </div>
+          <div class="st-res a-in" style="--d:1.6s">
+            <div><b>Deluxe vista mare</b><small>7 notti · colazione inclusa</small></div>
+            <b class="st-pr">€ 1.240</b>
+          </div>
+          <div class="st-seo a-in" style="--d:2.3s"><Icon name="search" size={14} stroke={2.2} /> Google · “hotel rimini con spa” · 3ª posizione</div>
+        </div>
+        <div class="toast a-in" style="--d:3.1s"><Icon name="check" size={15} stroke={3} /> Prenotazione diretta · nel CRM, 0% commissioni</div>
+      </>
+    )}
+
     {type === 'funnel' && (
       <>
         <ul class="fn">
@@ -381,6 +406,19 @@ const journey = [
   @media (prefers-reduced-motion: reduce) {
     .jr-dot { display: none; }
   }
+  /* sito web */
+  .st { display: grid; gap: 10px; }
+  .st-hero { padding: 16px; border-radius: 14px; background: linear-gradient(135deg, rgba(13,127,137,.55), rgba(13,127,137,.15)); }
+  .st-hero b { display: block; font-size: 1.02rem; line-height: 1.25; margin: 4px 0 12px; }
+  .st-nav { display: flex; flex-wrap: wrap; gap: 6px; }
+  .st-nav i { font-style: normal; font-size: .7rem; padding: 3px 8px; border-radius: 999px; background: rgba(0,0,0,.35); }
+  .st-bar { display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 6px; align-items: stretch; padding: 8px; border-radius: 12px; background: #fff; color: #000; }
+  .st-bar span { padding: 4px 6px; font-weight: 650; font-size: .8rem; }
+  .st-bar small { color: #000 !important; opacity: .6; font-size: .66rem; }
+  .st-btn { display: grid; place-items: center; padding: 0 14px !important; border-radius: 8px; background: var(--teal); color: #fff; }
+  .st-res { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04); }
+  .st-pr { color: #fff; font-size: 1rem; }
+  .st-seo { display: flex; align-items: center; gap: 8px; font-size: .76rem; padding: 8px 12px; border-radius: 10px; background: rgba(255,255,255,.06); }
 </style>
 
 <script>
