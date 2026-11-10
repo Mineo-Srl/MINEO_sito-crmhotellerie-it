@@ -1,12 +1,12 @@
 {
-  "name": "crmhotellerie-unico-software-compatto",
+  "name": "crmhotellerie-revisionato",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "serve": "node scripts/serve.mjs dist 4346",
+    "serve": "node scripts/serve.mjs dist 4347",
     "package": "bash scripts/package.sh",
     "astro": "astro"
   },

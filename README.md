@@ -1,4 +1,4 @@
-# CRM Hotellerie — ultima versione (compatta)
+# CRM Hotellerie — versione revisionata
 
 Sito Astro di CRM Hotellerie, il software per hotel su Zoho di Mineo S.r.l.
 Messaggio: un unico software, modulare — ogni area si attiva anche da sola.
@@ -7,16 +7,16 @@ Messaggio: un unico software, modulare — ogni area si attiva anche da sola.
 - `/` home: hero in 3 varianti (`?hero=a|b|c`, selettore visibile solo in locale), prove, demo come azione principale
 - `/il-software/` le cinque aree in una pagina (sostituisce le vecchie pagine `/funzionalita/*`)
 - `/marketing/` le principali app Zoho per il marketing; `/marketing/<app>/` una pagina per ognuna delle 7 app
-- `/trova-la-soluzione/` configuratore "Componi la tua soluzione"
-- `/chi-siamo/` chi siamo, come lavoriamo, Zoho, costi, dati
+- `/trova-la-soluzione/` configuratore "Componi la tua soluzione" (con servizi extra ed esperienze)
+- `/chi-siamo/` chi siamo, come lavoriamo, chi è Zoho (logo e confronto con/senza partner), costi, dati
 - `/demo/`, `/guida/`, `/calcolatore/`, `/faq/`, `/contatti/`, `/grazie/`, privacy e cookie
 
 Le vecchie URL rimandano alla nuova posizione (`redirects` in `astro.config.mjs`).
 
 ## Comandi
-- Anteprima locale: doppio clic su `Anteprima sito.command` (porta 4346)
+- Anteprima locale: doppio clic su `Anteprima sito.command` (porta 4347)
 - Build: `npm run build` → `dist/`
-- ZIP per il deploy: `npm run package` → `deploy/crmhotellerie-unico-software-compatto-latest.zip`
+- ZIP per il deploy: `npm run package` → `deploy/crmhotellerie-revisionato-latest.zip`
 
 ## Dove si modificano i testi
 - `src/data/site.js` — aree, menu, esigenze, strutture, FAQ

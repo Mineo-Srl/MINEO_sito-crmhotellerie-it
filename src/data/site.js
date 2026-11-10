@@ -135,7 +135,7 @@ export const dataOwnership = [
 export const roles = [
   {
     label: 'Zoho', title: 'La piattaforma',
-    text: 'CRM, marketing automation, chat sul sito, analisi e oltre 45 app su un unico account, con data center certificati ISO 27001.',
+    text: 'CRM, marketing automation, chat sul sito, analisi e oltre 50 app integrate su un unico account, con data center certificati ISO 27001.',
     points: ['Licenze in abbonamento, a parte', 'Edizione minima: Zoho CRM Enterprise, inclusa in Zoho One', 'Aggiornamenti inclusi'],
   },
   {
@@ -328,6 +328,13 @@ export const problems = [
     sol: 'Ristorante e bar sul conto della camera',
     text: 'Coperti prenotati e addebiti sul conto della camera: un solo conto per l’ospite, nessun blocchetto.',
     points: ['Addebiti in camera', 'Spesa per ospite nella scheda CRM', 'Note e preferenze per la ristorazione'],
+  },
+  {
+    id: 'extra', cat: 'struttura', icon: 'gift', slug: 'pms-gestionale',
+    pain: 'Servizi extra ed esperienze prenotati a voce o via email',
+    sol: 'Prenotazione di servizi ed esperienze',
+    text: 'Spa, massaggi, degustazioni, transfer, bici, late check-out: l’ospite li prenota con il soggiorno o durante la permanenza, e il costo finisce sul conto della camera.',
+    points: ['Catalogo di servizi ed esperienze con prezzi e posti', 'Prenotabili con la camera o dopo l’arrivo', 'Addebito sul conto e spesa extra nella scheda ospite'],
   },
   {
     id: 'staff', cat: 'struttura', icon: 'key', slug: 'app-su-misura',

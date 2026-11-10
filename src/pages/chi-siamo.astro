@@ -11,7 +11,7 @@ import { site } from '../data/site.js';
 
 const facts = [
   { v: `${site.partnerYears} anni`, l: 'da Zoho Authorized Partner' },
-  { v: '45+', l: 'app Zoho su un unico account' },
+  { v: '50+', l: 'app Zoho integrate in Zoho One' },
   { v: '5', l: 'aree, dal primo clic al ritorno' },
   { v: '1', l: 'account Zoho, intestato alla struttura' },
 ];
@@ -20,6 +20,24 @@ const steps = [
   { t: 'Demo sul tuo caso', d: 'Ti mostriamo CRM Hotellerie dal vivo e rifacciamo il calcolo delle commissioni con i tuoi numeri.' },
   { t: 'Configurazione su misura', d: 'Camere, tariffe, reparti, automazioni, widget sul sito: solo le funzioni che servono.' },
   { t: 'Formazione e assistenza', d: 'Il personale impara a usarlo con noi, in italiano. Dopo l’avvio restiamo a disposizione.' },
+];
+const zohoPoints = [
+  { i: 'layers', t: 'Un ecosistema unico', d: 'Le app condividono gli stessi dati: un ospite inserito una volta lo ritrovi ovunque.' },
+  { i: 'shield', t: 'Dati protetti', d: 'Data center certificati ISO 27001 e conformità al GDPR. Il modello di business è l’abbonamento, non la pubblicità.' },
+  { i: 'globe', t: 'Cloud, ovunque', d: 'Funziona da browser e da app, in reception, in ufficio o dal telefono. Niente server da gestire.' },
+  { i: 'refresh', t: 'Sempre aggiornato', d: 'Nuove funzioni e aggiornamenti di sicurezza arrivano con la licenza, senza reinstallare nulla.' },
+];
+const alone = [
+  'App generiche, da adattare da soli all’hotel',
+  'Configurazione standard, uguale per tutte le aziende',
+  'Più strumenti da collegare tra loro',
+  'Supporto sulla piattaforma, non sul tuo modo di lavorare',
+];
+const withUs = [
+  'Configurato sui processi reali della tua struttura, solo ciò che serve',
+  'App per hotel già pronte: booking engine, planning, reparti, fatturazione',
+  'Un ecosistema sincronizzato, con una sola base dati',
+  'Formazione e assistenza in italiano, anche dopo l’avvio',
 ];
 const included = [
   ['Configurazione sulla tua struttura', true], ['Formazione e assistenza in italiano', true], ['Booking engine, planning, reparti e automazioni per hotel', true],
@@ -54,6 +72,37 @@ const included = [
     </div>
   </section>
 
+  <!-- CHI È ZOHO -->
+  <section class="section" id="chi-e-zoho">
+    <div class="container">
+      <div class="zi reveal">
+        <div class="zi-logo"><img src="/img/zoho-logo.svg" alt="Zoho" width="240" height="106" loading="lazy" /></div>
+        <div>
+          <p class="eyebrow">Chi è Zoho</p>
+          <h2 class="h2">La piattaforma su cui <span class="hl">costruiamo il software</span></h2>
+          <p class="lead">Zoho è un’azienda di software in cloud nata nel 1996. Con Zoho One riunisce oltre 50 applicazioni integrate in un solo abbonamento: CRM, contabilità, assistenza, marketing, analisi, progetti. Lavorano tutte sulla stessa base dati.</p>
+        </div>
+      </div>
+      <ul class="zi-pts">
+        {zohoPoints.map((p, i) => (
+          <li class="reveal" style={`--d:${i * 70}ms`}><span class="zi-ic"><Icon name={p.i} size={20} /></span><p class="h4">{p.t}</p><p>{p.d}</p></li>
+        ))}
+      </ul>
+      <div class="zvs reveal">
+        <div class="zvs-c">
+          <p class="label">Zoho da soli</p>
+          <ul class="sq-list">{alone.map((t) => <li>{t}</li>)}</ul>
+        </div>
+        <div class="zvs-c dark">
+          <p class="label">Zoho con {site.legal}</p>
+          <ul class="sq-list">{withUs.map((t) => <li>{t}</li>)}</ul>
+          <img class="zvs-badge" src="/img/partner-autorizzato-zoho.webp" alt="Zoho Authorized Partner" width="180" height="50" loading="lazy" />
+        </div>
+      </div>
+      <p class="zi-note">{site.legal} è partner autorizzato indipendente e non è affiliata societariamente a Zoho Corporation.</p>
+    </div>
+  </section>
+
   <!-- ZOHO SÌ / NO -->
   <section class="section" id="zoho">
     <div class="container">
@@ -67,7 +116,7 @@ const included = [
           <p class="label">Non conosci Zoho</p>
           <p class="h3">Usi un software per hotel, già pronto.</p>
           <ul class="sq-list">
-            <li>Zoho è la piattaforma cloud su cui è costruito: oltre 45 app su un unico account, data center certificati ISO 27001.</li>
+            <li>Zoho è la piattaforma cloud su cui è costruito: oltre 50 app integrate, data center certificati ISO 27001.</li>
             <li>Noi la configuriamo per il tuo hotel: tu vedi prenotazioni, clienti, marketing, fatture e reparti.</li>
           </ul>
         </div>
@@ -129,6 +178,23 @@ const included = [
   .z-card.dark .label, .z-card.dark .h3 { color: #fff; }
   .z-card .h3 { margin-bottom: 18px; }
   .z-card.dark .sq-list li { color: #fff; }
+  .zi { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; margin-bottom: clamp(32px, 4vw, 52px); }
+  .zi-logo { display: grid; place-items: center; aspect-ratio: 4 / 3; background: #fff; border: 1px solid var(--line); border-radius: 32px 0 32px 0; padding: 36px; }
+  .zi-logo img { width: 100%; height: auto; max-width: 260px; }
+  .zi .lead { margin-top: 16px; max-width: 64ch; }
+  .zi-pts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-bottom: clamp(28px, 3.5vw, 44px); }
+  .zi-pts li { padding: 24px; background: #fff; border: 1px solid var(--line); border-radius: 24px 0 24px 0; }
+  .zi-ic { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px 0 12px 0; background: var(--teal); color: #fff; margin-bottom: 14px; }
+  .zi-pts .h4 { margin-bottom: 6px; }
+  .zvs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .zvs-c { position: relative; padding: clamp(24px, 3vw, 36px); background: var(--paper-2); border-radius: 32px 0 32px 0; }
+  .zvs-c .label { margin-bottom: 14px; }
+  .zvs-c.dark { background: var(--teal); }
+  .zvs-c.dark .label, .zvs-c.dark .sq-list li { color: #fff; }
+  .zvs-badge { margin-top: 20px; width: 160px; height: auto; background: #fff; padding: 8px 12px; border-radius: 10px 0 10px 0; }
+  .zi-note { margin-top: 16px; font-size: .82rem; }
+  @media (max-width: 1100px) { .zi-pts { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 760px) { .zi, .zvs, .zi-pts { grid-template-columns: 1fr; } .zi-logo { max-width: 300px; } }
   .inc { display: grid; gap: 10px; }
   .inc li { display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: var(--paper); border-radius: 16px 0 16px 0; font-weight: 600; color: #000; }
   .inc .ic { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #111; color: #fff; flex: none; }
@@ -136,4 +202,7 @@ const included = [
   .inc li.off .ic { background: var(--teal); }
   @media (max-width: 980px) { .steps { grid-template-columns: 1fr 1fr; } .zoho { grid-template-columns: 1fr; } }
   @media (max-width: 600px) { .steps { grid-template-columns: 1fr; } }
+</style>
+<style>
+  .zvs-c.dark .sq-list li::before { background: #fff; }
 </style>
