@@ -6,7 +6,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import { problems, problemCats, segments, whatsappUrl } from '../data/site.js';
+import { problems, problemCats, segments, site } from '../data/site.js';
 import { featureHref } from '../data/features.js';
 const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, links: s.links }));
 ---
@@ -21,7 +21,7 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
   />
 
   <section class="section-sm section-paper">
-    <div class="container cfg" data-cfg data-wa={whatsappUrl}>
+    <div class="container cfg" data-cfg data-mail={site.email}>
       <div class="steps">
         <fieldset class="step">
           <legend><h2 class="lg"><span class="n">1</span> Che struttura hai?</h2></legend>
@@ -45,7 +45,7 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
               <div class="needs">
                 {problems.filter((p) => p.cat === c.id).map((p) => (
                   <label class="need">
-                    <input type="checkbox" value={p.id} data-slug={p.slug} data-sol={p.sol} data-href={featureHref(p.slug)} />
+                    <input type="checkbox" value={p.id} data-slug={p.slug} data-sol={p.sol} data-href={featureHref(p.slug)} data-text={p.text} data-points={JSON.stringify(p.points)} data-pain={p.pain} data-nopreset={(p as any).noPreset ? '1' : undefined} />
                     <span class="nd-ic"><Icon name={p.icon} size={18} /></span>
                     <span class="nd-t">{p.pain}</span>
                     <span class="nd-ck"><Icon name="check" size={14} /></span>
@@ -64,15 +64,49 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
         <p class="res-sum" data-sum hidden></p>
         <div class="res-cta" data-cta hidden>
           <a class="btn btn-primary" data-demo href="/demo/">Prenota la demo su misura</a>
-          <a class="res-wa" data-wa-link href={whatsappUrl} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> Inviala su WhatsApp</a>
+          <button type="button" class="btn res-mail" data-open-mail><Icon name="mail" size={18} /> Inviala via email</button>
+          <button type="button" class="res-pdf" data-pdf><Icon name="download" size={18} /> Scarica il riepilogo PDF</button>
         </div>
         <p class="res-note"><Icon name="spark" size={16} /> Un solo account, gli stessi dati: le altre aree si aggiungono quando servono, senza cambiare piattaforma.</p>
       </aside>
     </div>
   </section>
+
+  <dialog class="mdl" data-mail-dlg aria-labelledby="mdl-t">
+    <form class="mdl-f" data-mail-form>
+      <button type="button" class="mdl-x" data-close aria-label="Chiudi"><Icon name="close" size={20} /></button>
+      <p class="label">La tua soluzione</p>
+      <h2 class="h3" id="mdl-t">Inviacela via email</h2>
+      <p class="mdl-lead">Compila i dati: prepariamo la mail con il riepilogo della tua configurazione e scarichiamo il PDF da allegare.</p>
+      <ul class="mdl-sel" data-mail-sel></ul>
+      <div class="mdl-g">
+        <label>Nome *<input name="nome" required autocomplete="given-name" /></label>
+        <label>Cognome<input name="cognome" autocomplete="family-name" /></label>
+        <label class="full">Nome della struttura<input name="struttura" autocomplete="organization" /></label>
+        <label>Telefono *<input name="telefono" type="tel" required autocomplete="tel" /></label>
+        <label>E-mail *<input name="email" type="email" required autocomplete="email" /></label>
+        <label class="full">Come gestisci oggi la struttura?
+          <select name="gestione">
+            <option value="">Seleziona</option>
+            <option>Ho già un PMS e vorrei affiancarlo</option>
+            <option>Voglio ripartire da zero</option>
+            <option>Excel, fogli e WhatsApp</option>
+            <option>Sto aprendo una nuova struttura</option>
+            <option>Uso già un altro CRM</option>
+            <option>Altro</option>
+          </select>
+        </label>
+        <label class="full">Note<textarea name="note" rows="3" placeholder="Date, numero di camere, domande…"></textarea></label>
+      </div>
+      <label class="mdl-ck"><input type="checkbox" name="privacy" required /> Accetto il trattamento dei miei dati secondo la <a href="/privacy-policy/" target="_blank" rel="noopener">privacy policy</a> *</label>
+      <button class="btn btn-primary mdl-go" type="submit"><Icon name="mail" size={18} /> Prepara la mail</button>
+      <p class="mdl-ok" data-mail-ok hidden><Icon name="check" size={16} /> Si è aperta la tua app di posta con la mail già compilata e il PDF è stato scaricato: allegalo e premi Invia.</p>
+    </form>
+  </dialog>
 </Base>
 
 <script>
+  type Sol = { sol: string; text: string; points: string[]; pain: string[] };
   document.querySelectorAll('[data-cfg]').forEach((root) => {
     const el = root as HTMLElement;
     const needs = [...root.querySelectorAll('.need input')] as HTMLInputElement[];
@@ -82,44 +116,149 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
     const sum = root.querySelector('[data-sum]') as HTMLElement;
     const cta = root.querySelector('[data-cta]') as HTMLElement;
     const demo = root.querySelector('[data-demo]') as HTMLAnchorElement;
-    const wa = root.querySelector('[data-wa-link]') as HTMLAnchorElement;
+    const dlg = document.querySelector('[data-mail-dlg]') as HTMLDialogElement;
+    const form = document.querySelector('[data-mail-form]') as HTMLFormElement;
+    let sols: Sol[] = [];
+    let segTxt = '';
 
     const render = () => {
       const on = needs.filter((n) => n.checked);
-      const seen = new Map<string, HTMLInputElement>();
-      on.forEach((n) => { if (!seen.has(n.dataset.sol!)) seen.set(n.dataset.sol!, n); });
-      list.innerHTML = '';
-      seen.forEach((n, sol) => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = n.dataset.href!; a.textContent = sol;
-        li.append(a); list.append(li);
+      const map = new Map<string, Sol>();
+      on.forEach((n) => {
+        const k = n.dataset.sol!;
+        if (!map.has(k)) map.set(k, { sol: k, text: n.dataset.text || '', points: JSON.parse(n.dataset.points || '[]'), pain: [] });
+        map.get(k)!.pain.push(n.dataset.pain || '');
       });
-      const k = seen.size;
+      sols = [...map.values()];
+      // Voci espandibili: il dettaglio si apre qui, senza lasciare la pagina
+      list.innerHTML = '';
+      sols.forEach((x) => {
+        const li = document.createElement('li');
+        const d = document.createElement('details');
+        const sm = document.createElement('summary'); sm.textContent = x.sol;
+        const p = document.createElement('p'); p.textContent = x.text;
+        const ul = document.createElement('ul'); x.points.forEach((t) => { const i = document.createElement('li'); i.textContent = t; ul.append(i); });
+        d.append(sm, p, ul); li.append(d); list.append(li);
+      });
+      const k = sols.length;
       empty.hidden = k > 0; sum.hidden = k === 0; cta.hidden = k === 0;
       sum.textContent = k === 1 ? 'Si attiva anche da sola.' : `${k} soluzioni, un solo software.`;
       const seg = segs.find((s) => s.checked);
-      const segTxt = seg ? (seg.parentElement!.textContent || '').trim() : '';
-      const names = [...seen.keys()];
+      segTxt = seg ? (seg.parentElement!.textContent || '').trim() : '';
+      const names = sols.map((x) => x.sol);
       demo.href = '/demo/?soluzioni=' + encodeURIComponent(names.join(' · ')) + (seg ? '&struttura=' + encodeURIComponent(segTxt) : '');
-      const msg = `Ciao, vorrei una demo di CRM Hotellerie${segTxt ? ' per ' + segTxt.toLowerCase() : ''}. Mi interessa: ${names.join(', ')}.`;
-      wa.href = el.dataset.wa + '?text=' + encodeURIComponent(msg);
+      // La configurazione resta nell'indirizzo: tornando indietro si ritrova uguale
+      const q = new URLSearchParams();
+      if (seg) q.set('struttura', seg.value);
+      if (on.length) q.set('esigenze', on.map((n) => n.value).join(','));
+      history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : ''));
     };
 
     needs.forEach((n) => n.addEventListener('change', render));
     segs.forEach((s) => s.addEventListener('change', () => {
       const links = (s.dataset.links || '').split(',');
-      needs.forEach((n) => (n.checked = links.includes(n.dataset.slug!)));
+      needs.forEach((n) => (n.checked = !n.dataset.nopreset && links.includes(n.dataset.slug!)));
       render();
     }));
-    // Arrivo dalla home: ?struttura=resort-e-villaggi preseleziona la struttura
-    const st = new URLSearchParams(location.search).get('struttura');
-    const sg = st && segs.find((s) => s.value === st);
+    const params = new URLSearchParams(location.search);
+    const sg = params.get('struttura') && segs.find((s) => s.value === params.get('struttura'));
     if (sg) { sg.checked = true; sg.dispatchEvent(new Event('change')); }
-    // Vecchi link del tipo #problema-commissioni: preseleziona quell'esigenza
+    const es = params.get('esigenze');
+    if (es) { const ids = es.split(','); needs.forEach((n) => (n.checked = ids.includes(n.value))); }
     const m = location.hash.match(/^#problema-(.+)$/);
     if (m) needs.forEach((n) => { if (n.value === m[1]) n.checked = true; });
     render();
+
+    /* ---- PDF riepilogativo ---- */
+    const clean = (t: string) => t.replace(/[’‘]/g, "'").replace(/[“”]/g, '"').replace(/…/g, '...').replace(/–|—/g, '-');
+    const makePdf = async (who?: Record<string, string>) => {
+      const { jsPDF } = await import('jspdf');
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const W = 210, M = 18, TW = W - M * 2;
+      let y = 0;
+      const page = () => { doc.addPage(); y = 20; };
+      const need = (h: number) => { if (y + h > 280) page(); };
+      // testata
+      doc.setFillColor(0, 0, 0); doc.rect(0, 0, W, 34, 'F');
+      doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(18);
+      doc.text('CRM Hotellerie', M, 15);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+      doc.text('La tua soluzione su misura', M, 23);
+      doc.text(new Date().toLocaleDateString('it-IT'), W - M, 23, { align: 'right' });
+      doc.setFillColor(13, 127, 137); doc.rect(0, 34, W, 2, 'F');
+      y = 48; doc.setTextColor(0, 0, 0);
+      if (segTxt) { doc.setFontSize(9); doc.setTextColor(13, 127, 137); doc.text('STRUTTURA', M, y); y += 6; doc.setTextColor(0, 0, 0); doc.setFontSize(12); doc.setFont('helvetica', 'bold'); doc.text(clean(segTxt), M, y); y += 10; }
+      if (who && who.nome) {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(13, 127, 137); doc.text('RICHIEDENTE', M, y); y += 6; doc.setTextColor(0, 0, 0); doc.setFontSize(10.5);
+        [`${who.nome} ${who.cognome || ''}`.trim(), who.struttura, who.email, who.telefono, who.gestione && 'Oggi: ' + who.gestione].filter(Boolean).forEach((t) => { doc.text(clean(t as string), M, y); y += 5.5; });
+        y += 4;
+      }
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(13, 127, 137); doc.text(`LE SOLUZIONI SCELTE (${sols.length})`, M, y); y += 7;
+      sols.forEach((x, i) => {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+        const txt = doc.splitTextToSize(clean(x.text), TW - 8);
+        const pts = x.points.map((p) => doc.splitTextToSize(clean(p), TW - 14));
+        const h = 12 + txt.length * 5 + pts.reduce((a, l) => a + l.length * 5, 0) + 8;
+        need(h);
+        doc.setFillColor(238, 246, 247); doc.roundedRect(M, y - 5, TW, h, 2, 2, 'F');
+        doc.setFillColor(13, 127, 137); doc.rect(M, y - 5, 1.6, h, 'F');
+        doc.setTextColor(0, 0, 0); doc.setFont('helvetica', 'bold'); doc.setFontSize(12.5);
+        doc.text(`${i + 1}. ${clean(x.sol)}`, M + 6, y + 2); y += 8;
+        doc.setFont('helvetica', 'italic'); doc.setFontSize(9); doc.setTextColor(60, 60, 60);
+        doc.text(clean('Esigenza: ' + x.pain.join('; ')), M + 6, y, { maxWidth: TW - 10 }); y += 5;
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(0, 0, 0);
+        doc.text(txt, M + 6, y); y += txt.length * 5 + 1;
+        pts.forEach((l) => { doc.setFillColor(13, 127, 137); doc.rect(M + 7, y - 2.6, 2, 2, 'F'); doc.text(l, M + 12, y); y += l.length * 5; });
+        y += 9;
+      });
+      need(36);
+      doc.setFillColor(0, 0, 0); doc.roundedRect(M, y, TW, 30, 2, 2, 'F');
+      doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
+      doc.text(sols.length > 1 ? `${sols.length} soluzioni, un solo software.` : 'Si attiva anche da sola.', M + 6, y + 9);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5);
+      doc.text('Un solo account Zoho, intestato alla struttura: le altre aree si aggiungono quando servono.', M + 6, y + 16);
+      doc.text('Prenota la demo gratuita: www.crmhotellerie.it/demo  ·  ' + (el.dataset.mail || ''), M + 6, y + 23);
+      doc.setTextColor(120, 120, 120); doc.setFontSize(8);
+      doc.text('MINEO S.r.l. · Zoho Authorized Partner · Riepilogo indicativo, da definire insieme in consulenza.', M, 290);
+      doc.save('crm-hotellerie-la-tua-soluzione.pdf');
+    };
+    root.querySelector('[data-pdf]')!.addEventListener('click', () => makePdf());
+
+    /* ---- Invio via email: modulo con gli stessi campi della pagina contatti ---- */
+    root.querySelector('[data-open-mail]')!.addEventListener('click', () => {
+      const ul = dlg.querySelector('[data-mail-sel]') as HTMLElement;
+      ul.innerHTML = sols.map((x) => `<li>${x.sol}</li>`).join('');
+      (dlg.querySelector('[data-mail-ok]') as HTMLElement).hidden = true;
+      dlg.showModal();
+    });
+    dlg.querySelector('[data-close]')!.addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+      await makePdf(f);
+      const body = [
+        'Buongiorno, vi invio la soluzione che ho composto su crmhotellerie.it.',
+        '',
+        `Nome: ${f.nome} ${f.cognome || ''}`.trim(),
+        `Struttura: ${f.struttura || '-'}`,
+        `Tipo di struttura: ${segTxt || '-'}`,
+        `Telefono: ${f.telefono}`,
+        `E-mail: ${f.email}`,
+        `Come gestisco oggi la struttura: ${f.gestione || '-'}`,
+        '',
+        'Le soluzioni scelte:',
+        ...sols.map((x, i) => `${i + 1}. ${x.sol}`),
+        '',
+        f.note ? 'Note: ' + f.note : '',
+        'In allegato il riepilogo PDF.',
+        '',
+        'Configurazione: ' + location.href,
+      ].filter((l, i, a) => !(l === '' && a[i - 1] === '')).join('\n');
+      const subj = `La mia soluzione CRM Hotellerie${f.struttura ? ' - ' + f.struttura : ''}`;
+      location.href = `mailto:${el.dataset.mail}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
+      (dlg.querySelector('[data-mail-ok]') as HTMLElement).hidden = false;
+    });
   });
 </script>
 
@@ -154,11 +293,39 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
   .res-empty { color: #fff; font-size: .95rem; }
   .res-list { display: grid; gap: 8px; margin-top: 6px; }
   .res-list li { display: flex; }
-  .res-list :global(a) { flex: 1; display: flex; justify-content: space-between; gap: 10px; padding: 11px 14px; border-radius: 12px 0 12px 0; background: var(--teal); color: #fff; font-weight: 600; }
-  .res-list :global(a)::after { content: '→'; }
+  .res-list > :global(li) { display: block; }
+  .res-list :global(details) { border-radius: 12px 0 12px 0; background: var(--teal); color: #fff; }
+  .res-list :global(summary) { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 11px 14px; font-weight: 600; cursor: pointer; list-style: none; }
+  .res-list :global(summary::-webkit-details-marker) { display: none; }
+  .res-list :global(summary)::after { content: '+'; font-size: 1.2rem; line-height: 1; flex: none; }
+  .res-list :global(details[open] summary)::after { content: '−'; }
+  .res-list :global(details p) { padding: 0 14px 8px; font-size: .86rem; line-height: 1.5; color: #fff; }
+  .res-list :global(details ul) { display: grid; gap: 4px; padding: 0 14px 12px 30px; list-style: square; font-size: .84rem; color: #fff; }
   .res-sum { margin-top: 14px; font-weight: 700; color: #fff; }
   .res-cta { display: grid; gap: 12px; margin-top: 16px; }
   .res-cta .btn { justify-content: center; text-align: center; white-space: normal; }
+  .res-mail { justify-content: center; gap: 8px; background: #fff; color: #000; border: 0; }
+  .res-mail:hover { background: var(--yellow-soft); }
+  .res-pdf { display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; background: none; border: 0; cursor: pointer; font: inherit; font-weight: 600; }
+  .mdl { margin: auto; inset: 0; position: fixed; overflow: auto; width: min(640px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; border-radius: 28px 0 28px 0; box-shadow: 0 40px 80px -30px rgba(0,0,0,.6); }
+  .mdl::backdrop { background: rgba(0,0,0,.55); }
+  .mdl-f { position: relative; padding: clamp(24px, 3vw, 36px); display: grid; gap: 14px; }
+  .mdl-x { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; border: 0; background: var(--paper-2); cursor: pointer; }
+  .mdl-lead { font-size: .94rem; }
+  .mdl-sel { display: flex; flex-wrap: wrap; gap: 6px; }
+  .mdl-sel :global(li) { padding: 5px 10px; border-radius: 999px; background: var(--yellow-tint); border: 1px solid var(--teal); font-size: .8rem; font-weight: 600; }
+  .mdl-g { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .mdl-g label { display: grid; gap: 6px; font-weight: 600; font-size: .86rem; }
+  .mdl-g .full { grid-column: 1 / -1; }
+  .mdl-g input, .mdl-g select, .mdl-g textarea { font: inherit; font-weight: 400; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; color: #000; }
+  .mdl-g input:focus, .mdl-g select:focus, .mdl-g textarea:focus { outline: 2px solid var(--teal); border-color: var(--teal); }
+  .mdl-ck { display: flex; gap: 10px; align-items: flex-start; font-size: .84rem; }
+  .mdl-ck input { margin-top: 3px; accent-color: var(--teal); }
+  .mdl-ck a { text-decoration: underline; }
+  .mdl-go { justify-content: center; }
+  .mdl-ok[hidden] { display: none; }
+  .mdl-ok { display: flex; gap: 8px; padding: 12px 14px; border-radius: 12px 0 12px 0; background: var(--yellow-tint); font-size: .86rem; }
+  @media (max-width: 560px) { .mdl-g { grid-template-columns: 1fr; } }
   .res-wa { display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
   .res-note { display: flex; gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid #333; font-size: .86rem; color: #fff; }
   .res-note :global(.icon) { flex: none; margin-top: 2px; }

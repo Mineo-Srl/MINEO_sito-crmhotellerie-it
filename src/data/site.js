@@ -330,7 +330,7 @@ export const problems = [
     points: ['Addebiti in camera', 'Spesa per ospite nella scheda CRM', 'Note e preferenze per la ristorazione'],
   },
   {
-    id: 'extra', cat: 'struttura', icon: 'gift', slug: 'pms-gestionale',
+    id: 'extra', cat: 'struttura', icon: 'gift', slug: 'pms-gestionale', noPreset: true,
     pain: 'Servizi extra ed esperienze prenotati a voce o via email',
     sol: 'Prenotazione di servizi ed esperienze',
     text: 'Spa, massaggi, degustazioni, transfer, bici, late check-out: l’ospite li prenota con il soggiorno o durante la permanenza, e il costo finisce sul conto della camera.',
