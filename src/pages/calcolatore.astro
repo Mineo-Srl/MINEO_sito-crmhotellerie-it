@@ -12,8 +12,8 @@ const fields = [
   { id: 'shift', label: 'Prenotazioni che passano dai portali al tuo sito', hint: 'Su 100 prenotazioni, quante arrivano dal tuo sito invece che da Booking.com o simili', min: 1, max: 30, step: 1, value: 10, unit: 'su 100' },
 ];
 ---
-<Base title="Calcolatore commissioni" description="Quanto ti costano le commissioni delle OTA e quanto resta in cassa spostando prenotazioni sul canale diretto. Calcolo illustrativo.">
-  <PageHero illo="calcolatore" eyebrow="Risorse · Calcolatore" title="Quanto ti costano " hl="i portali?" lead="Inserisci i numeri della tua struttura: vedi quanto valgono le commissioni in un anno e quanto resta in cassa spostando una parte del venduto sul canale diretto, a parità di camere vendute." crumbs={[{ label: 'Risorse' }, { label: 'Calcolatore commissioni' }]} ctas={false} />
+<Base title="Calcolatore commissioni" description="Quanto ti costano le commissioni delle OTA e quanto margine guadagni su ogni camera prenotata dal tuo sito invece che dai portali. Calcolo illustrativo.">
+  <PageHero illo="calcolatore" eyebrow="Risorse · Calcolatore" title="Quanto ti costano " hl="i portali?" lead="Inserisci i numeri della tua struttura: vedi quanto valgono le commissioni in un anno e quanto margine guadagni su ogni camera prenotata dal tuo sito invece che dai portali." crumbs={[{ label: 'Risorse' }, { label: 'Calcolatore commissioni' }]} ctas={false} />
 
   <section class="section-sm section-paper">
     <div class="container calc" data-calc>
@@ -31,15 +31,17 @@ const fields = [
       </form>
       <div class="results" aria-live="polite">
         <div class="res-main">
-          <p class="label">Restano in cassa ogni anno</p>
+          <p class="label">Margine in più ogni anno</p>
           <p class="big" data-r="saving">19.000 €</p>
-          <p>se <strong data-r="shiftTxt">10 prenotazioni su 100</strong> arrivano dal tuo sito invece che dai portali: la quota venduta dalle OTA passa <strong data-r="shiftFromTo">dal 60% al 50%</strong>. Stesse camere vendute, meno commissioni.</p>
+          <p class="pernight">Su ogni notte prenotata dal tuo sito guadagni <strong data-r="perNight">18,70 €</strong> in più: è la commissione che non paghi al portale.</p>
+          <p>Calcolato se <strong data-r="shiftTxt">10 prenotazioni su 100</strong> arrivano dal tuo sito invece che dai portali (quota OTA <strong data-r="shiftFromTo">dal 60% al 50%</strong>). Stesso prezzo, stesse camere vendute.</p>
         </div>
         <dl class="res-list">
+          <div class="hi"><dt>Margine in più per notte prenotata dal sito</dt><dd data-r="perNight2">—</dd></div>
           <div><dt>Notti vendute in un anno</dt><dd data-r="nights">—</dd></div>
           <div><dt>Fatturato camere</dt><dd data-r="revenue">—</dd></div>
           <div><dt>Venduto dalle OTA</dt><dd data-r="otaRev">—</dd></div>
-          <div class="hi"><dt>Commissioni pagate</dt><dd data-r="commissions">—</dd></div>
+          <div><dt>Commissioni pagate oggi</dt><dd data-r="commissions">—</dd></div>
         </dl>
         <p class="note">Calcolo illustrativo: lo rifacciamo in demo con i numeri reali della tua struttura.</p>
         <a class="btn btn-primary" href="/demo/">Rifallo con noi in demo <Icon name="arrow" size={18} class="icon-arrow" /></a>
@@ -82,6 +84,9 @@ const fields = [
     const otaShare = v('ota') / 100;
     const comm = v('comm') / 100;
     const shift = Math.min(v('shift'), v('ota')) / 100;
+    const eur2 = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    set('perNight', eur2.format(v('adr') * comm));
+    set('perNight2', eur2.format(v('adr') * comm));
     set('nights', num.format(nights));
     set('revenue', eur.format(revenue));
     set('otaRev', eur.format(revenue * otaShare));
@@ -100,6 +105,7 @@ const fields = [
   .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
   .inputs { background: #fff; border-radius: var(--radius); padding: clamp(22px, 3vw, 34px); display: grid; gap: 22px; border: 1px solid var(--line); }
   .field label { display: block; font-weight: 700; margin-bottom: 8px; }
+  .pernight { font-size: 1.08rem; margin-bottom: 10px; }
   .field .hint { margin: -4px 0 8px; font-size: .86rem; line-height: 1.45; color: #000; }
   .row { display: grid; grid-template-columns: 1fr 56px 52px; gap: 12px; align-items: center; }
   output { font-family: var(--font-head); font-weight: 700; font-size: 1.4rem; text-align: right; }

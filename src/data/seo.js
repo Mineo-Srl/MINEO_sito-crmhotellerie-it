@@ -51,7 +51,7 @@ export const seo = {
   },
   '/calcolatore/': {
     title: 'Calcolatore commissioni OTA per hotel | CRM Hotellerie',
-    description: 'Calcola quanto ti costano le commissioni di Booking.com e degli altri portali e quanto resta in cassa spostando prenotazioni sul tuo sito. Gratuito.',
+    description: 'Calcola quanto ti costano le commissioni di Booking.com e degli altri portali e quanto margine guadagni su ogni camera prenotata dal tuo sito. Gratuito.',
     keywords: ['commissioni OTA', 'commissioni Booking.com', 'calcolo commissioni hotel', 'disintermediazione hotel'],
     crumb: 'Calcolatore commissioni',
   },
