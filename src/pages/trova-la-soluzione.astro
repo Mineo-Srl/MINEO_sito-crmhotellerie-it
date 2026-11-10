@@ -66,7 +66,14 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
           <a class="btn btn-primary" data-demo href="/demo/">Prenota la demo su misura</a>
           <button type="button" class="btn res-mail" data-open-mail><Icon name="mail" size={18} /> Inviala via email</button>
           <button type="button" class="res-pdf" data-pdf><Icon name="download" size={18} /> Scarica il riepilogo PDF</button>
-          <p class="res-info"><Icon name="mail" size={16} /> <span>Inviandola via email ricevi il <strong>riepilogo in PDF</strong> nella tua casella e una copia arriva anche a noi. Poi ti ricontatta il team di <strong>MINEO S.r.l.</strong> per approfondire la tua soluzione.</span></p>
+          <div class="res-info">
+            <p class="res-info-t"><Icon name="mail" size={16} /> Cosa succede se la invii via email</p>
+            <ol>
+              <li>Ricevi nella tua casella il <strong>riepilogo in PDF</strong>.</li>
+              <li>Lo stesso riepilogo arriva anche a noi.</li>
+              <li>Il team di <strong>MINEO S.r.l.</strong> ti ricontatta per parlarne insieme.</li>
+            </ol>
+          </div>
         </div>
         <p class="res-note"><Icon name="spark" size={16} /> Un solo account, gli stessi dati: le altre aree si aggiungono quando servono, senza cambiare piattaforma.</p>
       </aside>
@@ -327,8 +334,11 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
   .mdl-ok[hidden] { display: none; }
   .mdl-ok { display: flex; gap: 8px; padding: 12px 14px; border-radius: 12px 0 12px 0; background: var(--yellow-tint); font-size: .86rem; }
   @media (max-width: 560px) { .mdl-g { grid-template-columns: 1fr; } }
-  .res-info { display: flex; gap: 10px; align-items: flex-start; margin-top: 4px; padding: 12px 14px; border-radius: 12px 0 12px 0; background: rgba(255,255,255,.08); font-size: .86rem; line-height: 1.5; color: #fff; }
-  .res-info :global(.icon) { flex: none; margin-top: 3px; color: #fff; }
+  .res-info { margin-top: 4px; padding: 14px 16px; border-radius: 12px 0 12px 0; background: rgba(255,255,255,.08); color: #fff; }
+  .res-info-t { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .88rem; color: #fff; margin-bottom: 10px; }
+  .res-info ol { display: grid; gap: 8px; counter-reset: st; }
+  .res-info li { position: relative; padding-left: 30px; font-size: .86rem; line-height: 1.45; color: #fff; counter-increment: st; }
+  .res-info li::before { content: counter(st); position: absolute; left: 0; top: 0; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 6px 0 6px 0; background: var(--teal); font-size: .74rem; font-weight: 700; }
   .res-info strong { color: #fff; }
   .res-wa { display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
   .res-note { display: flex; gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid #333; font-size: .86rem; color: #fff; }
