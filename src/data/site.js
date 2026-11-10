@@ -202,7 +202,7 @@ export const integrations = [
       ['Zoho CRM', 'Scheda ospite, pipeline, preventivi'], ['Marketing Automation', 'Campagne e flussi per segmento'],
       ['PageSense', 'Percorso di prenotazione e test A/B'], ['SalesIQ', 'Chat con trigger contestuali'],
       ['Forms', 'Richieste, preventivi, iscrizioni'], ['Social', 'Pubblicazione e lead social'],
-      ['Survey', 'Questionari a fine soggiorno'], ['Thrive', 'Loyalty e referral'],
+      ['Bookings', 'Spa, servizi ed esperienze prenotabili'], ['Survey', 'Questionari a fine soggiorno'], ['Thrive', 'Loyalty e referral'],
       ['Books', 'Fatturazione elettronica'], ['Analytics', 'Dashboard e indicatori'],
       ['People', 'Personale, quando serve'], ['Desk', 'Assistenza agli ospiti, quando serve'],
     ],
@@ -333,7 +333,7 @@ export const problems = [
     id: 'extra', cat: 'struttura', icon: 'gift', slug: 'pms-gestionale', noPreset: true,
     pain: 'Servizi extra ed esperienze prenotati a voce o via email',
     sol: 'Prenotazione di servizi ed esperienze',
-    text: 'Spa, massaggi, degustazioni, transfer, bici, late check-out: l’ospite li prenota con il soggiorno o durante la permanenza, e il costo finisce sul conto della camera.',
+    text: 'Con Zoho Bookings spa, massaggi, degustazioni, transfer, bici e late check-out si prenotano online, con il soggiorno o durante la permanenza, e il costo finisce sul conto della camera.',
     points: ['Catalogo di servizi ed esperienze con prezzi e posti', 'Prenotabili con la camera o dopo l’arrivo', 'Addebito sul conto e spesa extra nella scheda ospite'],
   },
   {

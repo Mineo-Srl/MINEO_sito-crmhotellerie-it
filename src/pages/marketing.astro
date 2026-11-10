@@ -13,6 +13,7 @@ import { APP_SITE } from '../data/features.js';
 const phases = [
   ['prima', 'Prima della prenotazione'],
   ['contatto', 'Primo contatto'],
+  ['soggiorno', 'Durante il soggiorno'],
   ['dopo', 'Dopo il soggiorno'],
 ] as const;
 
@@ -23,11 +24,12 @@ const apps = [
   { slug: 'social', name: 'Social', icon: 'megaphone', visual: 'inbox', phase: 'prima', menu: 'Tutti i canali in un’unica coda', site: 'Presidio continuo su ogni canale, messaggi e lead in un’unica coda.' },
   { slug: 'forms', name: 'Forms', icon: 'inbox', visual: 'form', phase: 'contatto', menu: 'Ogni richiesta in un solo posto', site: 'Raccoglie richieste e preventivi senza disperdere il lead tra mille canali.' },
   { slug: 'marketing-automation', name: 'Marketing Automation', icon: 'send', visual: 'journey', phase: 'contatto', menu: 'Campagne prima e dopo il soggiorno', site: 'Trasforma i contatti raccolti in prenotazioni dirette attribuite, con campagne mirate prima e dopo il soggiorno.' },
+  { slug: 'bookings', name: 'Bookings', icon: 'calendar', visual: 'bookings', phase: 'soggiorno', menu: 'Spa, servizi ed esperienze prenotabili', site: 'L’ospite prenota online massaggi, spa, degustazioni, transfer ed esperienze, con posti e orari reali: il costo finisce sul conto della camera.' },
   { slug: 'survey', name: 'Survey', icon: 'star', visual: 'nps', phase: 'dopo', menu: 'L’NPS di ogni soggiorno', site: 'Misura l’NPS a fine soggiorno e lo correla alla tipologia di camera.' },
   { slug: 'thrive', name: 'Thrive', icon: 'gift', visual: 'loyalty', phase: 'dopo', menu: 'Loyalty e passaparola', site: 'Trasforma l’ospite che riparte in un ospite che torna, con programmi di loyalty e referral.' },
 ] as const;
 ---
-<Base title="Marketing: le app principali per il tuo hotel" description="Sito web, PageSense, SalesIQ, Social, Forms, Marketing Automation, Survey e Thrive: le principali app Zoho per il marketing di CRM Hotellerie, che lavorano anche insieme per far prenotare e tornare gli ospiti.">
+<Base title="Marketing: le app principali per il tuo hotel" description="Sito web, PageSense, SalesIQ, Social, Forms, Marketing Automation, Bookings, Survey e Thrive: le principali app Zoho per il marketing di CRM Hotellerie, che lavorano anche insieme per far prenotare e tornare gli ospiti.">
   <PageHero illo="marketing"
     eyebrow="Marketing · web e app principali"
     title="Le principali app Zoho per il marketing, "

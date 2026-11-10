@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Il sito web e le 7 app di marketing di CRM Hotellerie, una pagina ciascuna
+   Il sito web e le 8 app di marketing di CRM Hotellerie, una pagina ciascuna
    (src/pages/[slug].astro). L'ordine segue il percorso dell'ospite:
    prima della prenotazione → contatto → soggiorno → ritorno.
    `site` è la frase del box sulla home di crmhotellerie.it.
@@ -9,6 +9,7 @@
 export const phases = {
   prima: 'Prima della prenotazione',
   contatto: 'Primo contatto',
+  soggiorno: 'Durante il soggiorno',
   dopo: 'Dopo il soggiorno',
 };
 
@@ -380,6 +381,63 @@ export const apps = [
       { q: 'Posso continuare a pubblicare dalle app dei social?', a: 'Sì. Zoho Social affianca le app ufficiali; conviene però passare da lì per avere calendario e report completi.' },
       { q: 'Lo può usare l’agenzia che segue i nostri social?', a: 'Sì, con un utente dedicato e le approvazioni: l’agenzia prepara i post e tu li approvi prima della pubblicazione.' },
       { q: 'Gestisce anche le recensioni su Google?', a: 'Il profilo Google Business si collega a Zoho Social per i post. Per le recensioni definiamo insieme il flusso più adatto, anche con Survey.' },
+    ],
+  },
+
+  /* -------------------------------------------------------------- Bookings */
+  {
+    slug: 'bookings',
+    name: 'Bookings',
+    full: 'Zoho Bookings',
+    icon: 'calendar',
+    visual: 'bookings',
+    phase: 'soggiorno',
+    menu: 'Spa, servizi ed esperienze prenotabili',
+    site: 'L’ospite prenota online massaggi, spa, degustazioni, transfer ed esperienze, con posti e orari reali: il costo finisce sul conto della camera.',
+    title: 'Servizi ed esperienze, ',
+    highlight: 'prenotabili in un clic',
+    lead: 'Zoho Bookings mette online l’agenda di spa, ristorante, escursioni e servizi extra. L’ospite sceglie giorno e orario dal sito, dalla mail di benvenuto o in hotel; lo staff vede tutto in un calendario e l’importo va sul conto della camera.',
+    seo: {
+      title: 'Zoho Bookings per hotel: spa, servizi ed esperienze online',
+      description: 'Con Zoho Bookings gli ospiti prenotano online spa, massaggi, degustazioni, transfer ed esperienze, con orari e posti reali e addebito sul conto della camera.',
+      keywords: ['Zoho Bookings hotel', 'prenotazione spa hotel', 'prenotazione esperienze hotel', 'servizi extra hotel online', 'upselling hotel'],
+    },
+    problem: [
+      'Massaggi ed esperienze si prenotano a voce o via email, e qualcosa si perde.',
+      'La spa ha un’agenda di carta, la reception un’altra.',
+      'Gli extra si propongono solo a chi passa dalla reception.',
+    ],
+    solution: [
+      'Ogni servizio con orari, durata, posti e prezzo, prenotabile online.',
+      'Un calendario per risorsa (cabina, terapista, barca, sala) visto da tutto lo staff.',
+      'Extra proposti prima dell’arrivo e durante il soggiorno, con addebito in camera.',
+    ],
+    features: [
+      { icon: 'calendar', title: 'Agenda per servizio', text: 'Massaggi, spa in esclusiva, degustazioni, transfer, escursioni: ognuno con durata, orari e capienza.' },
+      { icon: 'users', title: 'Staff e risorse', text: 'Terapisti, cabine, guide, mezzi: Bookings assegna solo ciò che è libero, niente doppie prenotazioni.' },
+      { icon: 'globe', title: 'Prenotazione dal sito', text: 'Pagina di prenotazione con i colori dell’hotel, da inserire nel sito o nella mail di benvenuto.' },
+      { icon: 'bell', title: 'Promemoria automatici', text: 'Conferma, promemoria e modifiche via email o SMS, per ridurre i “non presentati”.' },
+      { icon: 'euro', title: 'Pagamento o conto camera', text: 'Pagamento online o addebito sul conto della camera, a scelta per servizio.' },
+      { icon: 'chart', title: 'Report degli extra', text: 'Servizi più richiesti, occupazione dell’agenda e ricavi extra per periodo.' },
+    ],
+    steps: [
+      { title: 'Elenchiamo servizi ed esperienze', text: 'Durata, prezzi, posti, giorni e chi li eroga.' },
+      { title: 'Configuriamo agende e risorse', text: 'Cabine, terapisti, guide, mezzi: ognuno con i suoi orari.' },
+      { title: 'Lo colleghiamo a sito e CRM', text: 'Pagina di prenotazione sul sito, extra nella scheda ospite e sul conto.' },
+      { title: 'Formiamo lo staff', text: 'Reception e reparti imparano a gestire agenda, cambi e cancellazioni.' },
+    ],
+    scenario: {
+      title: 'Un caso tipico',
+      text: 'Tre giorni prima dell’arrivo l’ospite riceve la mail di benvenuto con le esperienze della settimana. Prenota un massaggio di coppia per giovedì alle 16:30 e la degustazione di venerdì. La spa trova l’appuntamento in agenda, il promemoria parte da solo e i 195 € finiscono sul conto della camera.',
+      note: 'Scenario di esempio.',
+    },
+    metrics: ['Servizi ed esperienze più prenotati', 'Occupazione di cabine e risorse', 'Ricavi extra per ospite', 'Prenotazioni arrivate prima del check-in'],
+    crm: 'Ogni servizio prenotato entra nella scheda dell’ospite: sai chi ama la spa e chi le escursioni, e Marketing Automation può proporre l’esperienza giusta al prossimo soggiorno.',
+    photo: '/img/photos/spa-sauna.webp',
+    faq: [
+      { q: 'Lo possono usare anche gli ospiti esterni?', a: 'Sì. Spa e ristorante possono avere una pagina di prenotazione pubblica, con pagamento online per chi non dorme in hotel.' },
+      { q: 'Si può addebitare sul conto della camera?', a: 'Sì, per gli ospiti in casa l’importo può andare sul conto della camera invece del pagamento online.' },
+      { q: 'Serve il booking engine di CRM Hotellerie?', a: 'No, Bookings si attiva anche da solo. Con il booking engine gli extra si possono proporre già durante la prenotazione della camera.' },
     ],
   },
 

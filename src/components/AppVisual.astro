@@ -6,13 +6,14 @@
 import Icon from './Icon.astro';
 
 interface Props {
-  type: 'site' | 'funnel' | 'chat' | 'form' | 'journey' | 'inbox' | 'nps' | 'loyalty';
+  type: 'site' | 'bookings' | 'funnel' | 'chat' | 'form' | 'journey' | 'inbox' | 'nps' | 'loyalty';
   compact?: boolean;
 }
 const { type, compact = false } = Astro.props;
 
 const titles = {
   site: 'Sito web · hotelsoleluna.it',
+  bookings: 'Bookings · Spa ed esperienze',
   funnel: 'PageSense · Funnel di prenotazione',
   chat: 'SalesIQ · Visitatori in tempo reale',
   form: 'Forms · Richiesta di preventivo',
@@ -77,6 +78,28 @@ const journey = [
           <div class="st-seo a-in" style="--d:2.3s"><Icon name="search" size={14} stroke={2.2} /> Google · “hotel rimini con spa” · 3ª posizione</div>
         </div>
         <div class="toast a-in" style="--d:3.1s"><Icon name="check" size={15} stroke={3} /> Prenotazione diretta · nel CRM, 0% commissioni</div>
+      </>
+    )}
+
+    {type === 'bookings' && (
+      <>
+        <div class="bk">
+          <div class="bk-svc a-in" style="--d:.1s">
+            <span class="bk-ic"><Icon name="spark" size={18} stroke={2} /></span>
+            <div><b>Massaggio rilassante · 50 min</b><small>Spa Acqua · € 75 · max 2 persone</small></div>
+          </div>
+          <p class="bk-day a-in" style="--d:.5s">Giovedì 14 agosto</p>
+          <div class="bk-slots">
+            {['10:00', '11:30', '15:00', '16:30', '18:00', '19:00'].map((t, i) => (
+              <span class:list={['a-in', { off: i === 1 || i === 5, pick: i === 3 }]} style={`--d:${0.7 + i * 0.12}s`}>{t}</span>
+            ))}
+          </div>
+          <div class="bk-who a-in" style="--d:1.9s">
+            <Icon name="users" size={15} stroke={2} />
+            <div><b>Laura Ferrari · camera 214</b><small>Riconosciuta dal CRM · promemoria il giorno prima</small></div>
+          </div>
+        </div>
+        <div class="toast a-in" style="--d:2.7s"><Icon name="check" size={15} stroke={3} /> Prenotato · € 75 sul conto della camera</div>
       </>
     )}
 
@@ -419,6 +442,15 @@ const journey = [
   .st-res { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04); }
   .st-pr { color: #fff; font-size: 1rem; }
   .st-seo { display: flex; align-items: center; gap: 8px; font-size: .76rem; padding: 8px 12px; border-radius: 10px; background: rgba(255,255,255,.06); }
+  /* bookings */
+  .bk { display: grid; gap: 12px; }
+  .bk-svc, .bk-who { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); }
+  .bk-ic { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px 0 10px 0; background: var(--teal); flex: none; }
+  .bk-day { font-weight: 650; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase; }
+  .bk-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .bk-slots span { text-align: center; padding: 9px 0; border-radius: 10px; border: 1px solid rgba(255,255,255,.22); font-weight: 650; }
+  .bk-slots .off { opacity: .3; text-decoration: line-through; }
+  .bk-slots .pick { background: #fff; color: #000; border-color: #fff; }
 </style>
 
 <script>

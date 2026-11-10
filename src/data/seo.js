@@ -21,7 +21,7 @@ export const seo = {
   },
   '/marketing/': {
     title: 'App di marketing per hotel su Zoho | CRM Hotellerie',
-    description: 'PageSense, SalesIQ, Social, Forms, Marketing Automation, Survey e Thrive: le principali app Zoho per far prenotare e tornare gli ospiti del tuo hotel.',
+    description: 'Sito web, PageSense, SalesIQ, Social, Forms, Bookings, Survey e altre app Zoho per far prenotare, spendere e tornare gli ospiti del tuo hotel.',
     keywords: ['marketing per hotel', 'Zoho PageSense hotel', 'Zoho SalesIQ hotel', 'marketing automation hotel', 'NPS hotel', 'loyalty hotel'],
     crumb: 'Marketing',
   },
