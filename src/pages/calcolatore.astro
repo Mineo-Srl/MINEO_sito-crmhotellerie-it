@@ -9,7 +9,7 @@ const fields = [
   { id: 'adr', label: 'Prezzo medio camera', min: 40, max: 600, step: 5, value: 110, unit: '€' },
   { id: 'ota', label: 'Quota venduta dalle OTA', min: 0, max: 100, step: 1, value: 60, unit: '%' },
   { id: 'comm', label: 'Commissione media OTA', min: 10, max: 30, step: 1, value: 17, unit: '%' },
-  { id: 'shift', label: 'Punti spostati sul diretto', min: 1, max: 30, step: 1, value: 10, unit: 'punti' },
+  { id: 'shift', label: 'Prenotazioni che passano dai portali al tuo sito', hint: 'Su 100 prenotazioni, quante arrivano dal tuo sito invece che da Booking.com o simili', min: 1, max: 30, step: 1, value: 10, unit: 'su 100' },
 ];
 ---
 <Base title="Calcolatore commissioni" description="Quanto ti costano le commissioni delle OTA e quanto resta in cassa spostando prenotazioni sul canale diretto. Calcolo illustrativo.">
@@ -21,6 +21,7 @@ const fields = [
         {fields.map((f) => (
           <div class="field">
             <label for={f.id}>{f.label}</label>
+            {f.hint && <p class="hint">{f.hint}</p>}
             <div class="row">
               <input type="range" id={f.id} min={f.min} max={f.max} step={f.step} value={f.value} />
               <output for={f.id} data-out={f.id}>{f.value}</output><span class="unit">{f.unit}</span>
@@ -32,7 +33,7 @@ const fields = [
         <div class="res-main">
           <p class="label">Restano in cassa ogni anno</p>
           <p class="big" data-r="saving">19.000 €</p>
-          <p>spostando <strong data-r="shiftTxt">10 punti</strong> sul canale diretto, a parità di camere vendute.</p>
+          <p>se <strong data-r="shiftTxt">10 prenotazioni su 100</strong> arrivano dal tuo sito invece che dai portali: la quota venduta dalle OTA passa <strong data-r="shiftFromTo">dal 60% al 50%</strong>. Stesse camere vendute, meno commissioni.</p>
         </div>
         <dl class="res-list">
           <div><dt>Notti vendute in un anno</dt><dd data-r="nights">—</dd></div>
@@ -49,7 +50,7 @@ const fields = [
   <section class="section-sm">
     <div class="container split">
       <div>
-        <p class="eyebrow">Come si sposta un punto</p>
+        <p class="eyebrow">Come si spostano le prenotazioni</p>
         <h2 class="h2">Dal portale <span class="hl">al tuo sito</span></h2>
       </div>
       <ul class="sq-list">
@@ -87,7 +88,9 @@ const fields = [
     set('commissions', eur.format(revenue * otaShare * comm));
     // arrotondato alle migliaia, come nella guida
     set('saving', eur.format(Math.round((revenue * shift * comm) / 1000) * 1000));
-    set('shiftTxt', `${Math.round(shift * 100)} punti`);
+    const sp = Math.round(shift * 100);
+    set('shiftTxt', `${sp} ${sp === 1 ? 'prenotazione' : 'prenotazioni'} su 100`);
+    set('shiftFromTo', `dal ${v('ota')}% al ${v('ota') - sp}%`);
   }
   root.addEventListener('input', update);
   update();
@@ -97,7 +100,8 @@ const fields = [
   .calc { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
   .inputs { background: #fff; border-radius: var(--radius); padding: clamp(22px, 3vw, 34px); display: grid; gap: 22px; border: 1px solid var(--line); }
   .field label { display: block; font-weight: 700; margin-bottom: 8px; }
-  .row { display: grid; grid-template-columns: 1fr 56px auto; gap: 12px; align-items: center; }
+  .field .hint { margin: -4px 0 8px; font-size: .86rem; line-height: 1.45; color: #000; }
+  .row { display: grid; grid-template-columns: 1fr 56px 52px; gap: 12px; align-items: center; }
   output { font-family: var(--font-head); font-weight: 700; font-size: 1.4rem; text-align: right; }
   .unit { color: var(--muted); font-size: .9rem; min-width: 36px; }
   input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 6px; background: linear-gradient(90deg, var(--black) var(--p, 50%), #ddd var(--p, 50%)); }
