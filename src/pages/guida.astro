@@ -22,6 +22,12 @@ const inside = [
       <div>
         <img class="cover-big" src="/img/guida/pag-1.jpg" alt="Copertina della guida CRM Hotellerie: Zoho per il tuo hotel" width="778" height="1100" />
         <h2 class="h3 mb">Cosa trovi nella guida</h2>
+        {/* Su telefono: riassunto compatto al posto dell'elenco con le anteprime */}
+        <div class="toc-short">
+          <img src="/img/guida/pag-1.jpg" alt="" width="778" height="1100" />
+          <p>{guide.pages} pagine: il sistema in una pagina, le cinque aree con le schermate reali e chi fa cosa.</p>
+          <ul>{inside.slice(1, 7).map(([, t]) => <li>{String(t).replace(/^\d+ · /, '')}</li>)}</ul>
+        </div>
         <ol class="toc">
           {inside.map(([n, t, d], i) => <li class="reveal" style={`--d:${i * 40}ms`}><img class="mini" src={`/img/guida/pag-${n}.jpg`} alt="" loading="lazy" width="778" height="1100" /><span><span class="pg">Pagina {String(n).padStart(2, '0')}</span><strong>{t}</strong><span>{d}</span></span></li>)}
         </ol>
@@ -30,12 +36,24 @@ const inside = [
         <p class="label">Ricevi la guida</p>
         <p class="h4">Lasciaci i tuoi dati e scaricala subito</p>
         {/* Il form Zoho deve reindirizzare a /grazie/ dopo l'invio */}
-        <iframe src={guide.formUrl} title="Modulo per scaricare la guida" loading="lazy"></iframe>
+        <iframe data-zfauto src={guide.formUrl + "?zf_rszfm=1"} title="Modulo per scaricare la guida"></iframe>
         <p class="small muted"><Icon name="lock" size={14} /> Usiamo i tuoi dati solo per inviarti la guida e, se lo chiedi, ricontattarti. <a href="/privacy-policy/">Privacy</a></p>
       </div>
     </div>
   </section>
 </Base>
+
+<script>
+  // Altezza automatica del modulo Zoho (messaggio "perma|altezza" inviato dal form)
+  window.addEventListener('message', (ev) => {
+    if (typeof ev.data !== 'string') return;
+    const d = ev.data.split('|');
+    if (d.length < 2 || isNaN(parseInt(d[1]))) return;
+    document.querySelectorAll<HTMLIFrameElement>('iframe[data-zfauto]').forEach((f) => {
+      if (f.src.includes(d[0])) f.style.height = parseInt(d[1]) + 15 + 'px';
+    });
+  });
+</script>
 
 <style>
   .ggrid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
@@ -50,5 +68,16 @@ const inside = [
   .formbox { background: #fff; border-radius: var(--radius); padding: 26px; border: 1px solid var(--line); position: sticky; top: calc(var(--header-h) + 20px); }
   .formbox iframe { width: 100%; height: 560px; border: 0; margin: 12px 0; }
   .formbox a { text-decoration: underline; }
-  @media (max-width: 900px) { .ggrid { grid-template-columns: 1fr; } .formbox { position: static; } }
+  .toc-short { display: none; }
+  @media (max-width: 900px) {
+    .ggrid { grid-template-columns: 1fr; gap: 20px; }
+    .formbox { position: static; padding: 20px 16px; }
+    .cover-big, .toc { display: none; }
+    .mb { margin-bottom: 12px; }
+    .toc-short { display: grid; grid-template-columns: 76px 1fr; gap: 10px 16px; align-items: start; }
+    .toc-short img { grid-row: span 2; width: 76px; border-radius: 4px; box-shadow: 0 8px 18px -10px rgba(0,0,0,.5); }
+    .toc-short p { font-size: .94rem; line-height: 1.45; }
+    .toc-short ul { display: flex; flex-wrap: wrap; gap: 6px; }
+    .toc-short li { padding: 4px 10px; border-radius: 999px; background: #fff; border: 1px solid var(--teal); font-size: .76rem; font-weight: 600; }
+  }
 </style>

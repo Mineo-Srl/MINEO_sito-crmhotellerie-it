@@ -222,7 +222,7 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
       // Precompila "Soluzioni scelte" (SingleLine2): campo a riga singola, max 255 caratteri
       const solTxt = sols.map((x) => x.sol).join(', ');
       if (solTxt) pre += '&SingleLine2=' + encodeURIComponent(solTxt.length > 255 ? solTxt.slice(0, 252) + '...' : solTxt);
-      const src = zf.dataset.zf + (zf.dataset.zf!.includes('?') ? '&' : '?') + 'referrername=' + encodeURIComponent(rfr) + pre;
+      const src = zf.dataset.zf + (zf.dataset.zf!.includes('?') ? '&' : '?') + 'zf_rszfm=1&referrername=' + encodeURIComponent(rfr) + pre;
       if (zf.src !== src) zf.src = src;
       dlg.showModal();
     });
