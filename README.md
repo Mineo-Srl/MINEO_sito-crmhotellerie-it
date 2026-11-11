@@ -1,4 +1,4 @@
-# CRM Hotellerie — versione revisionata
+# CRM Hotellerie — versione definitiva
 
 Sito Astro di CRM Hotellerie, il software per hotel su Zoho di Mineo S.r.l.
 Messaggio: un unico software, modulare — ogni area si attiva anche da sola.
