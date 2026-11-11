@@ -3,6 +3,7 @@
    del sistema girano attorno all'hotel stilizzato. L'anello ruota piano e le
    schermate restano sempre dritte. L'hotel si disegna come linea in costruzione. */
 import Illo from './Illo.astro';
+import Icon from './Icon.astro';
 
 const shots = [
   { src: '/img/orbit/planning.jpg', label: 'Planning camere' },
@@ -10,11 +11,15 @@ const shots = [
   { src: '/img/orbit/salesiq-live.jpg', label: 'SalesIQ · Visitatori live' },
   { src: '/img/orbit/pagesense-pagine.jpg', label: 'PageSense · Pagine' },
 ];
-const C = 50, R = 35, CORE = 15;
-const pts = shots.map((s, i) => {
-  const deg = (i * 360) / shots.length - 45;
+const icons = ['calendar', 'chart', 'chat', 'users'];
+/* Foto e icone alternate sull'anello: foto, icona, foto, icona… */
+const items = shots.flatMap((s, i) => [{ kind: 'foto', ...s }, { kind: 'icona', icon: icons[i] }]) as any[];
+const C = 50, R = 35, CORE = 13.5;
+const pts = items.map((s, i) => {
+  const deg = (i * 360) / items.length - 45;
   const a = deg * (Math.PI / 180);
-  return { ...s, i, x: C + R * Math.cos(a), y: C + R * Math.sin(a), x1: C + (CORE + 1) * Math.cos(a), y1: C + (CORE + 1) * Math.sin(a), x2: C + (R - 9) * Math.cos(a), y2: C + (R - 9) * Math.sin(a) };
+  const gap = s.kind === 'foto' ? 10 : 6.5;
+  return { ...s, i, x: C + R * Math.cos(a), y: C + R * Math.sin(a), x1: C + (CORE + 1) * Math.cos(a), y1: C + (CORE + 1) * Math.sin(a), x2: C + (R - gap) * Math.cos(a), y2: C + (R - gap) * Math.sin(a) };
 });
 ---
 <div class="hf" aria-hidden="true">
@@ -28,17 +33,21 @@ const pts = shots.map((s, i) => {
       {pts.map((p) => <line class="hf-line" x1={p.x1} y1={p.y1} x2={p.x2} y2={p.y2} style={`--i:${p.i}`} />)}
       {pts.map((p) => (
         <circle class="hf-dot" r="0.9" opacity="0">
-          <animateMotion dur="2.4s" begin={`${2 + p.i * 0.6}s`} repeatCount="indefinite" path={`M ${p.x2} ${p.y2} L ${p.x1} ${p.y1}`} />
-          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.8;1" dur="2.4s" begin={`${2 + p.i * 0.6}s`} repeatCount="indefinite" />
+          <animateMotion dur="2.4s" begin={`${2 + p.i * 0.35}s`} repeatCount="indefinite" path={`M ${p.x2} ${p.y2} L ${p.x1} ${p.y1}`} />
+          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.8;1" dur="2.4s" begin={`${2 + p.i * 0.35}s`} repeatCount="indefinite" />
         </circle>
       ))}
     </svg>
-    {pts.map((p) => (
+    {pts.map((p) => p.kind === 'foto' ? (
       <div class="hf-card" style={`left:${p.x}%;top:${p.y}%;--i:${p.i}`}>
         <figure class="hf-in">
           <img src={p.src} alt="" loading="eager" />
           <figcaption>{p.label}</figcaption>
         </figure>
+      </div>
+    ) : (
+      <div class="hf-ico" style={`left:${p.x}%;top:${p.y}%;--i:${p.i}`}>
+        <span class="hf-ico-in"><Icon name={p.icon} size={26} stroke={1.7} /></span>
       </div>
     ))}
   </div>
@@ -59,19 +68,22 @@ const pts = shots.map((s, i) => {
 
   /* L'anello gira; ogni schermata gira al contrario e resta dritta */
   .hf-rot { position: absolute; inset: 0; animation: hf-spin var(--spin) linear infinite; }
-  .hf-card { position: absolute; width: 34%; translate: -50% -50%; animation: hf-spin var(--spin) linear infinite reverse; }
-  .hf-in { margin: 0; padding: 5px; background: #fff; border-radius: 14px 0 14px 0; box-shadow: 0 0 0 1px rgba(0,0,0,.08), 0 22px 40px -18px rgba(0,0,0,.45); animation: hf-pop .7s cubic-bezier(.2,.8,.2,1.2) both; animation-delay: calc(1.2s + var(--i) * .2s); }
+  .hf-card { position: absolute; width: 37.4%; translate: -50% -50%; animation: hf-spin var(--spin) linear infinite reverse; }
+  .hf-in { margin: 0; padding: 5px; background: #fff; border-radius: 14px 0 14px 0; box-shadow: 0 0 0 1px rgba(0,0,0,.08), 0 22px 40px -18px rgba(0,0,0,.45); animation: hf-pop .7s cubic-bezier(.2,.8,.2,1.2) both; animation-delay: calc(1.2s + var(--i) * .15s); }
   .hf-in img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: left top; border-radius: 10px 0 10px 0; }
   .hf-in figcaption { position: absolute; left: 12px; bottom: -11px; padding: 3px 9px; border-radius: 999px; background: #000; color: #fff; font-size: .66rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
-  .hf-card:nth-child(even) .hf-in figcaption { background: var(--teal); }
+  .hf-card:nth-of-type(4n+3) .hf-in figcaption { background: var(--teal); }
+  .hf-ico { position: absolute; width: 12%; aspect-ratio: 1; translate: -50% -50%; animation: hf-spin var(--spin) linear infinite reverse; }
+  .hf-ico-in { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 50%; background: #000; color: #fff; box-shadow: 0 0 0 6px rgba(13,127,137,.1), 0 14px 26px -14px rgba(0,0,0,.5); animation: hf-pop .6s cubic-bezier(.2,.8,.2,1.25) both; animation-delay: calc(1.2s + var(--i) * .15s); }
+  .hf-ico-in::after { content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 2px solid transparent; border-top-color: var(--teal); border-right-color: var(--teal); animation: hf-spin 9s linear infinite; }
 
-  .hf-core { position: absolute; left: 50%; top: 50%; width: 30%; aspect-ratio: 1; translate: -50% -50%; display: grid; place-items: center; border-radius: 50%; background: #fff; border: 1px solid rgba(0,0,0,.1); box-shadow: 0 24px 60px -24px rgba(13,127,137,.55); animation: hf-pop .7s cubic-bezier(.2,.8,.2,1.2) both; z-index: 2; }
+  .hf-core { position: absolute; left: 50%; top: 50%; width: 27%; aspect-ratio: 1; translate: -50% -50%; display: grid; place-items: center; border-radius: 50%; background: #fff; border: 1px solid rgba(0,0,0,.1); box-shadow: 0 24px 60px -24px rgba(13,127,137,.55); animation: hf-pop .7s cubic-bezier(.2,.8,.2,1.2) both; z-index: 2; }
   .hf-glow { position: absolute; inset: -14%; border-radius: 50%; background: radial-gradient(circle, rgba(13,127,137,.22), rgba(13,127,137,0) 68%); animation: hf-breathe 4s ease-in-out infinite; z-index: -1; }
   .hf-hotel { position: relative; width: 76%; color: #000; --illo-accent: var(--teal); --illo-accent-op: .9; }
   .hf-hotel :global(svg) { width: 100%; height: auto; display: block; }
 
   /* Hotel: linea in costruzione */
-  .hf.draw .hf-hotel :global(svg *) { stroke-dasharray: var(--len, 800); stroke-dashoffset: var(--len, 800); animation: hf-build 1.6s ease-in-out forwards; animation-delay: var(--dd, 0s); }
+  .hf.draw .hf-ico-in :global(svg *), .hf.draw .hf-hotel :global(svg *) { stroke-dasharray: var(--len, 800); stroke-dashoffset: var(--len, 800); animation: hf-build 1.6s ease-in-out forwards; animation-delay: var(--dd, 0s); }
   .hf.draw .hf-hotel :global(.ac) { fill-opacity: 0; animation: hf-build 1.6s ease-in-out forwards, hf-fill .6s ease forwards; animation-delay: var(--dd, 0s), calc(var(--dd, 0s) + 1.3s); }
 
   @keyframes hf-spin { to { rotate: 360deg; } }
@@ -81,8 +93,8 @@ const pts = shots.map((s, i) => {
   @keyframes hf-pop { from { opacity: 0; scale: .5; } to { opacity: 1; scale: 1; } }
   @keyframes hf-breathe { 50% { scale: 1.12; opacity: .7; } }
 
-  .hf:hover .hf-rot, .hf:hover .hf-card { animation-play-state: paused; }
-  @media (max-width: 560px) { .hf { width: min(92%, 380px); } .hf-in figcaption { font-size: .56rem; bottom: -9px; } }
+  .hf:hover .hf-rot, .hf:hover .hf-card, .hf:hover .hf-ico { animation-play-state: paused; }
+  @media (max-width: 560px) { .hf { width: min(92%, 380px); } .hf-ico-in :global(svg) { width: 18px; height: 18px; } .hf-ico-in::after { inset: -5px; } .hf-in figcaption { font-size: .56rem; bottom: -9px; } }
   @media (prefers-reduced-motion: reduce) {
     .hf *, .hf { animation: none !important; }
     .hf-line { stroke-dashoffset: 0; }
@@ -93,10 +105,12 @@ const pts = shots.map((s, i) => {
 <script>
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.querySelectorAll<HTMLElement>('.hf').forEach((hf) => {
-      hf.querySelectorAll('.hf-hotel svg *').forEach((el, k) => {
+      hf.querySelectorAll('.hf-hotel svg *, .hf-ico-in svg *').forEach((el, k) => {
         const g = el as SVGGeometryElement;
         if (typeof g.getTotalLength === 'function') g.style.setProperty('--len', String(Math.ceil(g.getTotalLength()) + 1));
-        g.style.setProperty('--dd', (0.15 + (k % 8) * 0.07).toFixed(2) + 's');
+        const ico = g.closest('.hf-ico') as HTMLElement | null;
+        const base = ico ? 1.5 + Number(getComputedStyle(ico).getPropertyValue('--i')) * 0.15 : 0.15;
+        g.style.setProperty('--dd', (base + (k % 8) * 0.07).toFixed(2) + 's');
       });
       hf.classList.add('draw');
     });
