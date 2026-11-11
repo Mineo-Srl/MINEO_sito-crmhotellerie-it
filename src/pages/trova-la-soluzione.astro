@@ -83,13 +83,8 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
   <dialog class="mdl" data-mail-dlg aria-labelledby="mdl-t">
     <div class="mdl-f">
       <button type="button" class="mdl-x" data-close aria-label="Chiudi"><Icon name="close" size={20} /></button>
-      <p class="label">La tua soluzione</p>
       <h2 class="h3" id="mdl-t">Inviacela via email</h2>
-      <ul class="mdl-sel" data-mail-sel></ul>
-      <ol class="mdl-steps">
-        <li><span><strong>Scarica il riepilogo PDF</strong> della tua soluzione.</span> <button type="button" class="btn btn-primary mdl-dl" data-pdf-mdl><Icon name="download" size={16} /> Scarica PDF</button></li>
-        <li><span><strong>Compila il modulo</strong> qui sotto e allega il PDF nel campo “Riepilogo PDF”.</span></li>
-      </ol>
+      <p class="mdl-lead">Ti ricontattiamo noi. <button type="button" class="mdl-pdf" data-pdf-mdl><Icon name="download" size={15} /> Scarica il riepilogo PDF</button></p>
       {/* Modulo Zoho Forms "Funnel_hotellerie": il src viene impostato all'apertura,
           con referrername = indirizzo della pagina (contiene struttura ed esigenze scelte). */}
       <iframe id="ziframe_106334" class="mdl-if" aria-label="Form Funnel_hotellerie" title="Modulo di richiesta" data-zf={contactFormUrl}></iframe>
@@ -217,8 +212,6 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
 
     /* ---- Invio via email: modulo con gli stessi campi della pagina contatti ---- */
     root.querySelector('[data-open-mail]')!.addEventListener('click', () => {
-      const ul = dlg.querySelector('[data-mail-sel]') as HTMLElement;
-      ul.innerHTML = sols.map((x) => `<li>${x.sol}</li>`).join('');
       // Come nel codice di incorporamento Zoho: referrername = pagina di provenienza,
       // che qui contiene anche la configurazione (?struttura=…&esigenze=…)
       const zf = dlg.querySelector('#ziframe_106334') as HTMLIFrameElement;
@@ -233,7 +226,15 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
     dlg.querySelector('[data-pdf-mdl]')!.addEventListener('click', async (e) => {
       const b = e.currentTarget as HTMLButtonElement;
       await makePdf();
-      b.innerHTML = '✓ PDF scaricato';
+      b.textContent = '✓ PDF scaricato';
+    });
+    window.addEventListener('message', (ev) => {
+      const zf = dlg.querySelector('#ziframe_106334') as HTMLIFrameElement;
+      if (typeof ev.data !== 'string' || !zf.src.includes('/formperma/')) return;
+      const d = ev.data.split('|');
+      if ((d.length === 2 || d.length === 3) && zf.src.includes(d[0]) && !isNaN(parseInt(d[1]))) {
+        zf.style.height = parseInt(d[1]) + 15 + 'px';
+      }
     });
     dlg.querySelector('[data-close]')!.addEventListener('click', () => dlg.close());
     dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
@@ -285,19 +286,13 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
   .res-mail { justify-content: center; gap: 8px; background: #fff; color: #000; border: 0; }
   .res-mail:hover { background: var(--yellow-soft); }
   .res-pdf { display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; background: none; border: 0; cursor: pointer; font: inherit; font-weight: 600; }
-  .mdl { margin: auto; inset: 0; position: fixed; overflow: auto; width: min(720px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; border-radius: 28px 0 28px 0; box-shadow: 0 40px 80px -30px rgba(0,0,0,.6); }
+  .mdl { margin: auto; inset: 0; position: fixed; overflow: auto; width: min(720px, calc(100% - 32px)); max-height: calc(100dvh - 24px); padding: 0; border: 0; border-radius: 28px 0 28px 0; box-shadow: 0 40px 80px -30px rgba(0,0,0,.6); }
   .mdl::backdrop { background: rgba(0,0,0,.55); }
-  .mdl-f { position: relative; padding: clamp(24px, 3vw, 36px); display: grid; gap: 14px; }
+  .mdl-f { position: relative; padding: clamp(18px, 2.4vw, 28px) clamp(18px, 2.4vw, 28px) 8px; display: grid; gap: 6px; }
+  .mdl-pdf { display: inline-flex; align-items: center; gap: 6px; margin-left: 6px; background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--teal); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
   .mdl-x { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; border: 0; background: var(--paper-2); cursor: pointer; }
   .mdl-lead { font-size: .94rem; }
-  .mdl-sel { display: flex; flex-wrap: wrap; gap: 6px; }
-  .mdl-sel :global(li) { padding: 5px 10px; border-radius: 999px; background: var(--yellow-tint); border: 1px solid var(--teal); font-size: .8rem; font-weight: 600; }
-  .mdl-if { width: 100%; height: min(720px, 62dvh); border: 0; border-radius: 12px; background: #fff; }
-  .mdl-steps { display: grid; gap: 8px; counter-reset: ms; }
-  .mdl-steps li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px 10px 44px; position: relative; border-radius: 12px 0 12px 0; background: var(--yellow-tint); font-size: .9rem; counter-increment: ms; }
-  .mdl-steps li::before { content: counter(ms); position: absolute; left: 12px; top: 50%; translate: 0 -50%; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 6px 0 6px 0; background: var(--teal); color: #fff; font-size: .78rem; font-weight: 700; }
-  .mdl-dl { flex: none; padding: 9px 16px; font-size: .78rem; gap: 6px; }
-  @media (max-width: 560px) { .mdl-steps li { flex-direction: column; align-items: flex-start; } }
+  .mdl-if { width: 100%; height: 900px; border: 0; background: #fff; display: block; margin: 0 -8px; width: calc(100% + 16px); }
   .res-info { margin-top: 4px; padding: 14px 16px; border-radius: 12px 0 12px 0; background: rgba(255,255,255,.08); color: #fff; }
   .res-info-t { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .88rem; color: #fff; margin-bottom: 10px; }
   .res-info ol { display: grid; gap: 8px; counter-reset: st; }
