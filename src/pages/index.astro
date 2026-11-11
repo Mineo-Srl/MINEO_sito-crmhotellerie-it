@@ -1,7 +1,7 @@
 ---
 /* Home (versione compatta). Ordine: promessa (hero A) + 3 prove + 1 azione
    principale → esigenza per esigenza → non un pacchetto chiuso → da sei programmi
-   a uno + CTA → prezzo e numeri → guida → CTA. */
+   a uno + CTA → guida → CTA. */
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import CTA from '../components/CTA.astro';
@@ -181,30 +181,6 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
     </div>
   </section>
 
-  <!-- PREZZO + NUMERI: come si compone il costo e quanto si recupera -->
-  <section class="section-sm" id="costi">
-    <div class="container nums reveal">
-      <div class="n-big">
-        <p class="label">Esempio sui numeri</p>
-        <p class="n-v">19.000 €</p>
-        <p>di margine in più in un anno: su ogni notte prenotata dal tuo sito guadagni la commissione che non paghi al portale (18,70 € su una camera da 110 €). Calcolato con 10 prenotazioni su 100 che passano dai portali al sito.</p>
-        <p class="small muted">Hotel da 40 camere, 70% di occupazione, camera media 110 €, 60% del venduto dalle OTA con commissioni al 17%. Calcolo illustrativo.</p>
-        <a class="link-arrow" href="/calcolatore/">Fai il calcolo con i tuoi numeri</a>
-      </div>
-      <div class="price">
-        <p class="label">Quanto costa</p>
-        <h2 class="h3">Quanto costa CRM Hotellerie? Paghi solo le aree che attivi.</h2>
-        <ul class="price-list">
-          <li><Icon name="check" size={16} /> <span><strong>Licenze Zoho</strong> in abbonamento, a parte: si parte da Zoho CRM Enterprise, inclusa in Zoho One.</span></li>
-          <li><Icon name="check" size={16} /> <span><strong>Configurazione e personalizzazione</strong> di Mineo, preventivate sulla tua struttura.</span></li>
-          <li><Icon name="check" size={16} /> <span><strong>Formazione e assistenza</strong> in italiano.</span></li>
-        </ul>
-        <p class="todo price-todo">Prezzo indicativo da inserire, per esempio “a partire da … € al mese”</p>
-        <a class="link-arrow" href="/chi-siamo/#costi">Cosa è incluso</a>
-      </div>
-    </div>
-  </section>
-
   <GuideBand strip={false} />
 
   <CTA title="Vedilo sul" hl="tuo hotel." />
@@ -294,18 +270,12 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
   .seg-d { font-size: .9rem; color: var(--muted); }
 
   /* NUMERI */
-  .nums { display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: stretch; }
-  .n-big { background: #111; color: #fff; border-radius: 32px 0 32px 0; padding: clamp(28px, 4vw, 48px); display: grid; gap: 10px; justify-items: start; }
-  .n-big p { color: #fff; }
-  .n-v { font-weight: 700; font-size: clamp(3rem, 7vw, 5rem); letter-spacing: -.05em; line-height: 1; color: #fff !important; }
-  .n-big .link-arrow { color: #fff; margin-top: 8px; }
-  .n-big .link-arrow:hover { background: #fff; color: #000; }
   .n-list { display: grid; gap: 12px; align-content: center; }
   .n-list li { padding: 18px 22px; border: 1px solid var(--line); border-radius: 18px 0 18px 0; color: var(--muted); }
   .n-list strong { display: inline-block; min-width: 92px; font-size: 1.5rem; letter-spacing: -.03em; color: #000; }
 
   @media (max-width: 1080px) {
-    .hero-in, .block, .nums { grid-template-columns: 1fr; }
+    .hero-in, .block { grid-template-columns: 1fr; }
     .block.rev .b-img { order: 0; }
     .pillars { grid-template-columns: repeat(2, 1fr); }
     .segs { grid-template-columns: repeat(2, 1fr); }
@@ -369,13 +339,6 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
   .quote figcaption span span { display: block; font-size: .88rem; }
   .q-av { width: 44px; height: 44px; border-radius: 50%; background: var(--yellow-soft); flex: none; }
   .logos { margin-top: 20px; padding: 22px; text-align: center; border-radius: 16px; font-weight: 600; color: var(--teal); }
-  .price { padding: clamp(24px, 3vw, 36px); background: var(--paper); border-radius: 32px 0 32px 0; display: flex; flex-direction: column; gap: 12px; }
-  .price .label { color: var(--teal); }
-  .price-list { display: grid; gap: 10px; }
-  .price-list li { display: flex; gap: 10px; align-items: flex-start; color: #000; }
-  .price-list :global(.icon) { flex: none; margin-top: 4px; color: var(--teal); }
-  .price-todo { padding: 12px 14px; border-radius: 12px; font-weight: 600; color: var(--teal); background: #fff; }
-  .price .link-arrow { align-self: flex-start; }
   @media (max-width: 900px) { .quotes { grid-template-columns: 1fr; } }
   /* Fascia Zoho */
   .zband { padding: clamp(28px, 3.5vw, 44px) 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
