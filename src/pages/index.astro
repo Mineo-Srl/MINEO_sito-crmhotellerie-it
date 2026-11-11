@@ -9,6 +9,7 @@ import GuideBand from '../components/GuideBand.astro';
 import ProblemFinder from '../components/ProblemFinder.astro';
 import StartOptions from '../components/StartOptions.astro';
 import Illo from '../components/Illo.astro';
+import HeroOrbitFoto from '../components/HeroOrbitFoto.astro';
 import { site, segments } from '../data/site.js';
 const segIllo: Record<string, string> = { 'hotel-indipendenti': 'hotel', 'resort-e-villaggi': 'resort', 'agriturismi-e-bb': 'agriturismo', 'gruppi-alberghieri': 'gruppi', 'wellness-e-spa': 'spa', 'nuove-aperture': 'bnb' };
 
@@ -58,24 +59,8 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
         </div>
         <p class="trust"><Icon name="shield" size={18} /> Mineo, Zoho Authorized Partner da {site.partnerYears} anni</p>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="skyline"><Illo name="gruppi" /><Illo name="hotel" /><Illo name="resort" /><Illo name="agriturismo" /></div>
-        <div class="app">
-          <div class="app-bar"><span></span><span></span><span></span><em>CRM Hotellerie</em></div>
-          <div class="app-body">
-            <ul class="app-nav">
-              <li class="on"><Icon name="calendar" size={16} /> Prenotazioni</li>
-              <li><Icon name="users" size={16} /> Clienti</li>
-              <li><Icon name="chart" size={16} /> Marketing</li>
-              <li><Icon name="file" size={16} /> Fatture</li>
-              <li><Icon name="spark" size={16} /> Reparti</li>
-            </ul>
-            <img src="/img/app/planning.jpg" alt="" />
-          </div>
-        </div>
-        <div class="chip c1"><Icon name="check" size={16} /> Prenotazione diretta confermata</div>
-        <div class="chip c2"><Icon name="file" size={16} /> Fattura inviata allo SdI</div>
-        <div class="chip c3"><Icon name="users" size={16} /> Giulia R. · ospite abituale</div>
+      <div class="hero-art">
+        <HeroOrbitFoto />
       </div>
     </div>
     <div class="container">
@@ -188,6 +173,25 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
 </Base>
 
 
+<script>
+  // Strutture in home: si disegnano a linea quando la sezione entra nello schermo
+  const kinds = document.querySelector<HTMLElement>('.kinds');
+  if (kinds && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    kinds.querySelectorAll('.k-art').forEach((art, c) => {
+      art.querySelectorAll('svg *').forEach((el, k) => {
+        const g = el as SVGGeometryElement;
+        if (typeof g.getTotalLength === 'function') g.style.setProperty('--len', String(Math.ceil(g.getTotalLength()) + 1));
+        g.style.setProperty('--dd', (c * 0.18 + (k % 8) * 0.07).toFixed(2) + 's');
+      });
+    });
+    kinds.classList.add('draw');
+    const io = new IntersectionObserver((en) => {
+      if (en.some((e) => e.isIntersecting)) { kinds.classList.add('go'); io.disconnect(); }
+    }, { threshold: 0.25 });
+    io.observe(kinds);
+  }
+</script>
+
 <style>
   /* HERO */
   .hero { position: relative; overflow: hidden; padding: clamp(40px, 5vw, 72px) 0 0; }
@@ -198,19 +202,7 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
   .trust { display: flex; align-items: center; gap: 8px; margin-top: 26px; font-size: .9rem; color: var(--muted); }
   .trust :global(.icon) { color: var(--gold); }
 
-  .hero-art { position: relative; min-height: 470px; }
-  .app { position: absolute; left: 4%; right: 2%; top: 46px; background: #fff; border-radius: 16px; box-shadow: 0 30px 70px -28px rgba(0,0,0,.45); overflow: hidden; }
-  .app-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #111; }
-  .app-bar span { width: 9px; height: 9px; border-radius: 50%; background: #444; }
-  .app-bar em { font-style: normal; color: #fff; font-weight: 600; font-size: .8rem; margin-left: 10px; }
-  .app-body { display: grid; grid-template-columns: 128px 1fr; }
-  .app-nav { background: #f6f6f6; padding: 12px 8px; display: grid; gap: 4px; align-content: start; font-size: .78rem; font-weight: 600; }
-  .app-nav li { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 8px; color: #000; }
-  .app-nav li.on { background: var(--yellow); color: #fff; }
-  .app-body img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
-  .chip { position: absolute; display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 12px 0 12px 0; padding: 10px 14px; font-size: .82rem; font-weight: 600; color: #000; box-shadow: 0 14px 30px -14px rgba(0,0,0,.4); white-space: nowrap; }
-  .chip :global(.icon) { color: #fff; background: #111; border-radius: 50%; padding: 3px; width: 22px; height: 22px; }
-  .c1 { right: 0; top: 300px; } .c2 { left: 14%; bottom: 0; } .c3 { right: 10%; top: 6px; }
+  .hero-art { position: relative; display: grid; place-items: center; }
 
   .pillars { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: clamp(40px, 5vw, 64px); padding-bottom: clamp(40px, 5vw, 64px); }
   .pillars a { display: grid; grid-template-columns: 50px 1fr; gap: 14px; align-items: start; padding: 20px; background: #fff; border: 1px solid var(--line); border-radius: 22px 0 22px 0; height: 100%; transition: border-color .2s, transform .2s var(--ease); }
@@ -284,11 +276,6 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
     .pillars, .segs, .steps, .zoho { grid-template-columns: 1fr; }
     .ba { grid-template-columns: 1fr; }
     .ba-mid { transform: rotate(90deg); justify-self: center; }
-    .hero-art { min-height: 360px; }
-    .app-body { grid-template-columns: 1fr; }
-    .app-nav { display: none; }
-    .chip { font-size: .74rem; }
-    .c1 { top: 240px; }
   }
   /* CTA a metà pagina */
   .mid-cta { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px; margin-top: 44px; }
@@ -309,15 +296,20 @@ const after = ['Prenotazioni, planning e check-in', 'Booking engine e channel ma
   .br-segs { display: flex; flex-wrap: wrap; gap: 8px; }
   .br-segs li { padding: 6px 12px; border-radius: 999px; background: #fff; font-size: .85rem; font-weight: 600; }
   @media (max-width: 900px) { .brief { grid-template-columns: 1fr; } }
-  /* Hero: skyline di strutture stilizzate dietro il gestionale */
-  .skyline { position: absolute; left: -4%; right: -4%; bottom: 0; display: grid; grid-template-columns: 1.1fr 1fr 1fr 1fr; align-items: end; gap: 0; color: var(--teal); opacity: .5; --illo-accent: var(--teal); --illo-accent-op: .35; }
-  .skyline :global(.cut) { fill: #fff; }
 
   /* Per ogni struttura */
   .kinds { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
   .kinds a { display: flex; flex-direction: column; gap: 10px; height: 100%; padding: 18px 16px 16px; background: var(--paper); border: 1.5px solid transparent; border-radius: 22px 0 22px 0; color: #000; transition: border-color .2s, transform .2s var(--ease); }
   .kinds a:hover { border-color: var(--teal); transform: translateY(-3px); }
   .k-art { display: block; color: #000; --illo-accent: var(--teal); }
+  /* Linea in costruzione: le strutture si disegnano quando entrano nello schermo */
+  .kinds.draw .k-art :global(svg *) { stroke-dasharray: var(--len, 800); stroke-dashoffset: var(--len, 800); }
+  .kinds.draw .k-art :global(.ac) { fill-opacity: 0; }
+  .kinds.draw.go .k-art :global(svg *) { animation: kd-build 1.8s ease-in-out forwards; animation-delay: var(--dd, 0s); }
+  .kinds.draw.go .k-art :global(.ac) { animation: kd-build 1.8s ease-in-out forwards, kd-fill .6s ease forwards; animation-delay: var(--dd, 0s), calc(var(--dd, 0s) + 1.4s); }
+  .kinds.draw .k-art :global(.cut) { animation: none; stroke-dasharray: none; stroke-dashoffset: 0; }
+  @keyframes kd-build { to { stroke-dashoffset: 0; } }
+  @keyframes kd-fill { to { fill-opacity: var(--illo-accent-op, .9); } }
   .k-t { font-weight: 700; font-size: .95rem; line-height: 1.25; }
   .k-go { margin-top: auto; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; color: var(--teal); }
   @media (max-width: 1100px) { .kinds { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

@@ -5,7 +5,7 @@ import { site, whatsappUrl } from '../data/site.js';
 interface Props { title?: string; hl?: string; text?: string; consult?: boolean }
 const { title = 'Vedilo sul', hl = 'tuo hotel.', consult = true } = Astro.props;
 ---
-<section class="grow">
+<section class="grow" data-grow>
   <div class="g-art g-l" aria-hidden="true"><Illo name="hotel" /></div>
   <div class="g-art g-r" aria-hidden="true"><Illo name="demo" /></div>
   <div class="container grow-in">
@@ -24,6 +24,12 @@ const { title = 'Vedilo sul', hl = 'tuo hotel.', consult = true } = Astro.props;
   .g-art { position: absolute; bottom: 0; width: min(22%, 300px); color: var(--teal); opacity: .55; --illo-accent: var(--teal); --illo-accent-op: .3; pointer-events: none; }
   .g-l { left: 3%; }
   .g-r { right: 3%; bottom: 14%; }
+  /* Push: i due disegni entrano spinti dai lati quando la sezione arriva nello schermo */
+  .grow.push .g-art { opacity: 0; }
+  .grow.push .g-l { translate: -110% 0; }
+  .grow.push .g-r { translate: 110% 0; }
+  .grow.push.in .g-art { opacity: .55; translate: 0 0; transition: translate 1s cubic-bezier(.2,1.35,.35,1), opacity .5s ease; }
+  .grow.push.in .g-r { transition-delay: .15s; }
   @media (max-width: 900px) { .g-art { display: none; } }
   .grow-in { position: relative; }
   .grow-t { font-family: var(--font-head); font-weight: 700; font-size: clamp(2.5rem, 6vw, 4.4rem); letter-spacing: -.045em; line-height: 1.05; background: linear-gradient(90deg, #111 0%, #0d7f89 70%, #0d7f89 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -34,3 +40,14 @@ const { title = 'Vedilo sul', hl = 'tuo hotel.', consult = true } = Astro.props;
   .contacts a { color: #000; font-weight: 600; }
   .contacts a:hover { color: var(--gold); }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-grow]').forEach((g) => {
+    if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    g.classList.add('push');
+    const io = new IntersectionObserver((en) => {
+      if (en.some((e) => e.isIntersecting)) { g.classList.add('in'); io.disconnect(); }
+    }, { threshold: 0.3 });
+    io.observe(g);
+  });
+</script>
