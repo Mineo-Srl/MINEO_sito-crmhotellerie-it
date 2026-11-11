@@ -6,7 +6,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
-import { problems, problemCats, segments, site } from '../data/site.js';
+import { problems, problemCats, segments, site, contactFormUrl } from '../data/site.js';
 import { featureHref } from '../data/features.js';
 const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, links: s.links }));
 ---
@@ -69,8 +69,8 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
           <div class="res-info">
             <p class="res-info-t"><Icon name="mail" size={16} /> Cosa succede se la invii via email</p>
             <ol>
-              <li>Ricevi nella tua casella il <strong>riepilogo in PDF</strong>.</li>
-              <li>Lo stesso riepilogo arriva anche a noi.</li>
+              <li>Scarichi il <strong>riepilogo in PDF</strong> della tua soluzione.</li>
+              <li>Lo alleghi al modulo: la tua richiesta arriva direttamente a noi.</li>
               <li>Il team di <strong>MINEO S.r.l.</strong> ti ricontatta per parlarne insieme.</li>
             </ol>
           </div>
@@ -81,35 +81,19 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
   </section>
 
   <dialog class="mdl" data-mail-dlg aria-labelledby="mdl-t">
-    <form class="mdl-f" data-mail-form>
+    <div class="mdl-f">
       <button type="button" class="mdl-x" data-close aria-label="Chiudi"><Icon name="close" size={20} /></button>
       <p class="label">La tua soluzione</p>
       <h2 class="h3" id="mdl-t">Inviacela via email</h2>
-      <p class="mdl-lead">Compila i dati: prepariamo la mail con il riepilogo della tua configurazione e scarichiamo il PDF da allegare.</p>
       <ul class="mdl-sel" data-mail-sel></ul>
-      <div class="mdl-g">
-        <label>Nome *<input name="nome" required autocomplete="given-name" /></label>
-        <label>Cognome<input name="cognome" autocomplete="family-name" /></label>
-        <label class="full">Nome della struttura<input name="struttura" autocomplete="organization" /></label>
-        <label>Telefono *<input name="telefono" type="tel" required autocomplete="tel" /></label>
-        <label>E-mail *<input name="email" type="email" required autocomplete="email" /></label>
-        <label class="full">Come gestisci oggi la struttura?
-          <select name="gestione">
-            <option value="">Seleziona</option>
-            <option>Ho già un PMS e vorrei affiancarlo</option>
-            <option>Voglio ripartire da zero</option>
-            <option>Excel, fogli e WhatsApp</option>
-            <option>Sto aprendo una nuova struttura</option>
-            <option>Uso già un altro CRM</option>
-            <option>Altro</option>
-          </select>
-        </label>
-        <label class="full">Note<textarea name="note" rows="3" placeholder="Date, numero di camere, domande…"></textarea></label>
-      </div>
-      <label class="mdl-ck"><input type="checkbox" name="privacy" required /> Accetto il trattamento dei miei dati secondo la <a href="/privacy-policy/" target="_blank" rel="noopener">privacy policy</a> *</label>
-      <button class="btn btn-primary mdl-go" type="submit"><Icon name="mail" size={18} /> Prepara la mail</button>
-      <p class="mdl-ok" data-mail-ok hidden><Icon name="check" size={16} /> Si è aperta la tua app di posta con la mail già compilata e il PDF è stato scaricato: allegalo e premi Invia.</p>
-    </form>
+      <ol class="mdl-steps">
+        <li><span><strong>Scarica il riepilogo PDF</strong> della tua soluzione.</span> <button type="button" class="btn btn-primary mdl-dl" data-pdf-mdl><Icon name="download" size={16} /> Scarica PDF</button></li>
+        <li><span><strong>Compila il modulo</strong> qui sotto e allega il PDF nel campo “Riepilogo PDF”.</span></li>
+      </ol>
+      {/* Modulo Zoho Forms "Funnel_hotellerie": il src viene impostato all'apertura,
+          con referrername = indirizzo della pagina (contiene struttura ed esigenze scelte). */}
+      <iframe id="ziframe_106334" class="mdl-if" aria-label="Form Funnel_hotellerie" title="Modulo di richiesta" data-zf={contactFormUrl}></iframe>
+    </div>
   </dialog>
 </Base>
 
@@ -125,7 +109,6 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
     const cta = root.querySelector('[data-cta]') as HTMLElement;
     const demo = root.querySelector('[data-demo]') as HTMLAnchorElement;
     const dlg = document.querySelector('[data-mail-dlg]') as HTMLDialogElement;
-    const form = document.querySelector('[data-mail-form]') as HTMLFormElement;
     let sols: Sol[] = [];
     let segTxt = '';
 
@@ -236,37 +219,24 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
     root.querySelector('[data-open-mail]')!.addEventListener('click', () => {
       const ul = dlg.querySelector('[data-mail-sel]') as HTMLElement;
       ul.innerHTML = sols.map((x) => `<li>${x.sol}</li>`).join('');
-      (dlg.querySelector('[data-mail-ok]') as HTMLElement).hidden = true;
+      // Come nel codice di incorporamento Zoho: referrername = pagina di provenienza,
+      // che qui contiene anche la configurazione (?struttura=…&esigenze=…)
+      const zf = dlg.querySelector('#ziframe_106334') as HTMLIFrameElement;
+      let rfr = location.href;
+      if (rfr.length > 1800) rfr = rfr.substring(0, 1800);
+      // Precompila "Tipo di struttura" (SingleLine1) con la struttura scelta
+      const pre = segTxt ? '&SingleLine1=' + encodeURIComponent(segTxt) : '';
+      const src = zf.dataset.zf + (zf.dataset.zf!.includes('?') ? '&' : '?') + 'referrername=' + encodeURIComponent(rfr) + pre;
+      if (zf.src !== src) zf.src = src;
       dlg.showModal();
+    });
+    dlg.querySelector('[data-pdf-mdl]')!.addEventListener('click', async (e) => {
+      const b = e.currentTarget as HTMLButtonElement;
+      await makePdf();
+      b.innerHTML = '✓ PDF scaricato';
     });
     dlg.querySelector('[data-close]')!.addEventListener('click', () => dlg.close());
     dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const f = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
-      await makePdf(f);
-      const body = [
-        'Buongiorno, vi invio la soluzione che ho composto su crmhotellerie.it.',
-        '',
-        `Nome: ${f.nome} ${f.cognome || ''}`.trim(),
-        `Struttura: ${f.struttura || '-'}`,
-        `Tipo di struttura: ${segTxt || '-'}`,
-        `Telefono: ${f.telefono}`,
-        `E-mail: ${f.email}`,
-        `Come gestisco oggi la struttura: ${f.gestione || '-'}`,
-        '',
-        'Le soluzioni scelte:',
-        ...sols.map((x, i) => `${i + 1}. ${x.sol}`),
-        '',
-        f.note ? 'Note: ' + f.note : '',
-        'In allegato il riepilogo PDF.',
-        '',
-        'Configurazione: ' + location.href,
-      ].filter((l, i, a) => !(l === '' && a[i - 1] === '')).join('\n');
-      const subj = `La mia soluzione CRM Hotellerie${f.struttura ? ' - ' + f.struttura : ''}`;
-      location.href = `mailto:${el.dataset.mail}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
-      (dlg.querySelector('[data-mail-ok]') as HTMLElement).hidden = false;
-    });
   });
 </script>
 
@@ -315,25 +285,19 @@ const segData = segments.map((s) => ({ id: s.id, title: s.title, icon: s.icon, l
   .res-mail { justify-content: center; gap: 8px; background: #fff; color: #000; border: 0; }
   .res-mail:hover { background: var(--yellow-soft); }
   .res-pdf { display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; background: none; border: 0; cursor: pointer; font: inherit; font-weight: 600; }
-  .mdl { margin: auto; inset: 0; position: fixed; overflow: auto; width: min(640px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; border-radius: 28px 0 28px 0; box-shadow: 0 40px 80px -30px rgba(0,0,0,.6); }
+  .mdl { margin: auto; inset: 0; position: fixed; overflow: auto; width: min(720px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; border-radius: 28px 0 28px 0; box-shadow: 0 40px 80px -30px rgba(0,0,0,.6); }
   .mdl::backdrop { background: rgba(0,0,0,.55); }
   .mdl-f { position: relative; padding: clamp(24px, 3vw, 36px); display: grid; gap: 14px; }
   .mdl-x { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%; border: 0; background: var(--paper-2); cursor: pointer; }
   .mdl-lead { font-size: .94rem; }
   .mdl-sel { display: flex; flex-wrap: wrap; gap: 6px; }
   .mdl-sel :global(li) { padding: 5px 10px; border-radius: 999px; background: var(--yellow-tint); border: 1px solid var(--teal); font-size: .8rem; font-weight: 600; }
-  .mdl-g { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .mdl-g label { display: grid; gap: 6px; font-weight: 600; font-size: .86rem; }
-  .mdl-g .full { grid-column: 1 / -1; }
-  .mdl-g input, .mdl-g select, .mdl-g textarea { font: inherit; font-weight: 400; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; color: #000; }
-  .mdl-g input:focus, .mdl-g select:focus, .mdl-g textarea:focus { outline: 2px solid var(--teal); border-color: var(--teal); }
-  .mdl-ck { display: flex; gap: 10px; align-items: flex-start; font-size: .84rem; }
-  .mdl-ck input { margin-top: 3px; accent-color: var(--teal); }
-  .mdl-ck a { text-decoration: underline; }
-  .mdl-go { justify-content: center; }
-  .mdl-ok[hidden] { display: none; }
-  .mdl-ok { display: flex; gap: 8px; padding: 12px 14px; border-radius: 12px 0 12px 0; background: var(--yellow-tint); font-size: .86rem; }
-  @media (max-width: 560px) { .mdl-g { grid-template-columns: 1fr; } }
+  .mdl-if { width: 100%; height: min(720px, 62dvh); border: 0; border-radius: 12px; background: #fff; }
+  .mdl-steps { display: grid; gap: 8px; counter-reset: ms; }
+  .mdl-steps li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px 10px 44px; position: relative; border-radius: 12px 0 12px 0; background: var(--yellow-tint); font-size: .9rem; counter-increment: ms; }
+  .mdl-steps li::before { content: counter(ms); position: absolute; left: 12px; top: 50%; translate: 0 -50%; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 6px 0 6px 0; background: var(--teal); color: #fff; font-size: .78rem; font-weight: 700; }
+  .mdl-dl { flex: none; padding: 9px 16px; font-size: .78rem; gap: 6px; }
+  @media (max-width: 560px) { .mdl-steps li { flex-direction: column; align-items: flex-start; } }
   .res-info { margin-top: 4px; padding: 14px 16px; border-radius: 12px 0 12px 0; background: rgba(255,255,255,.08); color: #fff; }
   .res-info-t { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .88rem; color: #fff; margin-bottom: 10px; }
   .res-info ol { display: grid; gap: 8px; counter-reset: st; }
