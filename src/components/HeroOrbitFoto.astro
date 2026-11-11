@@ -11,16 +11,18 @@ const shots = [
   { src: '/img/orbit/salesiq-live.jpg', label: 'SalesIQ · Visitatori live' },
   { src: '/img/orbit/pagesense-pagine.jpg', label: 'PageSense · Pagine' },
 ];
-const icons = ['calendar', 'chart', 'chat', 'users', 'bell'];
+const icons = ['calendar', 'chart', 'chat', 'users', 'bell', 'social'];
 /* Foto e icone alternate sull'anello: foto, icona, foto, icona… (l'icona in più chiude il giro).
-   Le icone ruotano tra tre stili: fondo nero, fondo verde petrolio, fondo bianco con linee colorate. */
+   Stili icone: t0 nero, t1 verde petrolio, t2 bianco con linee petrolio, t3 bianco con linee nere (social). */
 const items = [
-  ...shots.flatMap((s, i) => [{ kind: 'foto', ...s }, { kind: 'icona', icon: icons[i], tone: i % 3 }]),
-  { kind: 'icona', icon: icons[4], tone: 4 % 3 },
+  { kind: 'foto', ...shots[0] }, { kind: 'icona', icon: icons[0], tone: 0 },
+  { kind: 'foto', ...shots[1] }, { kind: 'icona', icon: icons[1], tone: 1 }, { kind: 'icona', icon: icons[5], tone: 3 },
+  { kind: 'foto', ...shots[2] }, { kind: 'icona', icon: icons[2], tone: 2 },
+  { kind: 'foto', ...shots[3] }, { kind: 'icona', icon: icons[3], tone: 0 }, { kind: 'icona', icon: icons[4], tone: 1 },
 ] as any[];
 const C = 50, R = 45, CORE = 13;
 /* Spazi non uniformi: più largo tra foto e icona, più stretto tra le due icone vicine */
-const GAP_II = 30, GAP_PI = (360 - GAP_II) / 8;
+const GAP_II = 28, GAP_PI = (360 - 2 * GAP_II) / 8;
 let acc = -70;
 const angles = items.map((it, i) => { const a = acc; const next = items[i + 1]; acc += next && it.kind === 'icona' && next.kind === 'icona' ? GAP_II : GAP_PI; return a; });
 const pts = items.map((s, i) => {
@@ -87,6 +89,8 @@ const pts = items.map((s, i) => {
   .hf-ico.t1 .hf-ico-in { background: var(--teal); }
   .hf-ico.t1 .hf-ico-in::after { border-top-color: #000; border-right-color: #000; }
   .hf-ico.t2 .hf-ico-in { background: #fff; color: var(--teal); box-shadow: inset 0 0 0 2px var(--teal), 0 0 0 6px rgba(13,127,137,.1), 0 14px 26px -14px rgba(0,0,0,.35); }
+  .hf-ico.t3 .hf-ico-in { background: #fff; color: #000; box-shadow: inset 0 0 0 2px #000, 0 0 0 6px rgba(0,0,0,.06), 0 14px 26px -14px rgba(0,0,0,.35); }
+  .hf-ico.t3 .hf-ico-in::after { border-top-color: #000; border-right-color: #000; }
   .hf-ico-in::after { content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 2px solid transparent; border-top-color: var(--teal); border-right-color: var(--teal); animation: hf-spin 9s linear infinite; }
 
   .hf-core { position: absolute; left: 50%; top: 50%; width: 26%; aspect-ratio: 1; translate: -50% -50%; display: grid; place-items: center; border-radius: 50%; background: #fff; border: 1px solid rgba(0,0,0,.1); box-shadow: 0 24px 60px -24px rgba(13,127,137,.55); animation: hf-pop .7s cubic-bezier(.2,.8,.2,1.2) both; z-index: 2; }
