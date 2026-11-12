@@ -16,7 +16,7 @@ const { title = 'Vedilo sul', hl = 'tuo hotel.', consult = true } = Astro.props;
       <a class="btn btn-ghost" href={site.demoUrl} target="_blank" rel="noopener">Esplora l’hotel demo</a>
     </div>
     {consult && <p class="consult">Non tutti gli hotel hanno bisogno di tutto: in una <strong>consulenza gratuita</strong> ti suggeriamo solo le app Zoho davvero utili per la tua struttura.</p>}
-    <p class="contacts"><a href={`mailto:${site.email}`}>{site.email}</a> · <a href={whatsappUrl} target="_blank" rel="noopener">WhatsApp {site.whatsapp}</a></p>
+    <p class="contacts"><a href={`mailto:${site.email}`}>{site.email}</a> · <a href={`tel:${site.phoneHref}`}>Tel. {site.phone}</a> · <a href={whatsappUrl} target="_blank" rel="noopener">WhatsApp {site.whatsapp}</a></p>
   </div>
 </section>
 <style>

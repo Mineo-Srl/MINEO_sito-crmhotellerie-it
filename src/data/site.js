@@ -18,6 +18,8 @@ export const site = {
   email: 'info@mineoepartners.it',
   privacyEmail: 'privacy@mineoepartners.it',
   pec: 'mineosrl@legalmail.it',
+  phone: '+39 02 814 807 92',
+  phoneHref: '+390281480792',
   whatsapp: '+39 389 668 0301',
   whatsappHref: '393896680301',
 

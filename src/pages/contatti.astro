@@ -11,6 +11,7 @@ import { site, whatsappUrl, contactFormUrl } from '../data/site.js';
     <div class="container cgrid">
       <div class="ways">
         <a class="way" href="/demo/"><Icon name="calendar" size={24} /><span><strong>Prenota una demo</strong><span>Scegli giorno e ora nell’agenda</span></span></a>
+        <a class="way" href={`tel:${site.phoneHref}`}><Icon name="phone" size={24} /><span><strong>Telefono</strong><span>{site.phone}</span></span></a>
         <a class="way" href={whatsappUrl} target="_blank" rel="noopener"><Icon name="whatsapp" size={24} /><span><strong>WhatsApp</strong><span>{site.whatsapp}</span></span></a>
         <a class="way" href={`mailto:${site.email}`}><Icon name="mail" size={24} /><span><strong>Email</strong><span>{site.email}</span></span></a>
         <div class="way"><Icon name="pin" size={24} /><span><strong>{site.legal}</strong><span>{site.address}</span></span></div>

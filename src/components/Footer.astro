@@ -20,6 +20,7 @@ const reparti = features.filter((f) => f.group === 'reparti');
         <p class="f-claim">CRM Hotellerie: un unico software per marketing, prenotazioni, gestione del personale e fatturazione. I dati restano tuoi.</p>
         <ul class="f-contacts">
           <li><a href={`mailto:${site.email}`}><Icon name="mail" size={18} /> {site.email}</a></li>
+          <li><a href={`tel:${site.phoneHref}`}><Icon name="phone" size={18} /> {site.phone}</a></li>
           <li><a href={whatsappUrl} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> {site.whatsapp}</a></li>
           <li><span><Icon name="pin" size={18} /> {site.address}</span></li>
         </ul>

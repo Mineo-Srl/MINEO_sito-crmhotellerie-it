@@ -19,7 +19,7 @@ const ogImage = new URL(image, site.url).href;
 /* Dati strutturati (SEO e GEO): chi è l'azienda, cos'è il prodotto, dove sei. */
 const org = {
   '@type': 'Organization', '@id': `${site.url}/#org`,
-  name: site.legal, url: site.mainSite, email: site.email,
+  name: site.legal, url: site.mainSite, email: site.email, telephone: site.phoneHref,
   logo: new URL('/img/logo-crm-hotellerie.png', site.url).href,
   address: { '@type': 'PostalAddress', streetAddress: site.street, postalCode: site.zip, addressLocality: site.city, addressRegion: site.province, addressCountry: 'IT' },
   sameAs: [site.linkedin, site.mainSite],
